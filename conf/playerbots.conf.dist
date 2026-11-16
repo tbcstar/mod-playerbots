@@ -4403,9 +4403,10 @@ AiPlayerbot.MaxRandomBotRandomizeTime = 1209600
 
 # Number of bots processed (login, logout, update) per manager update cycle
 # Default: 60
-# 60 -> 4：最关键的一项。每个管理周期只处理 4 个机器人，登录被摊平到十几分钟，
-# 而不是几十秒内一百多个账号一起初始化（日志里那串 [1213] Deadlock 就是这一步挤出来的）。
-AiPlayerbot.RandomBotsPerInterval = 4
+# 60 -> 12：登录仍分批，但每轮 12 只、约 10 秒一轮，120 只两分钟内到齐。
+# 原来 60 会让几十秒内上百个账号同时初始化（那串 [1213] Deadlock），而 4 又慢到
+# 战场要等十几分钟才有人；死锁已在表结构上根治（唯一键 + upsert），这里取中间值。
+AiPlayerbot.RandomBotsPerInterval = 12
 
 # Interval (in seconds) between periodic random bot statistics dumps in the log
 # (online count, level/race/class distribution, roles, status). Set to 0 to disable.
