@@ -87,8 +87,10 @@ AiPlayerbot.RandomBotAutologin = 1
 
 # Randombot 数量。此处为 500：即发布包安装的数量，也是 16 GB 内存能
 # 舒适容纳的数量。5000 在 32 GB 机器上大约占用 9 GB 服务器内存。
-AiPlayerbot.MinRandomBots = 100
-AiPlayerbot.MaxRandomBots = 200
+# 100 -> 60：先减半跑稳；机器人越少，登录风暴时的并发写越少。
+AiPlayerbot.MinRandomBots = 60
+# 200 -> 120：8 核 / 16 GB 的实测舒适区间，加减机器人也更快收敛。
+AiPlayerbot.MaxRandomBots = 120
 
 # Randombot 账号
 # 设为 0 以根据 MaxRandomBots、EnablePeriodicOnlineOffline
@@ -100,7 +102,8 @@ AiPlayerbot.RandomBotAccountCount = 0
 # Addclass 账号
 # 为 addclass 命令保留的机器人所创建的账号数量。与 randombots 一样，每个账号有
 # 10 个机器人（若禁用 WotLK 则为 9 个），每个职业一个机器人。
-AiPlayerbot.AddClassAccountPoolSize = 50
+# 50 -> 20：50 个账号 × 10 角色 = 500 个角色，而随机机器人只有 120 个，多出来的全是白占内存。
+AiPlayerbot.AddClassAccountPoolSize = 20
 
 # 创建的机器人账号（任意类型）的前缀。
 # 在存在现有机器人账号时，请勿更改此前缀。
@@ -1443,8 +1446,10 @@ AiPlayerbot.ExcludedHunterPetFamilies = ""
 #
 # 60 here: measured on a realm of 1000 bots, the value that keeps the world alive without
 # spending the map threads on characters nobody is looking at.
-AiPlayerbot.BotActiveAlone = 60
-AiPlayerbot.BotActiveAloneDurationSeconds = 30
+# 60 -> 25：无真人时只唤醒约四分之一的机器人，直接降低同时运行的 AI 与后台写库频率。
+AiPlayerbot.BotActiveAlone = 25
+# 30 -> 60：轮换不再每 30 秒就把一批机器人唤醒/休眠一次，减少状态切换带来的抖动。
+AiPlayerbot.BotActiveAloneDurationSeconds = 60
 
 # Force-active rules (1 = on, 0 = off)
 # These override the percentage above. If any of these conditions is true, the bot stays active.
@@ -1483,7 +1488,8 @@ AiPlayerbot.BotActiveAloneForceWhenInGuild = 1
 #
 AiPlayerbot.botActiveAloneSmartScale = 1
 AiPlayerbot.botActiveAloneSmartScaleDiffLimitfloor = 50
-AiPlayerbot.botActiveAloneSmartScaleDiffLimitCeiling = 200
+# 200 -> 150：服务器 tick 到 150 ms 就把非强制机器人全部休眠，比原来的 200 ms 更早刹车。
+AiPlayerbot.botActiveAloneSmartScaleDiffLimitCeiling = 150
 AiPlayerbot.botActiveAloneSmartScaleWhenMinLevel = 1
 AiPlayerbot.botActiveAloneSmartScaleWhenMaxLevel = 80
 
@@ -4377,24 +4383,29 @@ AiPlayerbot.RandomBotUpdateInterval = 20
 
 # Minimum and maximum seconds before the manager re-evaluates and adjusts total randombot count
 # Defaults: 1800 (min), 7200 (max)
-AiPlayerbot.RandomBotCountChangeMinInterval = 1800
+# 1800 -> 3600：调整总人数的最小间隔拉长到 1 小时，避免短时间内反复上下线。
+AiPlayerbot.RandomBotCountChangeMinInterval = 3600
 AiPlayerbot.RandomBotCountChangeMaxInterval = 7200
 
 # Minimum and maximum seconds a randombot will stay online before logging out
 # Defaults: 600 (min), 28800 (max)
-AiPlayerbot.MinRandomBotInWorldTime = 600
+# 600 -> 1800：每个机器人至少在线 30 分钟，登录/登出周期减少，初始化写入也随之减少。
+AiPlayerbot.MinRandomBotInWorldTime = 1800
 AiPlayerbot.MaxRandomBotInWorldTime = 28800
 
 # Some aspects of randombots are periodically randomized while they are logged in and idle,
 # including their inventories and, if EquipAndSpecPersistence is disabled, their equipment and specs.
 # This config sets the minimum and maximum seconds between such randomization events.
 # Defaults: 7200 (min - 2 hours), 1209600 (max - 14 days)
-AiPlayerbot.MinRandomBotRandomizeTime = 7200
+# 7200 -> 14400：重新随机装备/专业的间隔翻倍，减少 professionRollType、firstSkill 这类写入。
+AiPlayerbot.MinRandomBotRandomizeTime = 14400
 AiPlayerbot.MaxRandomBotRandomizeTime = 1209600
 
 # Number of bots processed (login, logout, update) per manager update cycle
 # Default: 60
-AiPlayerbot.RandomBotsPerInterval = 60
+# 60 -> 4：最关键的一项。每个管理周期只处理 4 个机器人，登录被摊平到十几分钟，
+# 而不是几十秒内一百多个账号一起初始化（日志里那串 [1213] Deadlock 就是这一步挤出来的）。
+AiPlayerbot.RandomBotsPerInterval = 4
 
 # Interval (in seconds) between periodic random bot statistics dumps in the log
 # (online count, level/race/class distribution, roles, status). Set to 0 to disable.
