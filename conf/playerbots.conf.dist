@@ -3114,12 +3114,12 @@ AiPlayerbot.CoaWorld.Leveling.AreaGuardLevels = 3
 AiPlayerbot.CoaWorld.Leveling.SameContinentPct = 70
 
 #    AiPlayerbot.CoaWorld.DpsTargetCache
-#        Description: Performance. The bots' "dps target" (the enemy a damage dealer picks) is kept for one AI pass
-#                     (100 ms) instead of being searched again on every call; a target that dies or leaves is
-#                     searched again at once. Read when a bot's AI is made (start-up, login).
-#        Default:     0 - off
+#        描述：性能相关。机器人的“dps 目标”（伤害输出者选取的敌人）会在一次 AI 处理中
+#              （100 毫秒）保留，而不是每次调用都重新搜索；已死亡或离开的目标会
+#              立即重新搜索。在机器人 AI 创建时（启动、登录）读取。
+#        默认值：     0 - 关闭
 
-AiPlayerbot.CoaWorld.DpsTargetCache = 0
+AiPlayerbot.CoaWorld.DpsTargetCache = 1
 
 #    AiPlayerbot.CoaWorld.SlowIdleTriggers
 #        Description: Performance. Out of combat, a bot that nothing forces to stay active (no real player near, no
@@ -3131,13 +3131,14 @@ AiPlayerbot.CoaWorld.DpsTargetCache = 0
 AiPlayerbot.CoaWorld.SlowIdleTriggers = 1
 
 #    AiPlayerbot.CoaWorld.AiBudgetMs
-#        Description: Performance. A time budget for the bots' AI per map tick, in milliseconds. Once the bots of a
-#                     map have spent it in a tick, the next ones skip their AI for that tick (they think on the next
-#                     one, first; none waits two ticks in a row). Never skipped: a bot in combat, grouped with a real
-#                     player, or within 100 yards of one. Cuts the peaks of a continent with many bots.
-#        Default:     0 - off (e.g. 40)
+#        描述：性能相关。每个地图 tick 内机器人 AI 的时间预算，以毫秒计。一旦某个地图的
+#              机器人在一个 tick 内用完该预算，后续机器人将在该 tick 跳过 AI（它们会在下一个
+#              tick 优先思考；不会有任何机器人连续两个 tick 被跳过）。以下情况永不跳过：处于战斗中的机器人、
+#              与真实玩家组队的机器人，或位于真实玩家 100 码范围内的机器人。可削减机器人数目众多的
+#              大陆上的峰值负载。
+#        默认值：     0 - 关闭（例如 40）
 
-AiPlayerbot.CoaWorld.AiBudgetMs = 0
+AiPlayerbot.CoaWorld.AiBudgetMs = 40
 
 #    AiPlayerbot.CoaWorld.BotOnlyBgPace.Enable
 #    AiPlayerbot.CoaWorld.BotOnlyBgPace.IntervalMs
@@ -3716,13 +3717,13 @@ AiPlayerbot.CoaLive.TradeMessagesPerMinute = 1
 AiPlayerbot.CoaLive.TalentsPerUpdate = 2
 
 #    AiPlayerbot.CoaLive.TrainerDedup
-#        Description: Performance. When a bot is rebuilt or refreshed, each trainer's spell list is
-#                     read once a round instead of once for every creature of that trainer (all the
-#                     class trainers of a class share one list). The bots learn the same spells.
-#        Default:     0 - as before
-#                     1 - on
+#        描述：性能相关。当机器人被重建或刷新时，每个训练师的法术列表
+#              每轮只读取一次，而不是为该训练师的每个生物读取一次（同一职业的
+#              所有职业训练师共享一个列表）。机器人学到的法术相同。
+#        默认值：     0 - 和以前一样
+#                     1 - 开启
 
-AiPlayerbot.CoaLive.TrainerDedup = 0
+AiPlayerbot.CoaLive.TrainerDedup = 1
 
 #    AiPlayerbot.CoaLive.MaintenanceSpread
 #        Description: Performance. A random bot's level-up maintenance (new spells, a teleport to
@@ -3734,13 +3735,13 @@ AiPlayerbot.CoaLive.TrainerDedup = 0
 AiPlayerbot.CoaLive.MaintenanceSpread = 1
 
 #    AiPlayerbot.CoaLive.HeavyRefreshPerTick
-#        Description: Performance. At most this many random bot rebuilds or refreshes (about 70 ms
-#                     each at 2,000 bots) in one world update; the others wait for the next ones.
-#                     The same bots get the same rebuilds, a little later.
-#        Default:     0 - no limit, as before
-#                     1 - suggested
+#        描述：性能相关。在一次世界更新中最多进行这么多次随机机器人重建或刷新
+#              （在 2,000 个机器人时每次约 70 毫秒）；其余的等待后续更新。
+#              相同的机器人会获得相同的重建，只是稍晚一些。
+#        默认值：     0 - 无限制，和以前一样
+#                     1 - 建议值
 
-AiPlayerbot.CoaLive.HeavyRefreshPerTick = 0
+AiPlayerbot.CoaLive.HeavyRefreshPerTick = 1
 
 #    AiPlayerbot.CoaLive.Immersion.Enable
 #        Description: Immersion. A random bot idling with water close by (60 yd), a capital's
@@ -5166,18 +5167,18 @@ AiPlayerbot.EnableICCBuffs = 1
 PlayerbotsDatabaseInfo = "127.0.0.1;3306;root;!QAZ2wsx#EDC4rfv;acore_playerbots"
 
 #    PlayerbotsDatabase.WorkerThreads
-#        Description: The amount of worker threads spawned to handle asynchronous (delayed) MySQL
-#                     statements. Each worker thread is mirrored with its own connection to the
-#                     MySQL server and their own thread on the MySQL server.
-#        Default:     1 - (PlayerbotsDatabase.WorkerThreads)
+#        描述：用于处理异步（延迟）MySQL 语句所生成的 worker 线程数量。
+#              每个 worker 线程都会对应一个到 MySQL 服务器的独立连接，
+#              以及 MySQL 服务器上的独立线程。
+#        默认值：     1 - （PlayerbotsDatabase.WorkerThreads）
 
-PlayerbotsDatabase.WorkerThreads     = 1
+PlayerbotsDatabase.WorkerThreads     = 2
 
 #    PlayerbotsDatabase.SynchThreads
-#        Description: The amount of MySQL connections spawned to handle.
-#        Default:     1 - (PlayerbotDatabase.WorkerThreads)
+#        描述：用于处理的 MySQL 连接数。
+#        默认值：     1 - （PlayerbotDatabase.WorkerThreads）
 
-PlayerbotsDatabase.SynchThreads     = 1
+PlayerbotsDatabase.SynchThreads     = 2
 
 #    Playerbot.Updates.EnableDatabases
 #        Description: Determined if updates system work with playerbots database.
