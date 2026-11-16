@@ -79,56 +79,56 @@
 
 ####################################################################################################
 
-# Enable or disable Playerbots module
+# 启用或禁用 Playerbots 模块
 AiPlayerbot.Enabled = 1
 
-# Enable randombot system
+# 启用 randombot 系统
 AiPlayerbot.RandomBotAutologin = 1
 
-# Randombot count. 500 here: what the released package installs, and what 16 GB of memory holds
-# comfortably. 5000 run in about 9 GB of server memory on 32 GB.
-AiPlayerbot.MinRandomBots = 500
-AiPlayerbot.MaxRandomBots = 500
+# Randombot 数量。此处为 500：即发布包安装的数量，也是 16 GB 内存能
+# 舒适容纳的数量。5000 在 32 GB 机器上大约占用 9 GB 服务器内存。
+AiPlayerbot.MinRandomBots = 100
+AiPlayerbot.MaxRandomBots = 200
 
-# Randombot accounts
-# Set to 0 to automatically calculate needed accounts based on MaxRandomBots, EnablePeriodicOnlineOffline
-# and its ratio, and AddClassAccountPoolSize. Set manually if you want to create more accounts than needed.
-# If the manual value is less than the required, the system will override it with the required value.
-# Default: 0 (automatic)
+# Randombot 账号
+# 设为 0 以根据 MaxRandomBots、EnablePeriodicOnlineOffline
+# 及其比例、以及 AddClassAccountPoolSize 自动计算所需账号数。如果你想创建比所需更多的账号，请手动设置。
+# 如果手动值小于所需值，系统将用所需值覆盖它。
+# 默认值：0（自动）
 AiPlayerbot.RandomBotAccountCount = 0
 
-# Addclass accounts
-# Number of accounts created for bots reserved for the addclass command. As with randombots, each account has
-# 10 bots (or 9 if WotLK is disabled), one bot for each class.
+# Addclass 账号
+# 为 addclass 命令保留的机器人所创建的账号数量。与 randombots 一样，每个账号有
+# 10 个机器人（若禁用 WotLK 则为 9 个），每个职业一个机器人。
 AiPlayerbot.AddClassAccountPoolSize = 50
 
-# Prefix for created bot accounts (of any type).
-# Do not change this prefix while there are existing bot accounts.
+# 创建的机器人账号（任意类型）的前缀。
+# 在存在现有机器人账号时，请勿更改此前缀。
 AiPlayerbot.RandomBotAccountPrefix = "rndbot"
 
-# Delete all randombot accounts
-# To apply this, set the number to 1 and run the Worldserver. Once deletion is complete, if you would
-# like to recreate randombots, set the number back to 0 and rerun the Worldserver.
-# Set it back to 0 right after that one start, otherwise every start wipes all random bots again.
-# The purge also cleans the Conquest of Azeroth character tables (Mystic Enchants, challenges, Manastorm,
-# Mythic+, personal bank...) so new bots never inherit data from deleted bots that had the same guid.
+# 删除所有 randombot 账号
+# 要应用此操作，请将数值设为 1 并运行 Worldserver。删除完成后，如果你想
+# 重新创建 randombots，请将数值改回 0 并重新运行 Worldserver。
+# 在那一次启动后立即改回 0，否则每次启动都会再次清除所有随机机器人。
+# 此清除还会清理 Conquest of Azeroth 的角色表（神秘附魔、挑战、法力风暴、
+# 史诗+、个人银行……），这样新机器人永远不会继承已删除的同 guid 机器人的数据。
 AiPlayerbot.DeleteRandomBotAccounts = 0
 
-# Disable randombots when no real players are logged in
-# Default: 0 (randombots will login when server starts)
-# If enabled, randombots will only log in 30 seconds (default) after a real player logs in, and will
-# log out 300 seconds (default) after all real players log out
+# 当没有真实玩家登录时禁用 randombots
+# 默认值：0（服务器启动时 randombots 就会登录）
+# 若启用，randombots 仅会在真实玩家登录后 30 秒（默认）登录，并会在
+# 所有真实玩家登出后 300 秒（默认）登出
 AiPlayerbot.DisabledWithoutRealPlayer = 0
 AiPlayerbot.DisabledWithoutRealPlayerLoginDelay = 30
 AiPlayerbot.DisabledWithoutRealPlayerLogoutDelay = 300
 
-# Autosave interval for randombots, in seconds
-# Default: 0 (randombots autosave every PlayerSaveInterval, like players)
-# The core autosaves every character in the world every PlayerSaveInterval (15 minutes by default).
-# With thousands of randombots that is a steady stream of database writes. A longer interval here
-# only spaces out their autosaves: bots still save on logout, at shutdown and when the code saves
-# them on purpose. A randombot whose master is a real player is back on the normal interval from
-# its next save. Values shorter than PlayerSaveInterval are ignored.
+# randombots 的自动保存间隔，以秒为单位
+# 默认值：0（randombots 像玩家一样每个 PlayerSaveInterval 自动保存一次）
+# 核心每隔 PlayerSaveInterval（默认 15 分钟）自动保存世界中的每个角色。
+# 有数千个 randombots 时，这会是源源不断的数据库写入。此处更长的间隔
+# 只会拉长它们的自动保存间隔：机器人在登出、关服以及代码有意保存
+# 它们时仍会保存。主人是真实玩家的 randombot 会从下一次保存起恢复为
+# 正常间隔。短于 PlayerSaveInterval 的值会被忽略。
 AiPlayerbot.RandomBotSaveInterval = 0
 
 ####################################################################################################
@@ -142,91 +142,91 @@ AiPlayerbot.RandomBotSaveInterval = 0
 ####################################################################################################
 
 ####################################################################################################
-# GENERAL
+# 通用
 #
 
-# The maximum number of bots that a player can control simultaneously
+# 一名玩家可同时控制的最大机器人数量
 AiPlayerbot.MaxAddedBots = 40
 
-# Enable/Disable creating bots by addclass command (0 = GM only, 1 = enabled)
-# Default: 1 (enabled)
+# 启用/禁用通过 addclass 命令创建机器人（0 = 仅 GM，1 = 启用）
+# 默认值：1（启用）
 AiPlayerbot.AddClassCommand = 1
 
-# Bot group invitation permission level (0 = GM only, 1 = accept based on level, 2 = always accept)
-# Default: 1 (accept based on level)
+# 机器人组队邀请权限等级（0 = 仅 GM，1 = 按等级接受，2 = 总是接受）
+# 默认值：1（按等级接受）
 AiPlayerbot.GroupInvitationPermission = 2
 
-# Keep altbots in the party even when the master leaves
-# 0 = disabled (default behavior)
-# 1 = enabled (prevents bots from automatically leaving the group)
+# 即使主人离开也将小号机器人保留在队伍中
+# 0 = 禁用（默认行为）
+# 1 = 启用（防止机器人自动离队）
 AiPlayerbot.KeepAltsInGroup = 0
 
-# Auto-login all player alts as altbots on player login
+# 玩家登录时自动将所有玩家小号作为小号机器人登录
 AiPlayerbot.BotAutologin = 0
 
-# Allow/deny inviting altbots from the player's account
+# 允许/拒绝邀请玩家账号下的小号机器人
 AiPlayerbot.AllowAccountBots = 1
 
-# Allow/deny inviting altbots in the player's guild
+# 允许/拒绝邀请玩家公会中的小号机器人
 AiPlayerbot.AllowGuildBots = 1
 
-# Allow linking accounts for shared altbot control
+# 允许关联账号以共享小号机器人控制
 AiPlayerbot.AllowTrustedAccountBots = 1
 
-# Randombots will create guilds with nearby randombots
-# Note: currently, randombots will not invite more bots after a guild is created,
-# meaning randombot guilds will have only the 10 initial randombots needed to sign the charter
-# Default: 0 (disabled)
+# 随机机器人会与附近的随机机器人创建公会
+# 注意：目前，随机机器人在公会创建后不会再邀请更多机器人，
+# 这意味着随机机器人公会将只有签署公会章程所需的 10 个初始随机机器人
+# 默认值：0（禁用）
 AiPlayerbot.RandomBotGuildNearby = 0
 
-# Number of guilds created by randombots
+# 随机机器人创建的公会数量
 AiPlayerbot.RandomBotGuildCount = 20
 
-# Maximum number of members in randombot guilds (minimum is hardcoded to 10)
+# 随机机器人公会的最大成员数（最小值硬编码为 10）
 AiPlayerbot.RandomBotGuildSizeMax = 15
 
-# Delete all randombot (and any addclass bot) guilds on startup. While enabled,
-# no new randombot guilds are created or joined. Set back to 0 and restart the
-# server to resume normal random bot guild assignment.
+# 启动时删除所有随机机器人（以及任何 addclass 机器人）公会。启用期间，
+# 不会创建或加入新的随机机器人公会。改回 0 并重启
+# 服务器即可恢复正常随机机器人公会分配。
 AiPlayerbot.DeleteRandomBotGuilds = 0
 
-# Randombots will invite players to groups/raids/guilds
+# 随机机器人会邀请玩家加入队伍/团队/公会
 AiPlayerbot.RandomBotInvitePlayer = 0
 
-# Bots will chat in say/guild when they invite other bots to groups/raids/guilds
+# 机器人邀请其他机器人加入队伍/团队/公会时，会在说话/公会频道聊天
 AiPlayerbot.InviteChat = 0
 
-# Bots will be automatically summoned to the player when they accept a group invitation
+# 机器人接受组队邀请时会自动被召唤到玩家身边
 AiPlayerbot.SummonWhenGroup = 1
 
-# Player can be activated as a bot (selfbot)
-# Selfbot permission level (0 = disabled, 1 = GM only (default), 2 = all players, 3 = activate on login)
+# 玩家可被激活为机器人（selfbot）
+# Selfbot 权限等级（0 = 禁用，1 = 仅 GM（默认），2 = 所有玩家，3 = 登录时激活）
 AiPlayerbot.SelfBotLevel = 1
 
-# Language of bot chat texts (ai_playerbot_texts)
-# -1 = follow the client locale of connected players (default)
-#  0 = enUS, 1 = koKR, 2 = frFR, 3 = deDE, 4 = zhCN, 5 = zhTW, 6 = esES, 7 = esMX, 8 = ruRU
-# Forcing is needed when players run an enUS client but want bots in another language.
+# 机器人聊天文本的语言（ai_playerbot_texts）
+# -1 = 跟随已连接玩家的客户端语言环境（默认）
+#  0 = enUS，1 = koKR，2 = frFR，3 = deDE，4 = zhCN，5 = zhTW，6 = esES，7 = esMX，8 = ruRU
+# 当玩家使用 enUS 客户端但希望机器人使用另一种语言时，需要强制指定。
 AiPlayerbot.BotTextLocale = 4
 
-# Non-GM player can only use init=auto to initialize bots based on their own level and gearscore
-# Default: 0 (non-GM player can use any intialization commands)
+# 非 GM 玩家只能使用 init=auto 根据自身等级和装备评分初始化机器人
+# 默认值：0（非 GM 玩家可使用任何初始化命令）
 AiPlayerbot.AutoInitOnly = 0
 
-# Allow .bot refresh=raid to unbind instances on player-created alt
-# bots (non-addclass bots). When 0, refresh=raid is denied on alts
-# with "non-addclass bot" error. UnbindInstance is DB-light, no lag
-# risk from enabling this.
-# Default: 0
+# 允许 .bot refresh=raid 在玩家创建的小号机器人（非 addclass 机器人）上解绑副本。
+# 为 0 时，在未使用 addclass 的机器人上执行 refresh=raid 会报错 "non-addclass bot"。
+# UnbindInstance 对数据库负担很轻，
+# 启用此项不会带来卡顿风险。
+# 默认值：0
 AiPlayerbot.ResetInstanceIdForAltBots = 0
 
-# The upper limit ratio of bot equipment level for init=auto
-# Default: 1.0 (same with the player)
+# init=auto 时机器人装备等级的上限比例
+# 默认值：1.0（与玩家相同）
 AiPlayerbot.AutoInitEquipLevelLimitRatio = 1.0
 
 # AllowLearnTrainerSpells
-# Description: Allow the bot to learn trainers' spells as long as it has the money.
-# Default: 1 - (enabled)
+# 描述：只要机器人有钱，就允许它学习训练师法术。
+# 默认值：1 - （启用）
 AiPlayerbot.AllowLearnTrainerSpells = 1
 
 #
@@ -234,27 +234,27 @@ AiPlayerbot.AllowLearnTrainerSpells = 1
 ####################################################################################################
 
 ####################################################################################################
-# SUMMON OPTIONS
+# 召唤选项
 #
 
-# Enable/Disable summoning bots when the master is in combat
-# Default: 1 (enabled)
+# 启用/禁用主人处于战斗时召唤机器人
+# 默认值：1（启用）
 AiPlayerbot.AllowSummonInCombat = 1
 
-# Enable/Disable summoning bots when the master is dead
-# Default: 1 (enabled)
+# 启用/禁用主人死亡时召唤机器人
+# 默认值：1（启用）
 AiPlayerbot.AllowSummonWhenMasterIsDead = 1
 
-# Enable/Disable summoning bots when they are dead (0 = only when the bots are ghosts, 1 = always)
-# Default: 1 (always)
+# 启用/禁用机器人死亡时召唤它们（0 = 仅当机器人为幽灵时，1 = 总是）
+# 默认值：1（总是）
 AiPlayerbot.AllowSummonWhenBotIsDead = 1
 
-# Enable/Disable reviving bots when summoning them (0 = disabled, 1 = disabled in combat, 2 = enabled)
-# Default: 1 (disabled in combat)
+# 启用/禁用召唤机器人时复活它们（0 = 禁用，1 = 战斗中禁用，2 = 启用）
+# 默认值：1（战斗中禁用）
 AiPlayerbot.ReviveBotWhenSummoned = 1
 
-# Enable/Disable bots repairing gear when summoned
-# Default: 1 (enabled)
+# 启用/禁用召唤时机器人修理装备
+# 默认值：1（启用）
 AiPlayerbot.BotRepairWhenSummon = 1
 
 #
@@ -262,27 +262,27 @@ AiPlayerbot.BotRepairWhenSummon = 1
 ####################################################################################################
 
 ####################################################################################################
-# MOUNT
+# 坐骑
 #
 
-# Defines at what level a bot will naturally use its 60% ground mount
-# Note: was level 20 during WotLK, 30 during TBC, 40 during Vanilla
-# Default: 20
+# 定义机器人从多少级起会自然使用其 60% 地面坐骑
+# 备注：在 WotLK 中为 20 级，TBC 中为 30 级，Vanilla 中为 40 级
+# 默认值：20
 AiPlayerbot.UseGroundMountAtMinLevel = 20
 
-# Defines at what level a bot will naturally use its 100% fast ground mount
-# Note: was level 40 during WotLK, 60 during Vanilla
-# Default: 40
+# 定义机器人从多少级起会自然使用其 100% 快速地面坐骑
+# 备注：在 WotLK 中为 40 级，Vanilla 中为 60 级
+# 默认值：40
 AiPlayerbot.UseFastGroundMountAtMinLevel = 40
 
-# Defines at what level a bot will naturally use its 150% flying mount
-# Note: was level 60 during WotLK, 70 during TBC
-# Default: 60
+# 定义机器人从多少级起会自然使用其 150% 飞行坐骑
+# 备注：在 WotLK 中为 60 级，TBC 中为 70 级
+# 默认值：60
 AiPlayerbot.UseFlyMountAtMinLevel = 60
 
-# Defines at what level a bot will naturally use its 280% fast flying mount
-# Note: was level 70 during WotLK and TBC
-# Default: 70
+# 定义机器人从多少级起会自然使用其 280% 快速飞行坐骑
+# 备注：在 WotLK 和 TBC 中为 70 级
+# 默认值：70
 AiPlayerbot.UseFastFlyMountAtMinLevel = 70
 
 #
@@ -290,26 +290,26 @@ AiPlayerbot.UseFastFlyMountAtMinLevel = 70
 ####################################################################################################
 
 ####################################################################################################
-# GEAR
+# 装备
 #
 
-# Show helmet and cloak on randombots (reset required)
-# 0 - Helmet or cloak will be visually hidden on all randombots
-# 1 - Helmet or cloak will be visually visible on all randombots
-# 2 - Helmet or cloak visibility is random when a randombot is randomized
-# Default: 1 (helm/cloak visible on all randombots)
+# 在随机机器人上显示头盔和披风（需要重置）
+# 0 - 所有随机机器人的头盔或披风将被视觉隐藏
+# 1 - 所有随机机器人的头盔或披风将视觉可见
+# 2 - 随机机器人在随机化时，头盔或披风的可见性随机
+# 默认值：1（所有随机机器人的头盔/披风可见）
 AiPlayerbot.RandomBotShowHelmet = 1
 AiPlayerbot.RandomBotShowCloak = 1
 
-# Toggles whether altbots will automatically equip items in their inventory that are sufficient upgrades
-# Default: 1 (enabled)
+# 切换小号机器人是否会自动装备其背包中足以构成升级的物品
+# 默认值：1（启用）
 AiPlayerbot.AutoEquipUpgradeLoot = 1
 
-# Threshold for auto equipping upgrades
-# Default: 1.1 (Equip when the equipment score of the new item is 1.1 times higher than the currently equipped item)
+# 自动装备升级的阈值
+# 默认值：1.1（当新物品的装备评分比当前装备物品高 1.1 倍时装备）
 AiPlayerbot.EquipUpgradeThreshold = 1.1
 
-# Two rounds of equipment initialization to create more suitable gear
+# 两轮装备初始化以创建更合适的装备
 AiPlayerbot.TwoRoundsGearInit = 0
 
 #
@@ -317,48 +317,47 @@ AiPlayerbot.TwoRoundsGearInit = 0
 ####################################################################################################
 
 ####################################################################################################
-# LOOTING
+# 拾取
 #
 
-# Bots keep looting when loot system is set to free for all
-# Default: 0 (disabled)
+# 当拾取系统设为自由拾取时，机器人仍会继续拾取
+# 默认值：0（禁用）
 AiPlayerbot.FreeMethodLoot = 0
 
-# Bots' Roll level bots will use for items they Need (0 = pass, 1 = greed, 2 = need)
-# Default: 1 (greed)
+# 机器人对需求物品使用的 roll 等级（0 = 放弃，1 = 贪婪，2 = 需求）
+# 默认值：1（贪婪）
 AiPlayerbot.LootNeedRollLevel = 1
 
-# Enable bots to roll GREED on items (global toggle)
-# If disabled, bots will PASS instead of GREED on all items
-# Default: 0 (disabled - bots only NEED or PASS)
+# 启用机器人在物品上 roll 贪婪（全局开关）
+# 若禁用，机器人将对所有物品放弃而非贪婪
+# 默认值：0（禁用——机器人只需求或放弃）
 AiPlayerbot.LootGreedRollLevel = 0
 
-# Treat weapons and armor up to this many levels above the bot as upgrades it can grow into:
-# the bot rolls NEED, including against real players in its group, and keeps the item until it can
-# wear it, unless it already holds something at least as good for that slot.
-# Default: 0 (disabled)
+# 将比机器人高出至多这么多级的武器和护甲视为其可成长使用的升级：
+# 机器人会 roll 需求，包括与其队伍中的真实玩家竞争，并保留该物品直到能
+# 穿戴，除非它已经在该槽位持有至少同样好的物品。
+# 默认值：0（禁用）
 AiPlayerbot.LootNeedLevelLookahead = 0
 
-# Enable bots to roll on recipes. Will NEED on learnable profession recipes they don't already know
-# Bots will roll GREED on BoE recipes they can't learn if LootRollGreed is enabled.
-# Default: 0 (disabled)
+# 启用机器人在配方上 roll。会对其尚未学会的可学习专业配方 roll 需求。
+# 若 LootRollGreed 已启用，机器人会对其无法学习的装绑配方 roll 贪婪。
+# 默认值：0（禁用）
 AiPlayerbot.LootRollRecipe = 0
 
-# Bots with enchanting will roll DISENCHANT instead of GREED on disenchantable items
-# If disabled, bots will GREED on disenchantable items instead
-# Default: 0 (disabled)
+# 拥有附魔的机器人会对可分解物品 roll 分解而非贪婪。
+# 若禁用，机器人会对可分解物品 roll 贪婪。
+# 默认值：0（禁用）
 AiPlayerbot.LootRollDisenchant = 0
 
-# A list of GameObject GUIDs that bots will not interact with.
-# List of default GUIDs:
-# QuestItems:
-# Blood of Heroes = 176213, Defias Gunpowder = 17155, Waterlogged Envelope = 2656, Baelog's Chest = 123329, Half-Buried Bottle = 2560
-# Chests:
-# Large Solid Chest = 74448, Box of Assorted Parts = 19020, Food Crate = 3719, Water Barrel = 3658, Barrel of Milk = 3705, Barrel of sweet Nectar = 3706, Tattered Chest = 105579, Large bettered Chest = 75293, Solid Chest = 2857, Battered Foodlocker = 179490, Witch Doctor's Chest = 141596, Relic Coffer = 160836, Dark Coffer = 160845, Fengus's Chest = 179516, Supply Crate = 176224/181085, Malor's Strongbox = 176112
-# Other:
-# Shallow Grave (Zul'Farrak) = 128308/128403, Grim Guzzler Boar (Blackrock Depths) = 165739, Dark Iron Ale Mug (Blackrock Depths) = 165738, Father Flame (Blackrock Spire) = 175245, Unforged Runic Breastplate (Blackrock Spire) = 175970, Blacksmithing Plans (Stratholme) = 176325/176327
+# 机器人不会与之交互的游戏对象 GUID 列表。
+# 默认 GUID 列表：
+# 任务物品：
+# 英雄之血 = 176213，迪菲亚火药 = 17155，浸水的信封 = 2656，巴洛克的箱子 = 123329，半埋的瓶子 = 2560
+# 宝箱：
+# 大型坚固宝箱 = 74448，杂件箱 = 19020，食物箱 = 3719，水桶 = 3658，牛奶桶 = 3705，蜜酿桶 = 3706，破烂的宝箱 = 105579，大型加固宝箱 = 75293，坚固宝箱 = 2857，破损的食物柜 = 179490，巫医的宝箱 = 141596，圣物箱 = 160836，黑暗宝箱 = 160845，费古斯的宝箱 = 179516，补给箱 = 176224/181085，马洛尔的保险箱 = 176112
+# 其他：
+# 浅墓（祖尔法拉克）= 128308/128403，恐怖酒杯野猪（黑石深渊）= 165739，黑铁酒杯（黑石深渊）= 165738，烈焰之父（黑石塔）= 175245，未锻造的符文胸甲（黑石塔）= 175970，锻造图纸（斯坦索姆）= 176325/176327
 AiPlayerbot.DisallowedGameObjects = 176213,17155,2656,74448,19020,3719,3658,3705,3706,105579,75293,2857,179490,141596,160836,160845,179516,176224,181085,176112,128308,128403,165739,165738,175245,175970,176325,176327,123329,2560
-
 #
 #
 ####################################################################################################
@@ -877,53 +876,53 @@ AiPlayerbot.EndFishingWithMaster = 30.0
 # GENERAL
 #
 
-# Enable/Disable randomly generated password for randombot accounts
+# 启用/禁用为 randombot 账号随机生成密码
 AiPlayerbot.RandomBotRandomPassword = 0
 
-# Minimum and maximum levels for randombots
+# randombots 的最低和最高等级
 AiPlayerbot.RandomBotMinLevel = 1
 AiPlayerbot.RandomBotMaxLevel = 60
 
-# Sync max randombot level with max level of online players
-# Default: 0 (disabled)
-AiPlayerbot.SyncLevelWithPlayers = 0
+# 将 randombot 最高等级与在线玩家的最高等级同步
+# 默认值：0（禁用）
+AiPlayerbot.SyncLevelWithPlayers = 1
 
-# Concentrate randombots teleporting into level-appropriate open-world zones that hold a real
-# (non-GM) player. Falls back to normal teleporting behaviour when no player's zone matches.
-# Best paired with AiPlayerbot.SyncLevelWithPlayers.
-# Default: 0 (disabled)
-AiPlayerbot.RandomBotConcentrateInPlayerZone = 0
+# 将 randombots 的传送集中在有真实（非 GM）玩家所在的、等级合适的开放世界区域。
+# 当没有玩家的区域匹配时，回退到正常的传送行为。
+# 最好与 AiPlayerbot.SyncLevelWithPlayers 搭配使用。
+# 默认值：0（禁用）
+AiPlayerbot.RandomBotConcentrateInPlayerZone = 1
 
-# Mark many quests ≤ bot level as complete (slows down bot creation)
-# Default: 0 (disabled)
+# 将许多不高于机器人等级的任务标记为已完成（会减慢机器人创建速度）
+# 默认值：0（禁用）
 AiPlayerbot.PreQuests = 0
 
-# Enable LFG for randombots
-# Default: 1 (enabled)
+# 为 randombots 启用随机副本查找器（LFG）
+# 默认值：1（启用）
 AiPlayerbot.RandomBotJoinLfg = 1
 
-# Enable/Disable periodic online - offline of randombots to mimic the real-world scenario where not all players are online simultaneously
-# When enabled, randombots are randomly selected to go online or offline periodically from a larger set
-# Default: 0 (disabled, the set of online bots remains fixed)
-AiPlayerbot.EnablePeriodicOnlineOffline = 0
+# 启用/禁用 randombots 的周期性上下线，以模拟真实世界中并非所有玩家同时在线的情况
+# 启用后，会从更大的集合中周期性随机选择 randombots 上线或下线
+# 默认值：0（禁用，在线机器人集合保持固定）
+AiPlayerbot.EnablePeriodicOnlineOffline = 1
 
-# Defines the ratio between the total number of randombots (including offline ones) and the number of randombots currently online (MaxRandomBots)
-# This setting must greater than 1.0 and only applies when EnablePeriodicOnlineOffline
-# Default: 2.0 (total number of bots is twice the number of MaxRandomBots)
+# 定义 randombots 总数（包括离线）与当前在线 randombots 数量（MaxRandomBots）之间的比例
+# 此设置必须大于 1.0，且仅在 EnablePeriodicOnlineOffline 启用时生效
+# 默认值：2.0（机器人总数是 MaxRandomBots 的两倍）
 AiPlayerbot.PeriodicOnlineOfflineRatio = 2.0
 
-# With EnablePeriodicOnlineOffline, the bots that go online are first taken among those within LevelWindow levels of a
-# real player online (several players: any of their windows), then at random. Bots are never re-leveled: only the
-# choice of who goes online changes. No real player online: random choice, as before.
-# Default: 0 (disabled), LevelWindow 5
+# 启用 EnablePeriodicOnlineOffline 时，上线的机器人首先从在线真实玩家
+# LevelWindow 等级范围内的机器人中选取（多名玩家：其任一窗口），然后随机选取。机器人永远不会重新升级：只有
+# 谁上线的选择会变化。没有真实玩家在线时：和以前一样随机选择。
+# 默认值：0（禁用），LevelWindow 5
 AiPlayerbot.OnlineSelection.FollowPlayerLevels = 0
 AiPlayerbot.OnlineSelection.LevelWindow = 5
 
-# Percentage ratio of Alliance and Horde randombots
+# 联盟和部落 randombots 的百分比比例
 AiPlayerbot.RandomBotAllianceRatio = 50
 AiPlayerbot.RandomBotHordeRatio = 50
 
-# Disable logging in of death knight bots
+# 禁用死亡骑士机器人的登录
 AiPlayerbot.DisableDeathKnightLogin = 0
 
 # Enable simulated expansion limitation for talents and glyphs
@@ -1661,19 +1660,19 @@ AiPlayerbot.CoaOrphanGroupReleaseDelay = 300
 # Default: 0 (silent), 1 = whisper every automatic upgrade, as before. Read again by ".reload config".
 AiPlayerbot.CoaTellEquipUpgrades = 0
 
-# The CoA core puts every character without a ruleset in PvE at login, so all random bots are in PvE.
-# With 1, a share of the random bots is put in High Risk (open world PvP, full loss rules for players;
-# bots never lose items) or War Mode instead; the rest stays in PvE. Each bot always gets the same
-# ruleset (chosen from its guid). High Risk and War Mode bots keep the PvP flag on (the core only puts the
-# aura, so on a PvE realm nobody was flagged by it), and in the open world a bot on its own only starts a
-# fight with a High Risk or War Mode character, whatever its own ruleset: as on Ascension, those may be
-# attacked by anyone and PvE characters by no one (a bot still defends itself and helps its group).
-# In dungeons and raids the ruleset changes nothing, and grouping with
-# such a bot does not change yours. 0 = as before (every bot in PvE, bots keep the ruleset they have).
-# Read again by ".reload config"; ungrouped bots move at their next update, the others at login.
-# CoA Bots 1.9 (PvP): on by default, 30 % of the random bots in High Risk.
+# CoA 核心会在登录时将所有没有规则集的角色置于 PvE 中，因此所有随机机器人都在 PvE 中。
+# 设为 1 时，一部分随机机器人会被置于高风险（开放世界 PvP，玩家适用全掉落规则；
+# 机器人永不失去物品）或战争模式中；其余仍留在 PvE。每个机器人始终获得相同的
+# 规则集（根据其 guid 选择）。高风险和战争模式机器人保持 PvP 标记开启（核心只施加
+# 光环，因此在 PvE 服务器上没有人因此被标记），且在开放世界中，单独的机器人只会
+# 与高风险或战争模式角色开战，无论其自身规则集如何：正如在飞升中那样，这些角色
+# 可被任何人攻击，而 PvE 角色则不被任何人攻击（机器人仍会自卫并帮助其队伍）。
+# 在地下城和团本中，规则集不会改变任何东西，与
+# 此类机器人组队也不会改变你的规则集。0 = 和以前一样（每个机器人都在 PvE 中，机器人保持其现有规则集）。
+# 通过 ".reload config" 重新读取；未组队的机器人在下次更新时移动，其他在登录时移动。
+# CoA 机器人 1.9（PvP）：默认开启，30% 的随机机器人处于高风险。
 AiPlayerbot.CoaRulesetForBots = 1
-# Shares, in percent of the random bots, when CoaRulesetForBots = 1 (the rest is PvE).
+# 当 CoaRulesetForBots = 1 时，各占比（以随机机器人的百分比计）（其余为 PvE）。
 AiPlayerbot.CoaRulesetHighRiskPct = 30
 AiPlayerbot.CoaRulesetWarModePct = 0
 
@@ -2978,15 +2977,15 @@ AiPlayerbot.CoaWorld.Travel.BotsPerPlatform = 3
 AiPlayerbot.CoaWorld.Travel.Hearthstone = 1
 
 #    AiPlayerbot.CoaWorld.ServerFirst.Enable
-#        Description: "Server first" told to the whole realm, for each side: the first character to
-#                     reach the highest level, and the first kill of each raid boss (with the raid
-#                     leader's name and guild). Bots count like anyone. Each first is told once in the
-#                     life of the realm (kept in the playerbots database). Meant for a new realm: on an
-#                     older one, a side with characters at the top level already had its first.
-#        Default:     0 - off
-#                     1 - on
+#        描述：向整个服务器公布“服务器首杀/首次”，按阵营分别计算：第一个
+#              达到最高等级的角色，以及每个团本首领的首次击杀（包含团长的
+#              名字和公会）。机器人也算在内。每项首次在服务器生命周期内
+#              只公布一次（保存在 playerbots 数据库中）。适用于新服务器：在
+#              较旧的服务器上，已有角色达到最高等级的阵营早已完成了其首次。
+#        默认值：     0 - 关闭
+#                     1 - 开启
 
-AiPlayerbot.CoaWorld.ServerFirst.Enable = 0
+AiPlayerbot.CoaWorld.ServerFirst.Enable = 1
 
 #    AiPlayerbot.CoaWorld.Guilds.Enable
 #        Description: Guilds of bots that live: balanced between the sides (Balance), a new message of
@@ -3765,32 +3764,31 @@ AiPlayerbot.CoaLive.Immersion.Enable = 1
 AiPlayerbot.CoaLive.Immersion.FishingPerThousand = 25
 
 #    AiPlayerbot.CoaFreshStart.Enable
-#        Description: Launch of a new realm ("New living server" of the launcher, with the Solo
-#                     self-found preset). Every random bot starts at the level it was made at (1), never
-#                     rolled to a higher level, and levels at a pace of its own, always the same: 15 %
-#                     fast (150 % experience), 65 % the mass (100 %), 20 % late (60 %), so the population
-#                     spreads out like players after a launch. Bots already made keep their level.
-#                     Made for a new realm: the server first announcements, the launch auction house and
-#                     the self-found gear come from their own options.
-#        Default:     0 - off
-#                     1 - on
+#        描述：新服务器开服（启动器中的“新的活跃服务器”，并带有 Solo
+#              自给自足预设）。每个随机机器人都从创建时的等级（1 级）开始，绝不
+#              被随机到更高等级，并以各自始终相同的节奏升级：15%
+#              快速（150% 经验），65% 大众（100%），20% 较慢（60%），使人口
+#              像开服后的玩家一样分散。已创建的机器人保留其等级。
+#              为新服务器而设：服务器首杀公告、开服拍卖行和
+#              自给自足装备来自它们各自的选项。
+#        默认值：     0 - 关闭
+#                     1 - 开启
 
-AiPlayerbot.CoaFreshStart.Enable = 0
+AiPlayerbot.CoaFreshStart.Enable = 1
 
 #    AiPlayerbot.CoaFreshStart.CatchUp.Enable
-#        Description: On a new living realm (AiPlayerbot.CoaFreshStart.Enable = 1) only: a random bot
-#                     playing alone or with bots, behind the human players, earns more experience the
-#                     further behind it is, so the bot world keeps up with the players. The front is the
-#                     median of the highest character of each active human account (no bot
-#                     account), surveyed every 10 minutes: one rushing player does not pull it. No bonus
-#                     within MarginLevels under the front or above it, never slower than the bot's own
-#                     pace (fast, mass, late), never for an alt, an addclass bot or a bot in a group with
-#                     a real player (it keeps the normal rate). The simulated dungeons go through it too.
-#                     World.json "leveling" (AiPlayerbot.CoaLive.DataFile.Enable) records the front and
-#                     the random bots' levels every hour. No effect on a realm without FreshStart.
-#                     Read again by ".reload config".
-#        Default:     1 - on
-#                     0 - off (the pace only)
+#        描述：仅在新活跃服务器上（AiPlayerbot.CoaFreshStart.Enable = 1）：一个单独游玩
+#              或与机器人一起游玩、落后于人类玩家的随机机器人，落后得越多获得的经验越多，
+#              从而让机器人世界跟得上玩家。前沿为每个活跃人类账号（不含机器人
+#              账号）最高角色的中位数，每 10 分钟调查一次：单个冲刺的玩家不会拉高它。
+#              在前沿以下 MarginLevels 以内或以上均无加成，绝不慢于机器人自身的
+#              节奏（快速、大众、较慢），绝不适用于小号、addclass 机器人或与真实玩家
+#              组队的机器人（它保持正常速率）。模拟地下城也遵循此规则。
+#              World.json 的 "leveling"（AiPlayerbot.CoaLive.DataFile.Enable）每小时记录前沿和
+#              随机机器人的等级。对未启用 FreshStart 的服务器无影响。
+#              通过 ".reload config" 重新读取。
+#        默认值：     1 - 开启
+#                     0 - 关闭（仅保留节奏）
 
 AiPlayerbot.CoaFreshStart.CatchUp.Enable = 1
 
@@ -4221,9 +4219,9 @@ AiPlayerbot.ZoneBracket.4197 = 79,80
 # TELEPORTS
 #
 
-# Map IDs where bots can be teleported to
-# Defaults: 0 = Eastern Kingdoms, 1 = Kalimdor, 530 = Outland, 571 = Northrend
-AiPlayerbot.RandomBotMaps = 0,1,530,571
+# 机器人可以被传送到哪些地图 ID
+# 默认值：0 = 东部王国，1 = 卡利姆多，530 = 外域，571 = 诺森德
+AiPlayerbot.RandomBotMaps = 0,1
 
 # Probability bots teleport to banker (city)
 # Default: 0.25
@@ -4293,28 +4291,28 @@ AiPlayerbot.RandomBotAutoJoinBG = 1
 # - Multiple BG brackets can be specified as a comma-separated list (e.g., "0,2,5"). Not applicable for Rated Arena.
 #   - Rated Arena:           0=10-14, 1=15-19, 2=20-24, ..., 13=75-79, 14=80-84                     (Default: 14)
 #
-# Counts:
-# - Specify the number of battles to auto-fill per bracket.
-# - For battlegrounds, 'Count" is the number of battles per bracket. For example:
+# 数量：
+# - 指定每个区间要自动填充的战斗数量。
+# - 对于战场，'Count' 是每个区间的战斗数量。例如：
 #   - RandomBotAutoJoinWSBrackets = 6,7
 #   - RandomBotAutoJoinBGWSCount = 1
-#   - These configs would create two battles, one for bracket 6 and one for bracket 7.
-# - Ensure there are enough eligible bots to meet the specified counts.
+#   - 这些配置会创建两场战斗，一个用于区间 6，一个用于区间 7。
+# - 确保有足够符合条件的机器人来满足指定的数量。
 
-# Battleground bracket range possibilities:
+# 战场区间范围可能值：
 # AiPlayerbot.RandomBotAutoJoinWSBrackets = 0,1,2,3,4,5,6,7
 # AiPlayerbot.RandomBotAutoJoinABBrackets = 0,1,2,3,4,5,6
 # AiPlayerbot.RandomBotAutoJoinAVBrackets = 0,1,2,3
 # AiPlayerbot.RandomBotAutoJoinEYBrackets = 0,1,2
 # AiPlayerbot.RandomBotAutoJoinICBrackets = 0,1
-# Conquest of Azeroth stops at level 60: the upstream defaults (level 80 brackets) never filled a battle.
-# CoA's PvpDifficulty.dbc, not the list above: Warsong Gulch, Arathi Basin and Eye of the Storm all start at
-# level 10 (bracket 4 = 50-59, 5 = 60-69), Alterac Valley bracket 0 = 60, Isle of Conquest starts at 71.
-# Add lower brackets (e.g. WS 1,2,3,4) for levelling bots; Eye of the Storm needs a count above 0.
-AiPlayerbot.RandomBotAutoJoinWSBrackets = 5
-AiPlayerbot.RandomBotAutoJoinABBrackets = 5
+# 征服艾泽拉斯止于 60 级：上游默认值（80 级区间）从未填满一场战斗。
+# 使用 CoA 的 PvpDifficulty.dbc，而非上面的列表：战歌峡谷、阿拉希盆地和风暴之眼均从
+# 10 级开始（区间 4 = 50-59，5 = 60-69），奥特兰克山谷区间 0 = 60，征服之岛从 71 级开始。
+# 为练级机器人添加更低区间（例如 WS 1,2,3,4）；风暴之眼需要计数大于 0。
+AiPlayerbot.RandomBotAutoJoinWSBrackets = 0,1,2,3,4,5
+AiPlayerbot.RandomBotAutoJoinABBrackets = 0,1,2,3,4,5
 AiPlayerbot.RandomBotAutoJoinAVBrackets = 0
-AiPlayerbot.RandomBotAutoJoinEYBrackets = 5
+AiPlayerbot.RandomBotAutoJoinEYBrackets = 0,1,2,3,4,5
 AiPlayerbot.RandomBotAutoJoinICBrackets = 1
 
 # Battlegrounds battles count (per bracket):
@@ -5165,7 +5163,7 @@ AiPlayerbot.EnableICCBuffs = 1
 #                                                                           Unix/Linux)
 #        Default:     "127.0.0.1;3306;acore;acore;acore_playerbots"       - (PlayerbotDatabaseInfo)
 
-PlayerbotsDatabaseInfo = "127.0.0.1;3306;acore;acore;acore_playerbots"
+PlayerbotsDatabaseInfo = "127.0.0.1;3306;root;!QAZ2wsx#EDC4rfv;acore_playerbots"
 
 #    PlayerbotsDatabase.WorkerThreads
 #        Description: The amount of worker threads spawned to handle asynchronous (delayed) MySQL
