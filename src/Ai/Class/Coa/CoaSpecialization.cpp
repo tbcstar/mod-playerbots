@@ -2034,9 +2034,9 @@ std::string AnnounceText(CoaLfgSettings const& settings)
             name[0] = char(std::toupper(static_cast<unsigned char>(name[0])));
         where += (where.empty() ? "" : " or ") + name;
     }
-    return "|cff66ccff[SquidBots]|r Need a healer, a tank or damage? Say |cffffff00lfg bot heal|r, "
-           "|cffffff00lfg bot tank|r, |cffffff00lfg bot dps|r or a class: |cffffff00lfg bot tinker heal|r in the " +
-           where + " channel, then invite the bots that whisper you.";
+    return "|cff66ccff[SquidBots]|r 缺治疗、坦克还是输出？在 " + where +
+           " 频道里说 |cffffff00lfg bot heal|r、|cffffff00lfg bot tank|r、|cffffff00lfg bot dps|r，"
+           "也可以直接点职业：|cffffff00lfg bot tinker heal|r，然后邀请私聊你的机器人。";
 }
 }  // namespace
 
