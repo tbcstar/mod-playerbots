@@ -87,10 +87,10 @@ AiPlayerbot.RandomBotAutologin = 1
 
 # Randombot 数量。此处为 500：即发布包安装的数量，也是 16 GB 内存能
 # 舒适容纳的数量。5000 在 32 GB 机器上大约占用 9 GB 服务器内存。
-# 100 -> 60：先减半跑稳；机器人越少，登录风暴时的并发写越少。
-AiPlayerbot.MinRandomBots = 60
-# 200 -> 120：8 核 / 16 GB 的实测舒适区间，加减机器人也更快收敛。
-AiPlayerbot.MaxRandomBots = 120
+# 120：与下面的 200 配合留出浮动；登录已按 RandomBotsPerInterval 错峰，不必再压到 60。
+AiPlayerbot.MinRandomBots = 120
+# 200：战场要同一等级档凑够 60 只机器人才能同时开 3 场 WSG；内存吃紧时先降这一行。
+AiPlayerbot.MaxRandomBots = 200
 
 # Randombot 账号
 # 设为 0 以根据 MaxRandomBots、EnablePeriodicOnlineOffline
@@ -102,8 +102,8 @@ AiPlayerbot.RandomBotAccountCount = 0
 # Addclass 账号
 # 为 addclass 命令保留的机器人所创建的账号数量。与 randombots 一样，每个账号有
 # 10 个机器人（若禁用 WotLK 则为 9 个），每个职业一个机器人。
-# 50 -> 20：50 个账号 × 10 角色 = 500 个角色，而随机机器人只有 120 个，多出来的全是白占内存。
-AiPlayerbot.AddClassAccountPoolSize = 20
+# 30：30 个账号 × 10 角色 = 300 个角色，覆盖 200 个随机机器人后仍有余额。
+AiPlayerbot.AddClassAccountPoolSize = 30
 
 # 创建的机器人账号（任意类型）的前缀。
 # 在存在现有机器人账号时，请勿更改此前缀。
@@ -1148,35 +1148,35 @@ AiPlayerbot.LevelBrackets.Dynamic.SyncFactions = 0
 #
 AiPlayerbot.LevelBrackets.Alliance.Range1.Lower = 1
 AiPlayerbot.LevelBrackets.Alliance.Range1.Upper = 9
-AiPlayerbot.LevelBrackets.Alliance.Range1.Pct   = 6
+AiPlayerbot.LevelBrackets.Alliance.Range1.Pct   = 2
 
 AiPlayerbot.LevelBrackets.Alliance.Range2.Lower = 10
 AiPlayerbot.LevelBrackets.Alliance.Range2.Upper = 19
-AiPlayerbot.LevelBrackets.Alliance.Range2.Pct   = 7
+AiPlayerbot.LevelBrackets.Alliance.Range2.Pct   = 3
 
 AiPlayerbot.LevelBrackets.Alliance.Range3.Lower = 20
 AiPlayerbot.LevelBrackets.Alliance.Range3.Upper = 29
-AiPlayerbot.LevelBrackets.Alliance.Range3.Pct   = 8
+AiPlayerbot.LevelBrackets.Alliance.Range3.Pct   = 4
 
 AiPlayerbot.LevelBrackets.Alliance.Range4.Lower = 30
 AiPlayerbot.LevelBrackets.Alliance.Range4.Upper = 39
-AiPlayerbot.LevelBrackets.Alliance.Range4.Pct   = 9
+AiPlayerbot.LevelBrackets.Alliance.Range4.Pct   = 5
 
 AiPlayerbot.LevelBrackets.Alliance.Range5.Lower = 40
 AiPlayerbot.LevelBrackets.Alliance.Range5.Upper = 49
-AiPlayerbot.LevelBrackets.Alliance.Range5.Pct   = 11
+AiPlayerbot.LevelBrackets.Alliance.Range5.Pct   = 7
 
 AiPlayerbot.LevelBrackets.Alliance.Range6.Lower = 50
 AiPlayerbot.LevelBrackets.Alliance.Range6.Upper = 54
-AiPlayerbot.LevelBrackets.Alliance.Range6.Pct   = 10
+AiPlayerbot.LevelBrackets.Alliance.Range6.Pct   = 6
 
 AiPlayerbot.LevelBrackets.Alliance.Range7.Lower = 55
 AiPlayerbot.LevelBrackets.Alliance.Range7.Upper = 59
-AiPlayerbot.LevelBrackets.Alliance.Range7.Pct   = 14
+AiPlayerbot.LevelBrackets.Alliance.Range7.Pct   = 13
 
 AiPlayerbot.LevelBrackets.Alliance.Range8.Lower = 60
 AiPlayerbot.LevelBrackets.Alliance.Range8.Upper = 60
-AiPlayerbot.LevelBrackets.Alliance.Range8.Pct   = 35
+AiPlayerbot.LevelBrackets.Alliance.Range8.Pct   = 60
 
 ##############################################
 # Horde Level Brackets Configuration
@@ -1204,35 +1204,35 @@ AiPlayerbot.LevelBrackets.Alliance.Range8.Pct   = 35
 #
 AiPlayerbot.LevelBrackets.Horde.Range1.Lower = 1
 AiPlayerbot.LevelBrackets.Horde.Range1.Upper = 9
-AiPlayerbot.LevelBrackets.Horde.Range1.Pct   = 6
+AiPlayerbot.LevelBrackets.Horde.Range1.Pct   = 2
 
 AiPlayerbot.LevelBrackets.Horde.Range2.Lower = 10
 AiPlayerbot.LevelBrackets.Horde.Range2.Upper = 19
-AiPlayerbot.LevelBrackets.Horde.Range2.Pct   = 7
+AiPlayerbot.LevelBrackets.Horde.Range2.Pct   = 3
 
 AiPlayerbot.LevelBrackets.Horde.Range3.Lower = 20
 AiPlayerbot.LevelBrackets.Horde.Range3.Upper = 29
-AiPlayerbot.LevelBrackets.Horde.Range3.Pct   = 8
+AiPlayerbot.LevelBrackets.Horde.Range3.Pct   = 4
 
 AiPlayerbot.LevelBrackets.Horde.Range4.Lower = 30
 AiPlayerbot.LevelBrackets.Horde.Range4.Upper = 39
-AiPlayerbot.LevelBrackets.Horde.Range4.Pct   = 9
+AiPlayerbot.LevelBrackets.Horde.Range4.Pct   = 5
 
 AiPlayerbot.LevelBrackets.Horde.Range5.Lower = 40
 AiPlayerbot.LevelBrackets.Horde.Range5.Upper = 49
-AiPlayerbot.LevelBrackets.Horde.Range5.Pct   = 11
+AiPlayerbot.LevelBrackets.Horde.Range5.Pct   = 7
 
 AiPlayerbot.LevelBrackets.Horde.Range6.Lower = 50
 AiPlayerbot.LevelBrackets.Horde.Range6.Upper = 54
-AiPlayerbot.LevelBrackets.Horde.Range6.Pct   = 10
+AiPlayerbot.LevelBrackets.Horde.Range6.Pct   = 6
 
 AiPlayerbot.LevelBrackets.Horde.Range7.Lower = 55
 AiPlayerbot.LevelBrackets.Horde.Range7.Upper = 59
-AiPlayerbot.LevelBrackets.Horde.Range7.Pct   = 14
+AiPlayerbot.LevelBrackets.Horde.Range7.Pct   = 13
 
 AiPlayerbot.LevelBrackets.Horde.Range8.Lower = 60
 AiPlayerbot.LevelBrackets.Horde.Range8.Upper = 60
-AiPlayerbot.LevelBrackets.Horde.Range8.Pct   = 35
+AiPlayerbot.LevelBrackets.Horde.Range8.Pct   = 60
 
 ##############################################
 # Level Reset
@@ -1703,7 +1703,9 @@ AiPlayerbot.CoaGearHighRiskPvp = 1
 # tries (and then stays out of that queue for a minute), so the two teams have about the same levels.
 # Queues a real player waits in are filled as before.
 # In percent; 100 = as before. Read again by ".reload config".
-AiPlayerbot.CoaBgLevelBalanceChance = 15
+# CoA 新服：取 100 = 不做等级平衡拒绝，10-19、20-29 这类低档位才凑得出 10 对 10；
+# 机器人仍然只进自己等级对应的档位（canJoinBg 用 PvpDifficulty.dbc 的 RangeIndex 判定）。
+AiPlayerbot.CoaBgLevelBalanceChance = 100
 
 # A snapshot of every random bot online, written as JSON for the SquidBots dashboard (bot-status.json,
 # its "botStatusFile" setting): position, health, power, what the bot is doing, its group and its
@@ -4323,9 +4325,11 @@ AiPlayerbot.RandomBotAutoJoinEYBrackets = 0,1,2,3,4,5
 AiPlayerbot.RandomBotAutoJoinICBrackets = 1
 
 # Battlegrounds battles count (per bracket):
-AiPlayerbot.RandomBotAutoJoinBGWSCount = 1
-AiPlayerbot.RandomBotAutoJoinBGABCount = 1
-AiPlayerbot.RandomBotAutoJoinBGAVCount = 0
+# CoA：数字是「每个档位维持几场」，不是总人数。WSG 3 场 = 每方 30 只，AB 3 场 = 每方 45 只，
+# AV 1 场 = 每方 40 只（共 80 只）；机器人凑够前，战场不会自己开。
+AiPlayerbot.RandomBotAutoJoinBGWSCount = 3
+AiPlayerbot.RandomBotAutoJoinBGABCount = 3
+AiPlayerbot.RandomBotAutoJoinBGAVCount = 1
 AiPlayerbot.RandomBotAutoJoinBGEYCount = 0
 AiPlayerbot.RandomBotAutoJoinBGICCount = 0
 
