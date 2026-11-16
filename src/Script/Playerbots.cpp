@@ -180,11 +180,11 @@ public:
             if (sPlayerbotAIConfig.enabled)
             {
                 ChatHandler(player->GetSession()).SendSysMessage(
-                    "|cff00ff00For easy bot control, use the SquidBots addon:|r "
+                    "|cff00ff00要更方便地控制机器人，请使用 SquidBots 插件：|r "
                     "|cffcccccchttps://github.com/Zyth45/squidbots-addon|r");
                 // The source of this build (mod-playerbots and every CoA change) stays linked here.
                 ChatHandler(player->GetSession()).SendSysMessage(
-                    std::string("|cff00ff00CoA Bots|r |cff00ccffv") + COA_BOTS_VERSION +
+                    std::string("|cff00ff00CoA 机器人|r |cff00ccffv") + COA_BOTS_VERSION +
                     "|r (|cff00ccffmod-playerbots|r) |cffcccccchttps://github.com/Zyth45/mod-playerbots|r");
             }
 
@@ -193,7 +193,7 @@ public:
                 std::string maxAllowedBotCount = std::to_string(sRandomPlayerbotMgr.GetMaxAllowedBotCount());
 
                 ChatHandler(player->GetSession()).SendSysMessage(
-                    "|cff00ff00Playerbots:|r The server is configured with " + maxAllowedBotCount + " bots.");
+                    "|cff00ff00机器人：|r 本服务器已配置 " + maxAllowedBotCount + " 个机器人。");
             }
         }
     }
