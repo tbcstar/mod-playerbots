@@ -207,7 +207,7 @@ AiPlayerbot.SelfBotLevel = 1
 # -1 = follow the client locale of connected players (default)
 #  0 = enUS, 1 = koKR, 2 = frFR, 3 = deDE, 4 = zhCN, 5 = zhTW, 6 = esES, 7 = esMX, 8 = ruRU
 # Forcing is needed when players run an enUS client but want bots in another language.
-AiPlayerbot.BotTextLocale = -1
+AiPlayerbot.BotTextLocale = 4
 
 # Non-GM player can only use init=auto to initialize bots based on their own level and gearscore
 # Default: 0 (non-GM player can use any intialization commands)
