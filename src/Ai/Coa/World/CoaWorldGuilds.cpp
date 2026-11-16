@@ -490,8 +490,8 @@ namespace
                                     Say(other, Acore::StringFormat("gz {}", player->GetName()), now + urand(6, 15));
                             break;
                         }
-                        static char const* const ding[] = { "ding {}", "{}, finally", "ding! {} now", "and {}. slowly getting there" };
-                        static char const* const gz[] = { "gz", "grats!", "gz {}", "nice, gz" };
+                        static char const* const ding[] = { "{} 级了", "{}，终于！", "叮！{} 级了", "又升到 {} 级了，慢慢来吧" };
+                        static char const* const gz[] = { "恭喜", "恭喜！", "恭喜 {}", "不错，恭喜" };
                         Say(player, Acore::StringFormat(Pick(ding), e.value), now + urand(1, 4));
                         if (!settings.coaLive)
                             if (Player* other = OnlineGuildBot(player->GetGuildId(), player->GetGUID()))
@@ -509,8 +509,8 @@ namespace
                             break;
                         std::string link = Acore::StringFormat("|c{:08x}|Hitem:{}:0:0:0:0:0:0:0:0:{}|h[{}]|h|r",
                             ItemQualityColors[proto->Quality], proto->ItemId, player->GetLevel(), proto->Name1);
-                        static char const* const got[] = { "finally {}", "got {} :)", "{} dropped!", "look at this, {}" };
-                        static char const* const gz[] = { "gz!", "nice drop", "grats", "jealous, gz" };
+                        static char const* const got[] = { "终于出{}了", "拿到 {} :)", "{} 出啦！", "看这个：{}" };
+                        static char const* const gz[] = { "恭喜！", "好掉落", "恭喜", "羡慕，恭喜" };
                         Say(player, Acore::StringFormat(Pick(got), link), now + urand(2, 6));
                         if (Player* other = OnlineGuildBot(player->GetGuildId(), player->GetGUID()))
                             Say(other, Pick(gz), now + urand(8, 18));
@@ -610,9 +610,9 @@ namespace
             size_t const count = login ? (settings.coaLive ? urand(0, 1) : urand(1, 2))
                                        : CoaWorldGuildRules::AnswerCount(mates.size(), urand(0, 1));
             bool const fr = BotsFrench();
-            static char const* const replyEn[] = { "hey {}", "hi {}!", "o/", "yo {}", "hey hey", "hello {}" };
+            static char const* const replyEn[] = { "嗨 {}", "你好 {}！", "o/", "哟 {}", "嘿嘿", "你好 {}" };
             static char const* const replyFr[] = { "salut {}", "coucou {}", "yo", "slt", "bonjour {} !", "o/" };
-            static char const* const welcomeEn[] = { "hey {}", "wb {}", "re", "o/ {}" };
+            static char const* const welcomeEn[] = { "嘿 {}", "欢迎回来 {}", "你又来啦", "o/ {}" };
             static char const* const welcomeFr[] = { "salut {}", "re", "wb {}", "coucou {} !" };
             std::vector<time_t> delays;
             for (size_t i = 0; i < count && i < mates.size(); ++i)
@@ -672,7 +672,7 @@ namespace
             if (!bot)
                 return;
 
-            static char const* const hi[] = { "hi {}", "hey {}!", "o/ {}", "wb {}" };
+            static char const* const hi[] = { "嗨 {}", "嘿 {}！", "o/ {}", "欢迎回来 {}" };
             static char const* const hiFr[] = { "salut {}", "hey {} !", "o/ {}", "re {}" };
             if (!settings.coaLive && !settings.greetings && roll_chance_i(60))
                 Say(bot, Acore::StringFormat(BotsFrench() ? Pick(hiFr) : Pick(hi), player->GetName()), now + urand(4, 12));
@@ -690,8 +690,8 @@ namespace
 
             auto [potion, bandage] = GiftFor(player->GetLevel());
             CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
-            MailDraft draft(Tr("From the guild", "De la part de la guilde"),
-                            Acore::StringFormat(Tr("Had some spare, thought you could use them. - {}",
+            MailDraft draft(Tr("公会来信", "De la part de la guilde"),
+                            Acore::StringFormat(Tr("手头多了点，想着你或许用得上。 - {}",
                                                    "J'en avais en trop, je me suis dit que \u00e7a te servirait. - {}"), bot->GetName()));
             if (Item* item = Item::CreateItem(potion, 5, player))
             {
@@ -706,7 +706,7 @@ namespace
             draft.SendMailTo(trans, MailReceiver(player), MailSender(bot), MAIL_CHECK_MASK_NONE, 0);
             CharacterDatabase.CommitTransaction(trans);
             if (!BotLine(bot, "guild_gift", { { "player", player->GetName() } }))
-                Say(bot, Acore::StringFormat(Tr("{}, sent you a few potions", "{}, je t'ai envoy\u00e9 quelques potions"), player->GetName()), now + urand(20, 40));
+                Say(bot, Acore::StringFormat(Tr("{}，给你寄了几瓶药水", "{}, je t'ai envoy\u00e9 quelques potions"), player->GetName()), now + urand(20, 40));
         }
 
         // An item of the bot's bags by mail to the player, free or cash on delivery.
@@ -718,7 +718,7 @@ namespace
             item->SetOwnerGUID(to->GetGUID());
             item->SetState(ITEM_CHANGED);  // as MailHandler: saved standalone, in no player's update queue
             item->SaveToDB(trans);
-            MailDraft draft(item->GetTemplate()->Name1, Tr("From the guild.", "De la part de la guilde."));
+            MailDraft draft(item->GetTemplate()->Name1, Tr("公会来信。", "De la part de la guilde."));
             draft.AddItem(item);
             if (cod)
                 draft.AddCOD(uint32(cod));
@@ -836,7 +836,7 @@ namespace
                     if (qty && sent > qty)
                     {
                         // Part of a stack (one Silverleaf out of twenty): the rest stays in the bot's bags.
-                        if (!MailNew(bot, player, entry, qty, 0, 0, Tr("From the guild.", "De la part de la guilde.")))
+                        if (!MailNew(bot, player, entry, qty, 0, 0, Tr("公会来信。", "De la part de la guilde.")))
                             continue;
                         item->SetCount(sent - qty);
                         item->SetState(ITEM_CHANGED, bot);
@@ -849,11 +849,11 @@ namespace
                         MailFromBags(bot, player, item, 0, 0);
                     ++count.second;
                     if (qty && sent < qty)
-                        Say(bot, Acore::StringFormat(Tr("{} I only have {} of the {}, sending them", "{} j'en ai seulement {} sur les {}, je te les envoie"),
+                        Say(bot, Acore::StringFormat(Tr("{} 我手上只有 {} 个（共 {} 个），先寄给你", "{} j'en ai seulement {} sur les {}, je te les envoie"),
                                                      player->GetName(), sent, qty),
                             now + urand(5, 15));
                     else
-                        Answer(bot, "guild_order_share", slots, Acore::StringFormat(Tr("{} I have one, sending it", "{} j'en ai un, je te l'envoie"), player->GetName()),
+                        Answer(bot, "guild_order_share", slots, Acore::StringFormat(Tr("{} 我这有一个，这就寄给你", "{} j'en ai un, je te l'envoie"), player->GetName()),
                                now + urand(5, 15));
                     LogEvent("guild", bot->GetName(), Acore::StringFormat("sent {} to {}", proto->Name1, player->GetName()));
                     shared = Logged(player, entry, sent, "shared", "", bot->GetName(), 0, now);
@@ -890,19 +890,19 @@ namespace
                         uint32 const sent = plan.sent;
                         cost *= plan.casts;
                         if (!MailNew(bot, player, entry, sent, cost, 0,
-                                     Tr("Made it for you, you only pay the materials.",
+                                     Tr("给你做好了，只收材料钱。",
                                         "Fait pour toi, tu ne paies que les composants.")))
                             continue;
                         ++count.second;
                         slots["price"] = Money(cost);
                         if (qty && sent < qty)
-                            Say(bot, Acore::StringFormat(Tr("{} I can make {} of the {}, mats only ({}), will mail them",
+                            Say(bot, Acore::StringFormat(Tr("{} 我能做 {} 个（共 {} 个），只收材料费（{}），做好寄给你",
                                                             "{} je peux t'en faire {} sur les {}, juste les compos ({}), je te les envoie"),
                                                          player->GetName(), sent, qty, Money(cost)),
                                 now + urand(5, 15));
                         else
                             Answer(bot, "guild_order_craft", slots,
-                                   Acore::StringFormat(Tr("{} I can make that, mats only ({}), will mail it", "{} je peux te le faire, juste les compos ({}), je te l'envoie"), player->GetName(),
+                                   Acore::StringFormat(Tr("{} 这个我能做，只收材料费（{}），做好寄给你", "{} je peux te le faire, juste les compos ({}), je te l'envoie"), player->GetName(),
                                                        Money(cost)), now + urand(5, 15));
                         LogEvent("guild", bot->GetName(), Acore::StringFormat("crafts {} for {}", proto->Name1,
                                                                                player->GetName()));
@@ -925,11 +925,11 @@ namespace
             // The reason goes to the addon (GO / GLIST) and to the guild line when it is said.
             if (roll_chance_i(50))
             {
-                std::string const ah = !std::strcmp(why, "ahprice") ? Tr("too dear at the AH", "trop cher \u00e0 l'HV")
-                                       : !std::strcmp(why, "ahgold") ? Tr("nobody has the gold for the AH", "personne n'a l'or pour l'HV")
-                                                                     : Tr("none at the AH", "rien \u00e0 l'HV");
+                std::string const ah = !std::strcmp(why, "ahprice") ? Tr("拍卖行太贵", "trop cher \u00e0 l'HV")
+                                       : !std::strcmp(why, "ahgold") ? Tr("公会里没人有足够的金币去买", "personne n'a l'or pour l'HV")
+                                                                     : Tr("拍卖行没有货", "rien \u00e0 l'HV");
                 Say(mates.front(),
-                    Acore::StringFormat(Tr("sorry {}, no stock, no crafter online, {}", "d\u00e9sol\u00e9 {}, pas de stock, pas d'artisan en ligne, {}"),
+                    Acore::StringFormat(Tr("抱歉 {}，没货，也没有工匠在线，{}", "d\u00e9sol\u00e9 {}, pas de stock, pas d'artisan en ligne, {}"),
                                         player->GetName(), ah),
                     now + urand(8, 20));
             }
@@ -992,10 +992,10 @@ namespace
             CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
             buyer->ModifyMoney(-int32(total));
             MailDraft draft(proto->Name1,
-                            fewer ? Acore::StringFormat(Tr("Got {} of the {} you asked at the auction house, you pay what I paid.",
+                            fewer ? Acore::StringFormat(Tr("在拍卖行买到 {} 个（你要 {} 个），按我买的价格收钱。",
                                                            "Trouv\u00e9 {} sur les {} demand\u00e9s \u00e0 l'h\u00f4tel des ventes, tu paies ce que j'ai pay\u00e9."),
                                                         sent, qty)
-                                  : std::string(Tr("Got it at the auction house, you pay what I paid.",
+                                  : std::string(Tr("在拍卖行买到了，按我买的价格收钱。",
                                                    "Trouv\u00e9 \u00e0 l'h\u00f4tel des ventes, tu paies ce que j'ai pay\u00e9.")));
             for (std::size_t n = 0; n < picks.size(); ++n)
             {
@@ -1020,13 +1020,13 @@ namespace
 
             slots["price"] = Money(total);
             if (fewer)
-                Say(buyer, Acore::StringFormat(Tr("{} only found {} of the {} on the AH, {} at cost, check your mail",
+                Say(buyer, Acore::StringFormat(Tr("{} 拍卖行只找到 {} 个（共 {} 个），按成本价 {}，查看邮箱",
                                                   "{} j'en ai trouv\u00e9 seulement {} sur les {} \u00e0 l'HV, {} au prix co\u00fbtant, regarde ta bo\u00eete"),
                                                player->GetName(), sent, qty, Money(total)),
                     now + urand(5, 15));
             else
                 Answer(buyer, "guild_order_ah", slots,
-                       Acore::StringFormat(Tr("{} saw one on the AH for {}, I'll grab it for you", "{} j'en ai vu un \u00e0 l'HV pour {}, je te le prends"), player->GetName(), Money(total)),
+                       Acore::StringFormat(Tr("{} 在拍卖行看到一个，价格 {}，我帮你拍下", "{} j'en ai vu un \u00e0 l'HV pour {}, je te le prends"), player->GetName(), Money(total)),
                        now + urand(5, 15));
             LogEvent("guild", buyer->GetName(), Acore::StringFormat("bought {} {} at the auction house for {}", sent, proto->Name1,
                                                                      player->GetName()));
@@ -1064,7 +1064,7 @@ namespace
             player->UpdatePlayerSetting(GEAR_SETTING, GEAR_SETTING_LAST_DAY, today);  // the period's gift, whatever the answer
             std::string const link = Link(proto, player->GetLevel());
             if (!BotLine(bot, "guild_gift_offer", { { "player", player->GetName() }, { "item", link } }))
-                bot->Whisper(Acore::StringFormat(Tr("found {} for you, want it? (yes/no)", "j'ai trouv\u00e9 {} pour toi, tu le veux ? (oui/non)"), link), LANG_UNIVERSAL, player);
+                bot->Whisper(Acore::StringFormat(Tr("找到{}了，要吗？(yes/no)", "j'ai trouv\u00e9 {} pour toi, tu le veux ? (oui/non)"), link), LANG_UNIVERSAL, player);
             if (settings.addon)
                 CoaWorldAddonSendLines(player, { OfferLine(offer) });
         }
@@ -1092,16 +1092,16 @@ namespace
             {
                 LogRow(player, LOG_GIFT_REFUSED, offer.item, 1, "refused", offer.botName, now, 0, "");
                 if (bot)
-                    WhisperLater(bot, player, Tr("no worries", "pas de souci"));
+                    WhisperLater(bot, player, Tr("没事", "pas de souci"));
                 return true;
             }
             if (bot && proto &&
                 MailNew(bot, player, offer.item, 1, 0, 0,
-                        Acore::StringFormat(Tr("Here it is. - {}", "Le voil\u00e0. - {}"), offer.botName), offer.random))
+                        Acore::StringFormat(Tr("给你。 - {}", "Le voil\u00e0. - {}"), offer.botName), offer.random))
             {
                 LogEvent("guild", offer.botName, Acore::StringFormat("gave {} to {}", proto->Name1, player->GetName()));
                 LogRow(player, LOG_GIFT, offer.item, 1, "gift", offer.botName, now, 0, "");
-                WhisperLater(bot, player, Tr("sent, check your mail", "envoy\u00e9, regarde ta bo\u00eete aux lettres"));
+                WhisperLater(bot, player, Tr("已寄出，查看邮箱", "envoy\u00e9, regarde ta bo\u00eete aux lettres"));
             }
             return true;
         }
@@ -1207,11 +1207,11 @@ namespace
                 return;
             }
             if (!MailNew(bot, player, bestEntry, 1, 0, 0,
-                         Acore::StringFormat(Tr("Found this, it should suit you better. - {}", "Trouv\u00e9 \u00e7a, \u00e7a devrait mieux t'aller. - {}"), bot->GetName()), bestRandom))
+                         Acore::StringFormat(Tr("找到这个，应该更适合你。 - {}", "Trouv\u00e9 \u00e7a, \u00e7a devrait mieux t'aller. - {}"), bot->GetName()), bestRandom))
                 return;
             player->UpdatePlayerSetting(GEAR_SETTING, GEAR_SETTING_LAST_DAY, today);
             Answer(bot, "guild_gear_gift", { { "player", player->GetName() }, { "item", Link(proto, player->GetLevel()) } },
-                   Acore::StringFormat(Tr("{}, sent you something you can use, check your mail", "{}, je t'ai envoy\u00e9 un truc qui devrait te servir, regarde ton courrier"), player->GetName()),
+                   Acore::StringFormat(Tr("{}，给你寄了件用得上的东西，查看邮箱", "{}, je t'ai envoy\u00e9 un truc qui devrait te servir, regarde ton courrier"), player->GetName()),
                    now + urand(20, 40));
             LogEvent("guild", bot->GetName(), Acore::StringFormat("gave {} to {}", proto->Name1, player->GetName()));
             LogRow(player, LOG_GIFT, bestEntry, 1, "gift", bot->GetName(), now, 0, "");
@@ -1221,12 +1221,12 @@ namespace
         void Motds(time_t now)
         {
             static char const* const motds[] = {
-                "Raid night soon, bring flasks and repair before you come.",
-                "Welcome to all our new members! Ask in guild chat if you need help.",
-                "Guild bank is open, put your spare cloth in tab 1 for the crafters.",
-                "Dungeon runs every evening, whisper an officer to join.",
-                "Be nice in trade chat, you represent the guild.",
-                "Congrats to everyone who dinged this week!",
+                "团队副本之夜快到了，来之前记得带合剂、修好装备。",
+                "欢迎所有新成员！需要帮助就在公会频道里问。",
+                "公会银行已开放，多余的布料请放到第 1 页，方便工匠取用。",
+                "每晚都有副本活动，想参加就给官员发密语。",
+                "在交易频道请保持礼貌，你代表着公会。",
+                "恭喜本周所有升级的成员！",
             };
             std::unordered_set<uint32> seen;
             for (auto const& [guid, bot] : RandomBots())
@@ -1260,10 +1260,10 @@ namespace
             Player* bot = callers[urand(0, callers.size() - 1)];
             Guild* guild = sGuildMgr->GetGuildById(bot->GetGuildId());
             static char const* const calls[] = {
-                "<{}> is recruiting, all levels and classes welcome. /w me",
-                "<{}> looking for more people to level and run dungeons with, whisper me",
-                "friendly guild <{}> recruiting, we help with quests and crafting",
-                "<{}> recruiting! raids later, dungeons now. /w for invite",
+                "<{}> 招募中，欢迎所有等级与职业。密我",
+                "<{}> 找一起升级、刷副本的人，密我",
+                "友善公会 <{}> 招募中，我们带你做任务、帮做装备",
+                "<{}> 招募中！现在刷副本，之后打团队。密我进组",
             };
             static char const* const callsFr[] = {
                 "<{}> recrute, tous niveaux et toutes classes bienvenus, /w moi",

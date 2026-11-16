@@ -41,7 +41,7 @@ bool TradeStatusAction::Execute(Event event)
         // CoA Economy: a random bot answers with a polite whisper of the living chat (trade_window), paced per player.
         if (!CoaEconomy::Chatter::OnTradeRefused(bot, trader))
             bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
-                             "trade_busy_now", "I'm kind of busy now", {}),
+                             "trade_busy_now", "我现在有点忙", {}),
                          LANG_UNIVERSAL, trader);
         CancelTrade();
         return false;
@@ -51,7 +51,7 @@ bool TradeStatusAction::Execute(Event event)
         (sRandomPlayerbotMgr.IsRandomBot(bot)|| sRandomPlayerbotMgr.IsAddclassBot(bot)))
     {
         bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
-                         "trade_disabled", "Trading is disabled", {}),
+                         "trade_disabled", "交易功能已禁用", {}),
                      LANG_UNIVERSAL, trader);
         CancelTrade();
         return false;
@@ -239,7 +239,7 @@ bool TradeStatusAction::CheckTrade()
         (sRandomPlayerbotMgr.IsRandomBot(bot)|| sRandomPlayerbotMgr.IsAddclassBot(bot)))
     {
         bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
-                         "trade_selling_disabled", "Selling is disabled.", {}),
+                         "trade_selling_disabled", "出售功能已禁用。", {}),
                      LANG_UNIVERSAL, trader);
         return false;
     }
@@ -247,7 +247,7 @@ bool TradeStatusAction::CheckTrade()
         (sRandomPlayerbotMgr.IsRandomBot(bot)|| sRandomPlayerbotMgr.IsAddclassBot(bot)))
     {
         bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
-                         "trade_buying_disabled", "Buying is disabled.", {}),
+                         "trade_buying_disabled", "购买功能已禁用。", {}),
                      LANG_UNIVERSAL, trader);
         return false;
     }

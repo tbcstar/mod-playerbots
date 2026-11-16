@@ -65,13 +65,13 @@ namespace
     };
 
     std::vector<Front> const FRONTS = {
-        { "between Southshore and Tarren Mill", 0, 20, 32,
+        { "南海镇与塔伦米尔之间", 0, 20, 32,
             { -853.2f, -533.5f, 10.0f, 0.24f }, { -34.1f, -923.4f, 54.6f, 0.15f } },
-        { "between Astranaar and Splintertree Post", 1, 20, 32,
+        { "阿斯特兰纳与碎木岗哨之间", 1, 20, 32,
             { 2676.2f, -422.9f, 107.1f, 0.65f }, { 2270.9f, -2538.2f, 93.9f, 0.06f } },
-        { "between Refuge Pointe and Hammerfall", 0, 30, 42,
+        { "避难谷地与落锤镇之间", 0, 30, 42,
             { -1246.6f, -2529.3f, 20.6f, 0.74f }, { -941.0f, -3526.7f, 70.9f, 3.49f } },
-        { "between the Rebel Camp and Grom'gol", 0, 33, 45,
+        { "反抗军营与格罗姆高之间", 0, 33, 45,
             { -11322.4f, -202.5f, 75.6f, 0.43f }, { -12388.9f, 172.6f, 2.8f, 1.92f } },
     };
 
@@ -85,12 +85,12 @@ namespace
     };
 
     std::vector<Capital> const CAPITALS = {
-        { "Stormwind", 1519, 0, TEAM_ALLIANCE, { -8833.4f, 628.6f, 94.0f, 1.07f } },
-        { "Ironforge", 1537, 0, TEAM_ALLIANCE, { -4918.9f, -940.4f, 501.6f, 5.42f } },
-        { "Darnassus", 1657, 1, TEAM_ALLIANCE, { 9949.6f, 2284.2f, 1341.4f, 1.60f } },
-        { "Orgrimmar", 1637, 1, TEAM_HORDE, { 1629.9f, -4373.6f, 31.6f, 3.70f } },
-        { "Undercity", 1497, 0, TEAM_HORDE, { 1584.1f, 240.3f, -52.2f, 0.04f } },
-        { "Thunder Bluff", 1638, 1, TEAM_HORDE, { -1277.4f, 124.8f, 131.3f, 5.22f } },
+        { "暴风城", 1519, 0, TEAM_ALLIANCE, { -8833.4f, 628.6f, 94.0f, 1.07f } },
+        { "铁炉堡", 1537, 0, TEAM_ALLIANCE, { -4918.9f, -940.4f, 501.6f, 5.42f } },
+        { "达纳苏斯", 1657, 1, TEAM_ALLIANCE, { 9949.6f, 2284.2f, 1341.4f, 1.60f } },
+        { "奥格瑞玛", 1637, 1, TEAM_HORDE, { 1629.9f, -4373.6f, 31.6f, 3.70f } },
+        { "幽暗城", 1497, 0, TEAM_HORDE, { 1584.1f, 240.3f, -52.2f, 0.04f } },
+        { "雷霆崖", 1638, 1, TEAM_HORDE, { -1277.4f, 124.8f, 131.3f, 5.22f } },
     };
 
     struct Settings
@@ -219,7 +219,7 @@ namespace
                 for (Player* bot : Borrowed(BOT_OWNER_PVP_SKIRMISH))
                     bot->UpdatePvP(true, true);
 
-            std::string text = Acore::StringFormat("Fighting has broken out {}! The posts are sending their fighters.",
+            std::string text = Acore::StringFormat("{} 爆发了战斗！哨站已经派出了他们的战士。",
                 best->name);
             for (Player* player : Audience(*best))
                 Tell(player, WorldLine(player, "sys_skirmish", { { "place", best->name } }, text));
@@ -247,12 +247,12 @@ namespace
 
         std::string Status() const
         {
-            std::string out = _skirmish.active ? Acore::StringFormat("Skirmish {} ({} bots).", _skirmish.front->name,
-                BorrowedCount(BOT_OWNER_PVP_SKIRMISH)) : std::string("No skirmish.");
+            std::string out = _skirmish.active ? Acore::StringFormat("遭遇战：{}（{} 个机器人）。", _skirmish.front->name,
+                BorrowedCount(BOT_OWNER_PVP_SKIRMISH)) : std::string("没有遭遇战。");
             for (Defence const& d : _defences)
-                out += Acore::StringFormat(" {} defended by {} bots.", d.capital->name, BorrowedCount(d.Owner()));
+                out += Acore::StringFormat(" {} 由 {} 个机器人防守。", d.capital->name, BorrowedCount(d.Owner()));
             if (!settings.enabled)
-                out += " (switched off)";
+                out += "（已关闭）";
             return out;
         }
 
@@ -409,7 +409,7 @@ namespace
 
             if (first)
             {
-                std::string text = Acore::StringFormat("{} is under attack! Its defenders are rallying.", capital.name);
+                std::string text = Acore::StringFormat("{}正遭受攻击！守军正在集结。", capital.name);
                 for (auto const& [guid, player] : ObjectAccessor::GetPlayers())
                     if (IsHumanPlayer(player) && player->GetTeamId() == capital.team)
                         Tell(player, WorldLine(player, "sys_capital", { { "city", capital.name } }, text));
@@ -505,7 +505,7 @@ public:
         {
             if (!*front || *front > FRONTS.size())
             {
-                handler->PSendSysMessage("Fronts 1 to {}.", FRONTS.size());
+                handler->PSendSysMessage("战线 1 到 {}。", FRONTS.size());
                 handler->SetSentErrorMessage(true);
                 return false;
             }
@@ -513,7 +513,7 @@ public:
         }
         if (!settings.enabled || !Pvp().StartSkirmish(only))
         {
-            handler->SendSysMessage("No skirmish started: switched off, one already running, or no front fits.");
+            handler->SendSysMessage("没有开始遭遇战：已关闭、已有一个在进行，或没有合适的战线。");
             handler->SetSentErrorMessage(true);
             return false;
         }

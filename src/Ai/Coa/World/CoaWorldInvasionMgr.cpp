@@ -153,7 +153,7 @@ namespace CoaWorld
         std::string FormatMinutes(int64 ms)
         {
             uint32 minutes = uint32((std::max<int64>(0, ms) + MINUTE_MS - 1) / MINUTE_MS);
-            return minutes == 1 ? "1 minute" : Acore::StringFormat("{} minutes", minutes);
+            return minutes == 1 ? "1 分钟" : Acore::StringFormat("{} 分钟", minutes);
         }
 
         bool IsBotPlayer(Player* player)
@@ -892,7 +892,7 @@ namespace CoaWorld
                                                  : plan.key == std::string("legion") ? "Incursion de la L\u00e9gion"
                                                                                      : "Portes d'Ahn'Qiraj")
                                                : plan.name,
-                                Tr("Your share of the spoils. Your bags were too full to carry it.",
+                                Tr("这是你那一份战利品。你的背包太满，装不下它。",
                                    "Ta part du butin. Tes sacs \u00e9taient trop pleins pour la porter."));
                 if (Item* item = Item::CreateItem(itemId, count, player))
                 {
@@ -1135,7 +1135,7 @@ public:
     {
         if (!settings.enabled)
         {
-            handler->SendSysMessage("Invasions are switched off on this realm.");
+            handler->SendSysMessage("本服的入侵活动已关闭。");
             return true;
         }
 
@@ -1146,18 +1146,18 @@ public:
             switch (slot.state)
             {
                 case State::Running:
-                    handler->PSendSysMessage("{} is happening now at {} ({}).", slot.plan->name, slot.Site().name,
+                    handler->PSendSysMessage("{}正在{}（{}）进行。", slot.plan->name, slot.Site().name,
                         slot.Site().zone);
                     break;
                 case State::Warning:
-                    handler->PSendSysMessage("{} at {} in {}.", slot.plan->name, slot.Site().name, FormatMinutes(slot.timer));
+                    handler->PSendSysMessage("{} 将在 {}开始，还有 {}。", slot.plan->name, slot.Site().name, FormatMinutes(slot.timer));
                     break;
                 case State::Idle:
                     if (!settings.autoStart)
-                        handler->PSendSysMessage("{}: none now; a GM can start one (from level {}).", slot.plan->name,
+                        handler->PSendSysMessage("{}：目前没有；GM 可以开启（从 {} 级起）。", slot.plan->name,
                             slot.Conf().minLevel);
                     else
-                        handler->PSendSysMessage("{}: next chance in about {} (from level {}).", slot.plan->name,
+                        handler->PSendSysMessage("{}：下次机会大约在 {} 之后（从 {} 级起）。", slot.plan->name,
                             FormatMinutes(slot.timer), slot.Conf().minLevel);
                     break;
             }
@@ -1173,11 +1173,11 @@ public:
             if (slot.state == State::Idle && (!settings.autoStart || !Mgr().IsAvailable(slot)))
             {
                 handler->PSendSysMessage("{} ({}): {}", slot.plan->name, slot.plan->key,
-                    Mgr().IsAvailable(slot) ? "idle (manual start only)" : "idle (disabled)");
+                    Mgr().IsAvailable(slot) ? "空闲（只能手动开启）" : "空闲（已关闭）");
                 continue;
             }
-            handler->PSendSysMessage("{} ({}): {}{}, next step in {}, level {}, site {}, {} bots borrowed, {} creatures",
-                slot.plan->name, slot.plan->key, StateName(slot.state), Mgr().IsAvailable(slot) ? "" : " (disabled)",
+            handler->PSendSysMessage("{} ({}): {}{}，下一步在 {} 后，等级 {}，地点 {}，借出 {} 个机器人，{} 个生物",
+                slot.plan->name, slot.plan->key, StateName(slot.state), Mgr().IsAvailable(slot) ? "" : "（已关闭）",
                 FormatMinutes(slot.timer), slot.level, slot.state == State::Idle ? "-" : slot.Site().name,
                 BorrowedCount(slot.Owner()), slot.summons.size());
         }
@@ -1189,7 +1189,7 @@ public:
         Slot* slot = Mgr().FindSlot(key);
         if (!slot)
         {
-            handler->SendSysMessage("No such invasion: scourge, legion or aq.");
+            handler->SendSysMessage("没有这种入侵：scourge、legion 或 aq。");
             handler->SetSentErrorMessage(true);
         }
         return slot;
@@ -1203,7 +1203,7 @@ public:
 
         if (!Mgr().IsAvailable(*slot))
         {
-            handler->PSendSysMessage("{} is switched off (AiPlayerbot.CoaWorld.Invasions.Enable or .{}.Enable).",
+            handler->PSendSysMessage("{}已关闭（AiPlayerbot.CoaWorld.Invasions.Enable 或 .{}.Enable）。",
                 slot->plan->name, slot->plan->configName);
             handler->SetSentErrorMessage(true);
             return false;
@@ -1212,12 +1212,12 @@ public:
         std::string error;
         if (!Mgr().ForceStart(*slot, handler->GetPlayer(), error))
         {
-            handler->PSendSysMessage("{} didn't start: {}.", slot->plan->name, error);
+            handler->PSendSysMessage("{}未能开始：{}。", slot->plan->name, error);
             handler->SetSentErrorMessage(true);
             return false;
         }
 
-        handler->PSendSysMessage("{} started at {} (level {}).", slot->plan->name, slot->Site().name, slot->level);
+        handler->PSendSysMessage("{}已在{}开始（等级 {}）。", slot->plan->name, slot->Site().name, slot->level);
         return true;
     }
 
@@ -1228,7 +1228,7 @@ public:
             return false;
 
         Mgr().ForceStop(*slot);
-        handler->PSendSysMessage("{} stopped.", slot->plan->name);
+        handler->PSendSysMessage("{}已停止。", slot->plan->name);
         return true;
     }
 };

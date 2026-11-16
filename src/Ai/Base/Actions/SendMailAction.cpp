@@ -54,7 +54,7 @@ bool SendMailAction::Execute(Event event)
     if (!sPlayerbotAIConfig.botSendMailEnabled)
     {
         bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
-                         "send_mail_disabled", "I cannot send mail", {}),
+                         "send_mail_disabled", "我没法寄邮件", {}),
                      LANG_UNIVERSAL, tellTo);
         return false;
     }
@@ -62,7 +62,7 @@ bool SendMailAction::Execute(Event event)
     if (!mailboxFound && !randomBot)
     {
         bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
-                         "send_mail_no_mailbox_nearby", "There is no mailbox nearby", {}),
+                         "send_mail_no_mailbox_nearby", "附近没有邮箱", {}),
                      LANG_UNIVERSAL, tellTo);
         return false;
     }
@@ -71,7 +71,7 @@ bool SendMailAction::Execute(Event event)
     if (ids.size() > 1)
     {
         bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
-                         "send_mail_one_item_only", "You can not request more than one item", {}),
+                         "send_mail_one_item_only", "一次只能要一件物品", {}),
                      LANG_UNIVERSAL, tellTo);
         return false;
     }
@@ -85,7 +85,7 @@ bool SendMailAction::Execute(Event event)
         if (randomBot)
         {
             bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
-                             "send_mail_cannot_send_money", "I cannot send money", {}),
+                             "send_mail_cannot_send_money", "我没法寄钱", {}),
                          LANG_UNIVERSAL, tellTo);
             return false;
         }

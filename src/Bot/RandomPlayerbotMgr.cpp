@@ -3314,7 +3314,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
     if (cmd == "memory")
     {
         // Bounded, read-only sample; never evaluate calculated values or modify bot state.
-        handler->PSendSysMessage("Random bots online: {}", sRandomPlayerbotMgr.playerBots.size());
+        handler->PSendSysMessage("在线随机机器人：{}", sRandomPlayerbotMgr.playerBots.size());
         std::map<std::string, uint32> counts;
         uint32 sampled = 0;
         uint64 spells = 0;
@@ -3333,7 +3333,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
             if (++sampled == 100)
                 break;
         }
-        handler->PSendSysMessage("Bot memory sample: {} bots, {} cached values, {} learned spells. "
+        handler->PSendSysMessage("机器人内存采样：{} 个机器人、{} 个缓存值、{} 个已学法术。 "
             "Inline sizes (exclude heap allocations): Player={} AI={} Session={}",
             sampled, values, spells, sizeof(Player), sizeof(PlayerbotAI), sizeof(WorldSession));
         uint64 grids = 0;
@@ -3345,7 +3345,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
             creatures += map->GetCreatureBySpawnIdStore().size();
             gameObjects += map->GetGameObjectBySpawnIdStore().size();
         });
-        handler->PSendSysMessage("Shared world: {} loaded grids, {} spawned creatures, {} spawned gameobjects",
+        handler->PSendSysMessage("共享世界：{} 个已加载网格、{} 个已生成生物、{} 个已生成游戏对象",
             grids, creatures, gameObjects);
         std::vector<std::pair<std::string, uint32>> sorted(counts.begin(), counts.end());
         std::sort(sorted.begin(), sorted.end(), [](auto const& left, auto const& right)
@@ -3353,7 +3353,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
             return left.second > right.second;
         });
         for (std::size_t index = 0; index < std::min<std::size_t>(20, sorted.size()); ++index)
-            handler->PSendSysMessage("Cache {}: {} instances", sorted[index].first, sorted[index].second);
+            handler->PSendSysMessage("缓存 {}：{} 个实例", sorted[index].first, sorted[index].second);
         return true;
     }
 

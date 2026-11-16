@@ -233,8 +233,8 @@ namespace
             _timer = int64(std::max<uint32>(1, settings.duration)) * MINUTE_MS;
 
             std::string text = Acore::StringFormat(
-                "Gold rush! A tremor has laid bare rich veins and rare herbs near {} in {}. Prospectors are already on "
-                "their way.", AreaName(_areaId), AreaName(_zoneId));
+                "淘金潮！一场震动在 {}、{}附近揭出了富矿脉与稀有草药。淘金者已经"
+                "上路了。", AreaName(_areaId), AreaName(_zoneId));
             for (Player* player : Audience())
                 Tell(player, WorldLine(player, "sys_rush_start", { { "subzone", AreaName(_areaId) },
                     { "zone", AreaName(_zoneId) } }, text), true);
@@ -253,7 +253,7 @@ namespace
             if (_running)
             {
                 AddonPush("end");
-                std::string text = Acore::StringFormat("The gold rush near {} is over: the last veins have been picked clean.",
+                std::string text = Acore::StringFormat("{} 附近的淘金潮结束了：最后的矿脉也已被采空。",
                     AreaName(_areaId));
                 for (Player* player : Audience())
                     Tell(player, WorldLine(player, "sys_rush_end", { { "subzone", AreaName(_areaId) },
@@ -276,14 +276,14 @@ namespace
         std::string Status() const
         {
             if (_running)
-                return Acore::StringFormat("Gold rush near {} in {} (level {}): {} nodes, {} bots, {} min left.",
+                return Acore::StringFormat("{}附近（{}）正有淘金潮（等级 {}）：{} 个矿点，{} 个机器人，剩余 {} 分钟。",
                     AreaName(_areaId), AreaName(_zoneId), _level, _nodes.size(), BorrowedCount(BOT_OWNER_RUSH),
                     (_timer + MINUTE_MS - 1) / MINUTE_MS);
             if (!settings.enabled)
-                return "No gold rush now (switched off).";
+                return "现在没有淘金潮（已关闭）。";
             if (!settings.autoStart)
-                return "No gold rush now. A GM can start one here (.coaworld rush start).";
-            return Acore::StringFormat("No gold rush now; next chance in about {} min.", (_timer + MINUTE_MS - 1) / MINUTE_MS);
+                return "现在没有淘金潮。GM 可以在这里开启一个（.coaworld rush start）。";
+            return Acore::StringFormat("现在没有淘金潮；下次机会大约在 {} 分钟后。", (_timer + MINUTE_MS - 1) / MINUTE_MS);
         }
 
     private:
@@ -565,14 +565,14 @@ public:
     {
         if (!settings.enabled)
         {
-            handler->SendSysMessage("Resource rushes are switched off (AiPlayerbot.CoaWorld.ResourceRush.Enable).");
+            handler->SendSysMessage("资源热潮已关闭（AiPlayerbot.CoaWorld.ResourceRush.Enable）。");
             handler->SetSentErrorMessage(true);
             return false;
         }
         Player* gm = handler->GetPlayer();
         if (Rush().Running() || !gm || !gm->GetMap() || !gm->GetMap()->GetEntry()->IsContinent() || !Rush().Start(gm))
         {
-            handler->SendSysMessage("No rush started: one is already running, or no open ground was found near you.");
+            handler->SendSysMessage("没有开启热潮：已经有一个在进行，或你附近找不到空地。");
             handler->SetSentErrorMessage(true);
             return false;
         }

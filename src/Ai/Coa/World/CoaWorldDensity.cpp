@@ -260,10 +260,10 @@ public:
 
     static bool HandleStatus(ChatHandler* handler)
     {
-        handler->PSendSysMessage("Bots near real players: {}, far: {} (kept far: {}%). Sent off early: {}. "
-            "Last login batch: {} accounts near players first.{}", counters.nearBots, counters.farBots, settings.farSharePct,
+        handler->PSendSysMessage("靠近真玩家的机器人：{}，远处的：{}（保留远处 {}%）。提前下线：{}。"
+            "本次登录批次：{} 个账号优先靠近玩家。{}", counters.nearBots, counters.farBots, settings.farSharePct,
             counters.retired, counters.orderedFirst,
-            !settings.enabled ? " (switched off)" : !settings.rotation ? " (needs EnablePeriodicOnlineOffline = 1)" : "");
+            !settings.enabled ? "（已关闭）" : !settings.rotation ? "（需要 EnablePeriodicOnlineOffline = 1）" : "");
         return true;
     }
 };

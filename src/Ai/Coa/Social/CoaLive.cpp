@@ -3371,7 +3371,7 @@ public:
                     sample += " " + player->GetName() + "(" + std::to_string(missing) + ")";
             }
         }
-        handler->PSendSysMessage("CoA talents: {} CoA random bots online, {} short of their build ({} entries):{}",
+        handler->PSendSysMessage("CoA 天赋：在线 CoA 随机机器人 {} 个，{} 个缺少天赋（共 {} 项）：{}",
                                  bots, incomplete, entries, sample);
         return true;
     }
@@ -3393,7 +3393,7 @@ public:
                 spells += n;
             }
         }
-        handler->PSendSysMessage("Trainers: {} random bots online, {} could still learn something ({} spells)",
+        handler->PSendSysMessage("训练师：在线随机机器人 {} 个，{} 个仍可学习技能（{} 个法术）",
                                  bots, behind, spells);
         return true;
     }
@@ -3449,7 +3449,7 @@ public:
         }
         if (!bot || !sRandomPlayerbotMgr.IsRandomBot(bot))
         {
-            handler->PSendSysMessage("No random bot named {} online.", name);
+            handler->PSendSysMessage("没有名为 {} 的随机机器人在线。", name);
             return nullptr;
         }
         return bot;
@@ -3468,7 +3468,7 @@ public:
         if (!bot)
             return true;
         CoaSoul::Soul const s = CoaSoul::Get(bot);
-        handler->PSendSysMessage("{}: {} (pace {}, sociability {}, curiosity {}, greed {}, aggression {}){}",
+        handler->PSendSysMessage("{}：{}（节奏 {}，社交 {}，好奇 {}，贪婪 {}，攻击性 {}）{}",
                                  bot->GetName(), CoaSoul::ArchetypeName(s.archetype), s.pace, s.sociability,
                                  s.curiosity, s.greed, s.aggression,
                                  CoaSoul::Enabled() ? "" : " - souls are off (AiPlayerbot.CoaSoul.Enable = 0)");
@@ -3493,7 +3493,7 @@ public:
                 archetype = a;
         if (archetype == CoaSoul::ARCHETYPE_COUNT)
         {
-            handler->SendSysMessage("Archetype: lazy, quester, wanderer, trader or pvp.");
+            handler->SendSysMessage("原型：lazy、quester、wanderer、trader 或 pvp。");
             return true;
         }
         Player* bot = Bot(handler, name);

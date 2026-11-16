@@ -1311,7 +1311,7 @@ bool RecruitCoaBot(Player* master, CoaRole role, std::string& message, uint8 cla
     Group* group = master->GetGroup();
     if (group && group->IsFull())
     {
-        message = "Your group is full.";
+        message = "你的队伍已满。";
         return false;
     }
 
@@ -2107,7 +2107,7 @@ void CoaLfgHeard(Player* player, std::string const& message, Channel* channel)
         }
         if (wanted.empty() && classAsks.empty())
         {
-            chat.SendSysMessage("The bots already heard you: invite the ones that whispered you, or ask again in a moment.");
+            chat.SendSysMessage("机器人已经收到你的请求：请邀请那些密语你的机器人，或稍后再问一次。");
             return;
         }
 
@@ -2127,7 +2127,7 @@ void CoaLfgHeard(Player* player, std::string const& message, Channel* channel)
 
     if (player->GetGroup() && player->GetGroup()->IsFull())
     {
-        chat.SendSysMessage("Your group is full.");
+        chat.SendSysMessage("你的队伍已满。");
         return;
     }
 
@@ -2191,15 +2191,15 @@ void CoaLfgHeard(Player* player, std::string const& message, Channel* channel)
         }
         if (ask.role == CoaLfgAnyRole)
         {
-            chat.PSendSysMessage(playable ? "No free {} bot right now." : "No {} bot can join on this realm.", className);
+            chat.PSendSysMessage(playable ? "目前没有空闲的 {} 机器人。" : "本服务器没有可加入的 {} 机器人。", className);
             continue;
         }
         CoaRole const role = CoaRole(ask.role);
         if (playable)
-            chat.PSendSysMessage("No free {} bot can play {} right now: other {} bots are asked instead.", className,
+            chat.PSendSysMessage("目前没有空闲的 {} 机器人能担任 {}：改为询问其他 {} 机器人。", className,
                                  RoleName(role), RoleName(role));
         else
-            chat.PSendSysMessage("A {} cannot play {}: other {} bots are asked instead.", className, RoleName(role),
+            chat.PSendSysMessage("{} 无法担任 {}：改为询问其他 {} 机器人。", className, RoleName(role),
                                  RoleName(role));
         addRole(wanted, role);
     }
@@ -2209,9 +2209,9 @@ void CoaLfgHeard(Player* player, std::string const& message, Channel* channel)
         if (offer(role, 0))
             continue;
         if (CoaRecruitKeepsLevels(player))
-            chat.PSendSysMessage("No free bot of your level can play {} {}.", RoleName(role), CoaKeptLevelMode());
+            chat.PSendSysMessage("没有与你同等级的空闲机器人能担任 {} 角色（{}）。", RoleName(role), CoaKeptLevelMode());
         else
-            chat.PSendSysMessage("No free bot can play {} right now.", RoleName(role));
+            chat.PSendSysMessage("目前没有空闲机器人能担任 {}。", RoleName(role));
     }
 }
 

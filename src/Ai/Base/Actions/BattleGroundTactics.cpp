@@ -1287,7 +1287,7 @@ bool BGTactics::HandleConsoleCommand(ChatHandler* handler, char const* args)
     WorldSession* session = handler->GetSession();
     if (!session)
     {
-        handler->PSendSysMessage("Command can only be used from an active session");
+        handler->PSendSysMessage("该命令只能在活动的会话中使用");
         return true;
     }
     std::string const commandOutput = HandleConsoleCommandPrivate(session, args);

@@ -1055,7 +1055,7 @@ bool PlayerbotMgr::HandlePlayerbotMgrCommand(ChatHandler* handler, char const* a
     WorldSession* m_session = handler->GetSession();
     if (!m_session)
     {
-        handler->PSendSysMessage("You may only add bots from an active session");
+        handler->PSendSysMessage("只有在活动会话中才能添加机器人");
         return false;
     }
 
@@ -1063,7 +1063,7 @@ bool PlayerbotMgr::HandlePlayerbotMgrCommand(ChatHandler* handler, char const* a
     PlayerbotMgr* mgr = GET_PLAYERBOT_MGR(player);
     if (!mgr)
     {
-        handler->PSendSysMessage("You cannot control bots yet");
+        handler->PSendSysMessage("你目前还无法控制机器人");
         return false;
     }
 
@@ -2068,7 +2068,7 @@ void PlayerbotMgr::HandleSetSecurityKeyCommand(Player* player, std::string const
         "REPLACE INTO playerbots_account_keys (account_id, security_key) VALUES ({}, '{}')",
         accountId, hashedKey.str());
 
-    ChatHandler(player->GetSession()).PSendSysMessage("Security key set successfully.");
+    ChatHandler(player->GetSession()).PSendSysMessage("安全密钥设置成功。");
 }
 
 static bool IsValidAccountName(std::string const& name)
@@ -2090,7 +2090,7 @@ void PlayerbotMgr::HandleLinkAccountCommand(Player* player, std::string const& a
         : nullptr;
     if (!result)
     {
-        ChatHandler(player->GetSession()).PSendSysMessage("Account not found.");
+        ChatHandler(player->GetSession()).PSendSysMessage("未找到账号。");
         return;
     }
 
@@ -2100,7 +2100,7 @@ void PlayerbotMgr::HandleLinkAccountCommand(Player* player, std::string const& a
     result = PlayerbotsDatabase.Query("SELECT security_key FROM playerbots_account_keys WHERE account_id = {}", linkedAccountId);
     if (!result)
     {
-        ChatHandler(player->GetSession()).PSendSysMessage("Invalid security key.");
+        ChatHandler(player->GetSession()).PSendSysMessage("安全密钥无效。");
         return;
     }
 
@@ -2117,7 +2117,7 @@ void PlayerbotMgr::HandleLinkAccountCommand(Player* player, std::string const& a
     std::string storedKey = result->Fetch()->Get<std::string>();
     if (hashedKey.str() != storedKey)
     {
-        ChatHandler(player->GetSession()).PSendSysMessage("Invalid security key.");
+        ChatHandler(player->GetSession()).PSendSysMessage("安全密钥无效。");
         return;
     }
 
@@ -2129,7 +2129,7 @@ void PlayerbotMgr::HandleLinkAccountCommand(Player* player, std::string const& a
         "INSERT IGNORE INTO playerbots_account_links (account_id, linked_account_id) VALUES ({}, {})",
         linkedAccountId, accountId);
 
-    ChatHandler(player->GetSession()).PSendSysMessage("Account linked successfully.");
+    ChatHandler(player->GetSession()).PSendSysMessage("账号关联成功。");
 }
 
 void PlayerbotMgr::HandleViewLinkedAccountsCommand(Player* player)
@@ -2139,11 +2139,11 @@ void PlayerbotMgr::HandleViewLinkedAccountsCommand(Player* player)
 
     if (!result)
     {
-        ChatHandler(player->GetSession()).PSendSysMessage("No linked accounts.");
+        ChatHandler(player->GetSession()).PSendSysMessage("没有已关联的账号。");
         return;
     }
 
-    ChatHandler(player->GetSession()).PSendSysMessage("Linked accounts:");
+    ChatHandler(player->GetSession()).PSendSysMessage("已关联的账号：");
     do
     {
         Field* fields = result->Fetch();
@@ -2158,7 +2158,7 @@ void PlayerbotMgr::HandleViewLinkedAccountsCommand(Player* player)
         }
         else
         {
-            ChatHandler(player->GetSession()).PSendSysMessage("- Unknown account");
+            ChatHandler(player->GetSession()).PSendSysMessage("- 未知账号");
         }
     } while (result->NextRow());
 }
@@ -2170,7 +2170,7 @@ void PlayerbotMgr::HandleUnlinkAccountCommand(Player* player, std::string const&
         : nullptr;
     if (!result)
     {
-        ChatHandler(player->GetSession()).PSendSysMessage("Account not found.");
+        ChatHandler(player->GetSession()).PSendSysMessage("未找到账号。");
         return;
     }
 
@@ -2181,5 +2181,5 @@ void PlayerbotMgr::HandleUnlinkAccountCommand(Player* player, std::string const&
     PlayerbotsDatabase.Execute("DELETE FROM playerbots_account_links WHERE (account_id = {} AND linked_account_id = {}) OR (account_id = {} AND linked_account_id = {})",
                                 accountId, linkedAccountId, linkedAccountId, accountId);
 
-    ChatHandler(player->GetSession()).PSendSysMessage("Account unlinked successfully.");
+    ChatHandler(player->GetSession()).PSendSysMessage("账号已解除关联。");
 }

@@ -102,14 +102,14 @@ struct CityDef
 
 // Spots from the CoA world DB (coa-local): the kings' spawns, the keep's guards, the invasions' gate spots.
 std::vector<CityDef> const CITIES = {
-    { "stormwind", "Stormwind", "Hurlevent", "King Varian Wrynn", "le roi Varian Wrynn", 0, TEAM_ALLIANCE, 29611,
+    { "stormwind", "Stormwind", "Hurlevent", "瓦里安·乌瑞恩国王", "le roi Varian Wrynn", 0, TEAM_ALLIANCE, 29611,
       { { -9200.0f, 330.0f, 84.0f, 0.75f },           // Elwynn road, outside the gate
         { -8888.2f, 566.2f, 93.3f, 2.20f },           // inside the main gate
         { -8533.0f, 456.9f, 105.1f, 0.0f },           // the keep's steps (Royal Guards)
         { -8408.4f, 300.0f, 147.0f, 0.0f },           // the keep's hall
         { -8370.0f, 240.0f, 155.5f, 0.0f } },         // before King Varian Wrynn (-8364.7, 230.9, 157)
       3 },
-    { "orgrimmar", "Orgrimmar", "Orgrimmar", "Thrall", "Thrall", 1, TEAM_HORDE, 4949,
+    { "orgrimmar", "Orgrimmar", "Orgrimmar", "萨尔", "Thrall", 1, TEAM_HORDE, 4949,
       { { 1310.0f, -4385.0f, 26.5f, 0.0f },           // Durotar, outside the gate
         { 1629.9f, -4373.6f, 31.6f, 3.70f },          // inside the main gate
         { 1930.5f, -4238.3f, 42.3f, 0.0f },           // Grommash Hold's door (Kor'kron Elite)
@@ -159,7 +159,7 @@ void TellAll(char const* situation, char const* en, char const* fr, CityDef cons
             continue;
         bool const f = French(player);
         bool const horde = Attacker(city) == TEAM_HORDE;
-        std::string const side = f ? (horde ? "la Horde" : "l'Alliance") : (horde ? "the Horde" : "the Alliance");
+        std::string const side = f ? (horde ? "la Horde" : "l'Alliance") : (horde ? "部落" : "联盟");
         std::string const place = f ? city.nameFr : city.name;
         std::string const king = f ? city.kingFr : city.king;
         std::string text = Acore::StringFormat(f ? fr : en, side, place, king, minutes);
@@ -245,9 +245,9 @@ void Finish(bool attackersWon, char const* why)
     CityDef const& city = *g_raid.city;
     time_t const now = time(nullptr);
     if (attackersWon)
-        TellAll("sys_craid_won", "{2} has fallen! {0} has sacked {1}.", "{2} est tomb\u00e9 ! {0} a mis {1} \u00e0 sac.", city);
+        TellAll("sys_craid_won", "{2}已经陷落！{0}洗劫了{1}。", "{2} est tomb\u00e9 ! {0} a mis {1} \u00e0 sac.", city);
     else
-        TellAll("sys_craid_lost", "The assault on {1} is broken. {2} still stands.",
+        TellAll("sys_craid_lost", "对{1}的突袭已被击溃，{2}依然屹立。",
                 "L'assaut sur {1} est repouss\u00e9. {2} tient toujours.", city);
 
     // Gold for the real players of the winning side who were there.
@@ -279,18 +279,18 @@ bool Start(CityDef const& city, std::string& error)
 {
     if (g_raid.phase != Phase::Idle)
     {
-        error = Acore::StringFormat("A raid on {} is already on.", g_raid.city->name);
+        error = Acore::StringFormat("对{}的首都突袭已经开始了。", g_raid.city->name);
         return false;
     }
     if (CoaWorldInvasionAt(city.name))
     {
-        error = Acore::StringFormat("An invasion holds {} now.", city.name);
+        error = Acore::StringFormat("{} 目前正被入侵占据。", city.name);
         return false;
     }
     Map* map = sMapMgr->CreateBaseMap(city.mapId);
     if (!map)
     {
-        error = "No such map.";
+        error = "没有这张地图。";
         return false;
     }
     map->LoadGridsInRange(city.path.back(), 100.0f);
@@ -304,7 +304,7 @@ bool Start(CityDef const& city, std::string& error)
         }
     if (!king)
     {
-        error = Acore::StringFormat("{} is not there (dead or not spawned).", city.king);
+        error = Acore::StringFormat("{}不在这里（已死亡或未刷新）。", city.king);
         return false;
     }
 
@@ -318,8 +318,8 @@ bool Start(CityDef const& city, std::string& error)
     uint32 const needed = std::max<uint32>(1, std::min<uint32>(20, settings.attackers));
     if (free < needed)
     {
-        error = Acore::StringFormat("Only {} free {} bots of level {}+ (at least {} needed).", free,
-                                    attacker == TEAM_HORDE ? "Horde" : "Alliance", minLevel, needed);
+        error = Acore::StringFormat("只有 {} 个空闲的{}机器人（{} 级以上），至少需要 {} 个。", free,
+                                    attacker == TEAM_HORDE ? "部落" : "联盟", minLevel, needed);
         return false;
     }
 
@@ -336,7 +336,7 @@ bool Start(CityDef const& city, std::string& error)
     if (attackers < needed)
     {
         ReleaseBots(BOT_OWNER_RAID_ATTACK, true);
-        error = Acore::StringFormat("Only {} attackers could come (at least {} needed).", attackers, needed);
+        error = Acore::StringFormat("只来了 {} 个进攻者（至少需要 {} 个）。", attackers, needed);
         return false;
     }
 
@@ -364,7 +364,7 @@ bool Start(CityDef const& city, std::string& error)
     SetKingHealth(king, settings.kingHealthPct);
 
     uint32 const minutes = std::max<uint32>(1, (settings.gatherSeconds + 59) / 60);
-    TellAll("sys_craid_warning", "{0} is massing outside {1} to march on {2}! The assault begins in {3} minutes.",
+    TellAll("sys_craid_warning", "{0}正在{1}城外集结，准备进军{2}！突袭将在 {3} 分钟后开始。",
             "{0} se rassemble aux portes de {1} pour marcher sur {2} ! L'assaut commence dans {3} minutes.", city, minutes);
     BorrowedSay(BOT_OWNER_RAID_ATTACK, 0, "craid_rally", { { "city", city.name } }, 3);
     Push("warn", g_raid.assaultAt);
@@ -478,7 +478,7 @@ void Tick(time_t now)
         for (Player* bot : Bots(BOT_OWNER_RAID_ATTACK))
             if (bot->IsAlive())
                 Go(bot, city.path[1]);
-        TellAll("sys_craid_assault", "{0} storms the gates of {1}! Defend {2}!",
+        TellAll("sys_craid_assault", "{0}冲破了{1}的城门！保卫{2}！",
                 "{0} enfonce les portes de {1} ! D\u00e9fendez {2} !", city);
         Push("on", g_raid.endsAt);
         LogEvent("capitalraid", "", Acore::StringFormat("the assault on {} begins", city.name));
@@ -597,21 +597,21 @@ public:
         time_t const now = time(nullptr);
         for (CityDef const& city : CITIES)
         {
-            std::string state = "idle";
+            std::string state = "空闲";
             if (g_raid.city == &city)
                 state = g_raid.phase == Phase::Gathering
-                            ? Acore::StringFormat("gathering, assault in {} s", int64(g_raid.assaultAt - now))
-                            : Acore::StringFormat("assault, step {}/{}, {} min left", g_raid.step, city.path.size() - 1,
+                            ? Acore::StringFormat("集结中，{} 秒后发起突袭", int64(g_raid.assaultAt - now))
+                            : Acore::StringFormat("突袭中，第 {}/{} 步，剩余 {} 分钟", g_raid.step, city.path.size() - 1,
                                                   int64(g_raid.endsAt - now) / 60);
             else if (CoaWorldInvasionAt(city.name))
-                state = "an invasion holds it";
-            handler->PSendSysMessage("{} ({} attack {}): {}. Attackers {}, defenders {}.", city.key,
-                                     Attacker(city) == TEAM_HORDE ? "Horde" : "Alliance", city.king, state,
+                state = "正被入侵占据";
+            handler->PSendSysMessage("{}（{}进攻{}）：{}。进攻者 {}，防守者 {}。", city.key,
+                                     Attacker(city) == TEAM_HORDE ? "部落" : "联盟", city.king, state,
                                      g_raid.city == &city ? BorrowedCount(BOT_OWNER_RAID_ATTACK) : 0,
                                      g_raid.city == &city ? BorrowedCount(BOT_OWNER_RAID_DEFEND) : 0);
         }
         if (!settings.enabled)
-            handler->SendSysMessage("AiPlayerbot.CoaWorld.CapitalRaid.Enable is 0: no raid can start.");
+            handler->SendSysMessage("AiPlayerbot.CoaWorld.CapitalRaid.Enable 为 0：无法开启首都突袭。");
         return true;
     }
 
@@ -622,13 +622,13 @@ public:
         CityDef const* city = FindCity(name);
         if (!city)
         {
-            handler->SendSysMessage("Usage: .coaworld capitalraid start <stormwind|orgrimmar>");
+            handler->SendSysMessage("用法：.coaworld capitalraid start <stormwind|orgrimmar>");
             handler->SetSentErrorMessage(true);
             return false;
         }
         if (!settings.enabled)
         {
-            handler->SendSysMessage("AiPlayerbot.CoaWorld.CapitalRaid.Enable is 0.");
+            handler->SendSysMessage("AiPlayerbot.CoaWorld.CapitalRaid.Enable 为 0。");
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -639,7 +639,7 @@ public:
             handler->SetSentErrorMessage(true);
             return false;
         }
-        handler->PSendSysMessage("Raid on {} gathering: {} attackers, {} defenders.", city->name,
+        handler->PSendSysMessage("对{}的首都突袭正在集结：{} 个进攻者，{} 个防守者。", city->name,
                                  BorrowedCount(BOT_OWNER_RAID_ATTACK), BorrowedCount(BOT_OWNER_RAID_DEFEND));
         return true;
     }
@@ -648,11 +648,11 @@ public:
     {
         if (g_raid.phase == Phase::Idle)
         {
-            handler->SendSysMessage("No raid is on.");
+            handler->SendSysMessage("当前没有首都突袭。");
             return true;
         }
         Finish(false, "stopped by a game master");
-        handler->SendSysMessage("Raid stopped.");
+        handler->SendSysMessage("首都突袭已停止。");
         return true;
     }
 };

@@ -442,21 +442,21 @@ bool CoaMissionAction::Start(Player* requester, uint32 minutes, uint32 skillId, 
     sCoaMissionMgr.Save(bot);
 
     std::string const riskLine =
-        mission.risk ? " High Risk: I mail what I gather on the way and stop at my first death." : "";
+        mission.risk ? " 高风险：路上采集到的东西我会随时寄出，一旦死亡就立刻停下。" : "";
     if (orderItem)
     {
         ItemTemplate const* proto = sObjectMgr->GetItemTemplate(orderItem);
-        botAI->TellMasterNoFacing("Mission started: order of " + std::to_string(orderCount) + " " +
-                                  (proto ? proto->Name1 : "?") + " (" + CoaMissionMgr::SkillName(skillId) + ") in " +
-                                  ZoneNameOf(cell->zoneId) + ", at most " + std::to_string(minutes) +
-                                  " min. I will mail them to you. Whisper \"mission status\" or \"mission stop\"." +
+        botAI->TellMasterNoFacing("任务已开始：制造订单 " + std::to_string(orderCount) + " × " +
+                                  (proto ? proto->Name1 : "?") + "（" + CoaMissionMgr::SkillName(skillId) + "），地点 " +
+                                  ZoneNameOf(cell->zoneId) + "，最多 " + std::to_string(minutes) +
+                                  " 分钟。完成后我会把它们邮寄给你。密语 \"mission status\" 或 \"mission stop\"。" +
                                   riskLine);
         return true;
     }
 
-    botAI->TellMasterNoFacing("Mission started: " + CoaMissionMgr::SkillName(skillId) + " in " +
-                              ZoneNameOf(cell->zoneId) + " for " + std::to_string(minutes) +
-                              " min. I will mail you what I gather. Whisper \"mission status\" or \"mission stop\"." +
+    botAI->TellMasterNoFacing("任务已开始：" + CoaMissionMgr::SkillName(skillId) + "，地点 " +
+                              ZoneNameOf(cell->zoneId) + "，最多 " + std::to_string(minutes) +
+                              " 分钟。采集到的东西我会邮寄给你。密语 \"mission status\" 或 \"mission stop\"。" +
                               riskLine);
     return true;
 }

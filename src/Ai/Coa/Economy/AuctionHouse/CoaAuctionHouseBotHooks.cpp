@@ -242,10 +242,10 @@ public:
     static bool HandleHelp(ChatHandler* handler)
     {
         LOG_INFO("module", "CoA Economy AH bot: help shown.");
-        handler->SendSysMessage("AH bot commands:");
-        handler->SendSysMessage("  .ahbot update - run one bot update cycle now");
-        handler->SendSysMessage("  .ahbot reload - reload config and rebuild item data");
-        handler->SendSysMessage("  .ahbot empty  - remove all bot auctions");
+        handler->SendSysMessage("拍卖行机器人命令：");
+        handler->SendSysMessage("  .ahbot update - 立即执行一轮机器人更新");
+        handler->SendSysMessage("  .ahbot reload - 重新加载配置并重建物品数据");
+        handler->SendSysMessage("  .ahbot empty  - 移除所有机器人拍卖");
         return true;
     }
 };

@@ -396,7 +396,7 @@ public:
 
         if (!state.ready.insert(player->GetGUID()).second)
         {
-            ChatHandler(player->GetSession()).SendSysMessage("You are already ready.");
+            ChatHandler(player->GetSession()).SendSysMessage("你已就绪。");
             return true;
         }
         Evaluate(bg, state);

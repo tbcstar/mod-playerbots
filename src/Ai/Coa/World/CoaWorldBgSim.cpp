@@ -159,11 +159,11 @@ public:
 
     std::string Status() const
     {
-        std::string out = Acore::StringFormat("{} simulated battleground(s){}.", _matches.size(),
-                                              settings.enabled ? "" : " (switched off)");
+        std::string out = Acore::StringFormat("{} 个模拟战场{}。", _matches.size(),
+                                              settings.enabled ? "" : "（已关闭）");
         for (Match const& m : _matches)
-            out += Acore::StringFormat(" [{} {}-{}, {} bots, {}]", m.bg->name, m.minLevel, m.maxLevel, m.members.size(),
-                                       m.returning ? "back" : "playing");
+            out += Acore::StringFormat(" [{} {}-{}, {} 个机器人, {}]", m.bg->name, m.minLevel, m.maxLevel, m.members.size(),
+                                       m.returning ? "返程中" : "在打");
         return out;
     }
 

@@ -104,7 +104,7 @@ public:
         bool const console = !handler->GetSession();
         if (console && wanted != "regear")
         {
-            handler->SendSysMessage("From the console: .playerbots coa regear [level].");
+            handler->SendSysMessage("控制台只能执行：.playerbots coa regear [等级]。");
             return true;
         }
         bool const gameMaster = console || handler->GetSession()->GetSecurity() >= SEC_GAMEMASTER;
@@ -149,13 +149,13 @@ public:
                 if (mine != playerRaids.end() && now - mine->second.second < time_t(cooldown))
                 {
                     uint32 const minutes = uint32((cooldown - (now - mine->second.second) + MINUTE - 1) / MINUTE);
-                    handler->SendSysMessage("You can build another raid in " + std::to_string(minutes) + " minutes.");
+                    handler->SendSysMessage("你可以在 " + std::to_string(minutes) + " 分钟后再组建一支机器人团队副本。");
                     return true;
                 }
                 if (active >= maxRaids)
                 {
-                    handler->SendSysMessage("The realm already has " + std::to_string(active) +
-                                            " raids of bots; try again when one of them is over.");
+                    handler->SendSysMessage("本服已有 " + std::to_string(active) +
+                                            " 支机器人团队副本；请等其中一支结束后再试。");
                     return true;
                 }
             }
@@ -188,8 +188,8 @@ public:
                 factory.ApplyEnchantAndGemsNew();
                 ++done;
             }
-            handler->SendSysMessage(std::to_string(done) + " bots of level " + std::to_string(minLevel) +
-                                    "+ geared again, " + std::to_string(skipped) + " left for later (in combat or in a battleground).");
+            handler->SendSysMessage(std::to_string(done) + " 名 " + std::to_string(minLevel) +
+                                    " 级以上的机器人已重新装备，" + std::to_string(skipped) + " 名留待稍后（正在战斗或身处战场）。");
             return true;
         }
 
@@ -201,8 +201,8 @@ public:
 
         if (!gameMaster)
         {
-            handler->SendSysMessage("Usage: .playerbots coa raid [size] [tanks] [healers], e.g. .playerbots coa raid 25. "
-                                    "To find a single tank or healer, say \"lfg bot tank\" or \"lfg bot heal\" in a chat channel.");
+            handler->SendSysMessage("用法：.playerbots coa raid [规模] [坦克数] [治疗数]，例如 .playerbots coa raid 25。 "
+                                    "若只想找一名坦克或治疗，在频道里说 \"lfg bot tank\" 或 \"lfg bot heal\"。");
             return true;
         }
 
@@ -215,8 +215,8 @@ public:
             role = CoaRole::Dps;
         else
         {
-            handler->SendSysMessage("Usage: .playerbots coa tank|heal|dps [class], e.g. .playerbots coa heal sun cleric; "
-                                    ".playerbots coa raid [size] [tanks] [healers], e.g. .playerbots coa raid 25");
+            handler->SendSysMessage("用法：.playerbots coa tank|heal|dps [职业]，例如 .playerbots coa heal sun cleric； "
+                                    ".playerbots coa raid [规模] [坦克数] [治疗数]，例如 .playerbots coa raid 25");
             return true;
         }
 
@@ -226,10 +226,10 @@ public:
             classId = FindCoaClass(className);
             if (!classId)
             {
-                handler->SendSysMessage("Unknown or ambiguous class '" + className + "'. Classes: Barbarian, Witch Doctor, "
-                                        "Felsworn, Witch Hunter, Stormbringer, Knight of Xoroth, Guardian, Templar, "
-                                        "Bloodmage, Ranger, Chronomancer, Necromancer, Pyromancer, Cultist, Starcaller, "
-                                        "Sun Cleric, Tinker, Venomancer, Reaper, Primalist, Runemaster.");
+                handler->SendSysMessage("未知或歧义的职业 '" + className + "'。可用职业：野蛮人、巫医、"
+                                        "魔誓者、猎巫人、风暴使者、索罗斯骑士、守护者、圣殿骑士、"
+                                        "血法师、游侠、时空术士、死灵法师、炎术师、邪教徒、唤星者、"
+                                        "太阳祭司、工匠、毒术士、收割者、原始主义者、符文大师。");
                 return true;
             }
         }
@@ -248,7 +248,7 @@ public:
     {
         if (!IsRebornRealm())
         {
-            handler->SendSysMessage("not a Warcraft Reborn realm");
+            handler->SendSysMessage("本服不是 Warcraft Reborn 规则的服务器");
             return;
         }
         std::istringstream in(args);
@@ -256,19 +256,19 @@ public:
         in >> word >> number;
         if (word == "reload")
         {
-            handler->PSendSysMessage("playerbots_coa_wcr_builds: {} guide rows loaded.", LoadWcrBuilds());
+            handler->PSendSysMessage("playerbots_coa_wcr_builds：已载入 {} 条指南。", LoadWcrBuilds());
             return;
         }
 
         Player* bot = handler->getSelectedPlayer();
         if (!bot || !GET_PLAYERBOT_AI(bot))
         {
-            handler->SendSysMessage("Select a bot: .playerbots coa wcr [spec <0-2>|reload]");
+            handler->SendSysMessage("请先选中一名机器人：.playerbots coa wcr [spec <0-2>|reload]");
             return;
         }
         if (!IsRebornBot(bot))
         {
-            handler->PSendSysMessage("{}: not a Warcraft Reborn class.", bot->GetName());
+            handler->PSendSysMessage("{}：不是 Warcraft Reborn 职业。", bot->GetName());
             return;
         }
 
@@ -276,7 +276,7 @@ public:
         {
             if (number.size() != 1 || number[0] < '0' || number[0] > '2')
             {
-                handler->SendSysMessage("Usage: .playerbots coa wcr spec <0-2>");
+                handler->SendSysMessage("用法：.playerbots coa wcr spec <0-2>");
                 return;
             }
             CoaRole const before = GetWcrRole(bot);
@@ -302,24 +302,24 @@ public:
         Player* bot = target ? target->GetConnectedPlayer() : nullptr;
         if (!bot)
         {
-            handler->SendSysMessage("Name an online Wildcard Hero bot or select one: .playerbots wildcard redraft [name]");
+            handler->SendSysMessage("请指定一名在线的外卡英雄机器人，或先选中一个：.playerbots wildcard redraft [名字]");
             return true;
         }
         if (!RedraftWildcardBot(bot))
         {
-            handler->PSendSysMessage("{} is not a random Wildcard Hero bot.", bot->GetName());
+            handler->PSendSysMessage("{} 不是随机外卡英雄机器人。", bot->GetName());
             return true;
         }
 
         if (bot->IsInCombat())
         {
-            handler->PSendSysMessage("{} drafted its build again and takes its stat path after the fight.", bot->GetName());
+            handler->PSendSysMessage("{} 已重新抽取流派，战斗结束后就会转入新的属性路线。", bot->GetName());
             return true;
         }
 
         CoaRole const role = GetWildcardRole(bot);
-        handler->PSendSysMessage("{} drafted its build again as a {}.", bot->GetName(),
-                                 role == CoaRole::Tank ? "tank" : role == CoaRole::Heal ? "healer" : "damage dealer");
+        handler->PSendSysMessage("{} 已重新抽取流派，担任{}。", bot->GetName(),
+                                 role == CoaRole::Tank ? "坦克" : role == CoaRole::Heal ? "治疗" : "输出");
         return true;
     }
 
@@ -396,7 +396,7 @@ public:
                     handler->PSendSysMessage("{} lvl {}: {}", bot->GetName(), bot->GetLevel(),
                                              sCoaMissionMgr.StatusLine(bot));
             }
-            handler->PSendSysMessage("{} bench missions {}.", count, first == "stop" ? "stopped" : "running");
+            handler->PSendSysMessage("{} 个测试任务{}。", count, first == "stop" ? "已停止" : "仍在进行");
             return true;
         }
 
@@ -487,7 +487,7 @@ public:
             }
             ++started;
         }
-        handler->PSendSysMessage("{} bench missions started for {} min ({} bots taught a profession).", started,
+        handler->PSendSysMessage("已开始 {} 个测试任务，时长 {} 分钟（{} 名机器人临时学会了采集专业）。", started,
                                  minutes, taught);
         return true;
     }
@@ -501,7 +501,7 @@ public:
     {
         if (!args || !*args)
         {
-            handler->PSendSysMessage("Usage: .playerbots account setKey <securityKey>");
+            handler->PSendSysMessage("用法：.playerbots account setKey <安全密钥>");
             return false;
         }
 
@@ -516,7 +516,7 @@ public:
         }
         else
         {
-            handler->PSendSysMessage("PlayerbotMgr instance not found.");
+            handler->PSendSysMessage("未找到 PlayerbotMgr 实例。");
             return false;
         }
     }
@@ -531,7 +531,7 @@ public:
 
         if (!accountName || !key)
         {
-            handler->PSendSysMessage("Usage: .playerbots account link <accountName> <securityKey>");
+            handler->PSendSysMessage("用法：.playerbots account link <账号名> <安全密钥>");
             return false;
         }
 
@@ -545,7 +545,7 @@ public:
         }
         else
         {
-            handler->PSendSysMessage("PlayerbotMgr instance not found.");
+            handler->PSendSysMessage("未找到 PlayerbotMgr 实例。");
             return false;
         }
     }
@@ -562,7 +562,7 @@ public:
         }
         else
         {
-            handler->PSendSysMessage("PlayerbotMgr instance not found.");
+            handler->PSendSysMessage("未找到 PlayerbotMgr 实例。");
             return false;
         }
     }
@@ -575,7 +575,7 @@ public:
         char* accountName = strtok((char*)args, " ");
         if (!accountName)
         {
-            handler->PSendSysMessage("Usage: .playerbots account unlink <accountName>");
+            handler->PSendSysMessage("用法：.playerbots account unlink <账号名>");
             return false;
         }
 
@@ -589,7 +589,7 @@ public:
         }
         else
         {
-            handler->PSendSysMessage("PlayerbotMgr instance not found.");
+            handler->PSendSysMessage("未找到 PlayerbotMgr 实例。");
             return false;
         }
     }

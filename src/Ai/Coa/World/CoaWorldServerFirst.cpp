@@ -140,13 +140,14 @@ namespace
                 uint8 const kind = f[0].Get<uint8>();
                 uint32 const entry = f[1].Get<uint32>();
                 char const* side = f[2].Get<uint8>() == TEAM_ALLIANCE ? "the Alliance" : "the Horde";
+                char const* sideZh = f[2].Get<uint8>() == TEAM_ALLIANCE ? "联盟" : "部落";
                 std::string what;
                 if (kind == FIRST_LEVEL)
-                    what = Acore::StringFormat("level {} ({})", entry, side);
+                    what = Acore::StringFormat("{} 级（{}）", entry, sideZh);
                 else
                 {
                     CreatureTemplate const* boss = sObjectMgr->GetCreatureTemplate(entry);
-                    what = Acore::StringFormat("{} ({})", boss ? boss->Name : std::to_string(entry), side);
+                    what = Acore::StringFormat("{}（{}）", boss ? boss->Name : std::to_string(entry), sideZh);
                 }
                 rows.emplace_back(what, f[3].Get<std::string>(), f[4].Get<std::string>(), time_t(f[5].Get<uint32>()));
                 raw.emplace_back(kind, entry, f[2].Get<uint8>());
@@ -184,15 +185,16 @@ namespace
                 uint32(p.team), p.guid.GetCounter(), name, guild);
 
             char const* side = p.team == TEAM_ALLIANCE ? "the Alliance" : "the Horde";
-            std::string who = p.guild.empty() ? p.name : Acore::StringFormat("{} of <{}>", p.name, p.guild);
+            char const* sideZh = p.team == TEAM_ALLIANCE ? "联盟" : "部落";
+            std::string who = p.guild.empty() ? p.name : Acore::StringFormat("{} <{}>", p.name, p.guild);
             std::string text = p.kind == FIRST_LEVEL
-                ? Acore::StringFormat("|cffff8000[Server First]|r {} is the first of {} to reach level {}!", who, side, p.entry)
-                : Acore::StringFormat("|cffff8000[Server First]|r {} has slain {}, a first for {}!", who, p.what, side);
+                ? Acore::StringFormat("|cffff8000[全服首杀]|r {} 是{}第一位达到 {} 级的玩家！", who, sideZh, p.entry)
+                : Acore::StringFormat("|cffff8000[全服首杀]|r {} 带领{}首次击杀 {}！", who, sideZh, p.what);
             ChatHandler(nullptr).SendWorldText(text);
             LOG_INFO("module", "CoA World: server first ({}): {}", side, text);
             Recent(uint8(p.kind), p.entry, uint8(p.team), p.name, p.guild, time(nullptr));
-            CoaWorldState::First(p.kind == FIRST_LEVEL ? Acore::StringFormat("level {} ({})", p.entry, side)
-                                                      : Acore::StringFormat("{} ({})", p.what, side),
+            CoaWorldState::First(p.kind == FIRST_LEVEL ? Acore::StringFormat("{} 级（{}）", p.entry, sideZh)
+                                                      : Acore::StringFormat("{}（{}）", p.what, sideZh),
                                  p.name, p.guild, time(nullptr));
             CoaWorld::LogEvent("server_first", p.name, p.kind == FIRST_LEVEL
                 ? Acore::StringFormat("first of {} to level {}", side, p.entry)

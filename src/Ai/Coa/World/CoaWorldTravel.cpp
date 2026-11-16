@@ -224,8 +224,8 @@ namespace
                 waiting += r.waiting[0].size() + r.waiting[1].size();
                 aboard += r.aboard.size();
             }
-            return Acore::StringFormat("{} transport routes; {} bots waiting on a platform, {} aboard; {} trips made{}.",
-                _routes.size(), waiting, aboard, _trips, settings.enabled ? "" : " (switched off)");
+            return Acore::StringFormat("{} 条运输航线；{} 个机器人在站台等待，{} 个已登船；已完成 {} 次航行{}。",
+                _routes.size(), waiting, aboard, _trips, settings.enabled ? "" : "（已关闭）");
         }
 
     private:

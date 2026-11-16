@@ -222,15 +222,15 @@ namespace
 
         std::string Status() const
         {
-            std::string out = Acore::StringFormat("{} simulated dungeon run(s){}.", _runs.size(),
-                settings.enabled ? "" : " (switched off)");
+            std::string out = Acore::StringFormat("{} 个地下城模拟{}。", _runs.size(),
+                settings.enabled ? "" : "（已关闭）");
             time_t now = time(nullptr);
             for (Run const& run : _runs)
-                out += Acore::StringFormat(" [{} {} {}, {} bots, {}]", run.team == TEAM_ALLIANCE ? "A" : "H",
+                out += Acore::StringFormat(" [{} {} {}, {} 个机器人, {}]", run.team == TEAM_ALLIANCE ? "A" : "H",
                     run.dungeon->name,
-                    run.phase == Phase::Gathering ? "gathering" : run.phase == Phase::Inside ? "inside" : "back",
+                    run.phase == Phase::Gathering ? "集合中" : run.phase == Phase::Inside ? "地下城内" : "返程中",
                     run.members.size(),
-                    run.until > now ? Acore::StringFormat("{} min", (run.until - now + 59) / 60) : std::string("-"));
+                    run.until > now ? Acore::StringFormat("{} 分钟", (run.until - now + 59) / 60) : std::string("-"));
             return out;
         }
 
@@ -827,15 +827,15 @@ public:
             dungeon = FindDungeon(std::string(*name));
             if (!dungeon)
             {
-                handler->SendSysMessage("No such dungeon in the list.");
+                handler->SendSysMessage("列表中没有这个地下城。");
                 handler->SetSentErrorMessage(true);
                 return false;
             }
         }
         if (!settings.enabled || !Sim().ForceStart(team, dungeon))
         {
-            handler->SendSysMessage("No run started: switched off (AiPlayerbot.CoaWorld.DungeonSim.Enable), or no five "
-                                    "free bots of the level with a tank and a healer.");
+            handler->SendSysMessage("没有启动模拟：已关闭（AiPlayerbot.CoaWorld.DungeonSim.Enable），或找不到五个同级、"
+                                    "带坦克和治疗的闲置机器人。");
             handler->SetSentErrorMessage(true);
             return false;
         }

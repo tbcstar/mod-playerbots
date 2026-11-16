@@ -248,9 +248,9 @@ namespace
 
         std::string Status() const
         {
-            return Acore::StringFormat("Stuck bots helped: {} standing still, {} in circles, {} back and forth, {} dying "
-                "over and over, {} out of their level range; {} hearthstones. {} bots watched{}.", _counters.stuck,
-                _counters.loops, _counters.noProgress, _counters.deaths, _counters.outOfRange, _counters.hearths, _tracks.size(), settings.enabled ? "" : " (switched off)");
+            return Acore::StringFormat("已处理的卡住机器人：{} 原地不动，{} 绕圈，{} 来回走，{} 反复死亡，"
+                "{} 超出等级范围；{} 次炉石。观察中 {} 个机器人{}。", _counters.stuck,
+                _counters.loops, _counters.noProgress, _counters.deaths, _counters.outOfRange, _counters.hearths, _tracks.size(), settings.enabled ? "" : "（已关闭）");
         }
 
     private:
