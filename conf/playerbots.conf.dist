@@ -1146,38 +1146,36 @@ AiPlayerbot.LevelBrackets.Dynamic.SyncFactions = 0
 #
 # NOTE: The sum of all Pct values for the Alliance brackets must equal 100.
 #
+# CoA 新服（2026-11-17）：机器人以 1-59 级为主，用来陪玩家打副本与战场。
+#   Range1(1-9) 4%、Range2(10-19) 10%、Range3(20-29) 13%、Range4(30-39) 14%、
+#   Range5(40-49) 14%、Range6(50-54) 13%、Range7(55-59) 12%、Range8(60) 20%。
+#   1-59 级共 80%，200 只机器人里约 160 只在练级路上，60 级留 40 只给满级内容。
+#   要改比例，8 个 Pct 之和必须正好 100（ClampAndBalanceBrackets 只补不削）。
+#
 AiPlayerbot.LevelBrackets.Alliance.Range1.Lower = 1
 AiPlayerbot.LevelBrackets.Alliance.Range1.Upper = 9
-AiPlayerbot.LevelBrackets.Alliance.Range1.Pct   = 2
-
+AiPlayerbot.LevelBrackets.Alliance.Range1.Pct   = 4
 AiPlayerbot.LevelBrackets.Alliance.Range2.Lower = 10
 AiPlayerbot.LevelBrackets.Alliance.Range2.Upper = 19
-AiPlayerbot.LevelBrackets.Alliance.Range2.Pct   = 3
-
+AiPlayerbot.LevelBrackets.Alliance.Range2.Pct   = 10
 AiPlayerbot.LevelBrackets.Alliance.Range3.Lower = 20
 AiPlayerbot.LevelBrackets.Alliance.Range3.Upper = 29
-AiPlayerbot.LevelBrackets.Alliance.Range3.Pct   = 4
-
+AiPlayerbot.LevelBrackets.Alliance.Range3.Pct   = 13
 AiPlayerbot.LevelBrackets.Alliance.Range4.Lower = 30
 AiPlayerbot.LevelBrackets.Alliance.Range4.Upper = 39
-AiPlayerbot.LevelBrackets.Alliance.Range4.Pct   = 5
-
+AiPlayerbot.LevelBrackets.Alliance.Range4.Pct   = 14
 AiPlayerbot.LevelBrackets.Alliance.Range5.Lower = 40
 AiPlayerbot.LevelBrackets.Alliance.Range5.Upper = 49
-AiPlayerbot.LevelBrackets.Alliance.Range5.Pct   = 7
-
+AiPlayerbot.LevelBrackets.Alliance.Range5.Pct   = 14
 AiPlayerbot.LevelBrackets.Alliance.Range6.Lower = 50
 AiPlayerbot.LevelBrackets.Alliance.Range6.Upper = 54
-AiPlayerbot.LevelBrackets.Alliance.Range6.Pct   = 6
-
+AiPlayerbot.LevelBrackets.Alliance.Range6.Pct   = 13
 AiPlayerbot.LevelBrackets.Alliance.Range7.Lower = 55
 AiPlayerbot.LevelBrackets.Alliance.Range7.Upper = 59
-AiPlayerbot.LevelBrackets.Alliance.Range7.Pct   = 13
-
+AiPlayerbot.LevelBrackets.Alliance.Range7.Pct   = 12
 AiPlayerbot.LevelBrackets.Alliance.Range8.Lower = 60
 AiPlayerbot.LevelBrackets.Alliance.Range8.Upper = 60
-AiPlayerbot.LevelBrackets.Alliance.Range8.Pct   = 60
-
+AiPlayerbot.LevelBrackets.Alliance.Range8.Pct   = 20
 ##############################################
 # Horde Level Brackets Configuration
 ##############################################
@@ -1204,36 +1202,28 @@ AiPlayerbot.LevelBrackets.Alliance.Range8.Pct   = 60
 #
 AiPlayerbot.LevelBrackets.Horde.Range1.Lower = 1
 AiPlayerbot.LevelBrackets.Horde.Range1.Upper = 9
-AiPlayerbot.LevelBrackets.Horde.Range1.Pct   = 2
-
+AiPlayerbot.LevelBrackets.Horde.Range1.Pct   = 4
 AiPlayerbot.LevelBrackets.Horde.Range2.Lower = 10
 AiPlayerbot.LevelBrackets.Horde.Range2.Upper = 19
-AiPlayerbot.LevelBrackets.Horde.Range2.Pct   = 3
-
+AiPlayerbot.LevelBrackets.Horde.Range2.Pct   = 10
 AiPlayerbot.LevelBrackets.Horde.Range3.Lower = 20
 AiPlayerbot.LevelBrackets.Horde.Range3.Upper = 29
-AiPlayerbot.LevelBrackets.Horde.Range3.Pct   = 4
-
+AiPlayerbot.LevelBrackets.Horde.Range3.Pct   = 13
 AiPlayerbot.LevelBrackets.Horde.Range4.Lower = 30
 AiPlayerbot.LevelBrackets.Horde.Range4.Upper = 39
-AiPlayerbot.LevelBrackets.Horde.Range4.Pct   = 5
-
+AiPlayerbot.LevelBrackets.Horde.Range4.Pct   = 14
 AiPlayerbot.LevelBrackets.Horde.Range5.Lower = 40
 AiPlayerbot.LevelBrackets.Horde.Range5.Upper = 49
-AiPlayerbot.LevelBrackets.Horde.Range5.Pct   = 7
-
+AiPlayerbot.LevelBrackets.Horde.Range5.Pct   = 14
 AiPlayerbot.LevelBrackets.Horde.Range6.Lower = 50
 AiPlayerbot.LevelBrackets.Horde.Range6.Upper = 54
-AiPlayerbot.LevelBrackets.Horde.Range6.Pct   = 6
-
+AiPlayerbot.LevelBrackets.Horde.Range6.Pct   = 13
 AiPlayerbot.LevelBrackets.Horde.Range7.Lower = 55
 AiPlayerbot.LevelBrackets.Horde.Range7.Upper = 59
-AiPlayerbot.LevelBrackets.Horde.Range7.Pct   = 13
-
+AiPlayerbot.LevelBrackets.Horde.Range7.Pct   = 12
 AiPlayerbot.LevelBrackets.Horde.Range8.Lower = 60
 AiPlayerbot.LevelBrackets.Horde.Range8.Upper = 60
-AiPlayerbot.LevelBrackets.Horde.Range8.Pct   = 60
-
+AiPlayerbot.LevelBrackets.Horde.Range8.Pct   = 20
 ##############################################
 # Level Reset
 ##############################################
@@ -2504,8 +2494,7 @@ AiPlayerbot.CoaLfgDpsOffers = 3
 #                     whispers.
 #        Default:     2
 
-AiPlayerbot.CoaLfgLevelRange = 2
-
+AiPlayerbot.CoaLfgLevelRange = 3
 #    AiPlayerbot.CoaLfgOfferMinutes
 #        Description: How long an offer holds: meanwhile the bot is offered to nobody else and
 #                     accepts that player's invitation. Afterwards it goes back to its own life.
@@ -4325,11 +4314,13 @@ AiPlayerbot.RandomBotAutoJoinEYBrackets = 0,1,2,3,4,5
 AiPlayerbot.RandomBotAutoJoinICBrackets = 1
 
 # Battlegrounds battles count (per bracket):
-# CoA：数字是「每个档位维持几场」，不是总人数。WSG 3 场 = 每方 30 只，AB 3 场 = 每方 45 只，
-# AV 1 场 = 每方 40 只（共 80 只）；机器人凑够前，战场不会自己开。
-AiPlayerbot.RandomBotAutoJoinBGWSCount = 3
-AiPlayerbot.RandomBotAutoJoinBGABCount = 3
-AiPlayerbot.RandomBotAutoJoinBGAVCount = 1
+# CoA：数字是「每个档位维持几场」，不是总人数。机器人以 1-59 级为主，玩家分散在 10-19、20-29 …
+# 55-59 五个档位，每档每阵营只有十几只，所以 1 场 WSG（每方 10）/ 1 场 AB（每方 15）才填得满；
+# 开 3 场会让机器人全卡在队列里，反而没人陪你打副本。办活动当天再临时调高。
+# AV 一场要每方 40 只，只有 60 级档可能凑齐，默认留给活动。
+AiPlayerbot.RandomBotAutoJoinBGWSCount = 1
+AiPlayerbot.RandomBotAutoJoinBGABCount = 1
+AiPlayerbot.RandomBotAutoJoinBGAVCount = 0
 AiPlayerbot.RandomBotAutoJoinBGEYCount = 0
 AiPlayerbot.RandomBotAutoJoinBGICCount = 0
 
