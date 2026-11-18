@@ -191,7 +191,7 @@ namespace
                 ? Acore::StringFormat("|cffff8000[全服首杀]|r {} 是{}第一位达到 {} 级的玩家！", who, sideZh, p.entry)
                 : Acore::StringFormat("|cffff8000[全服首杀]|r {} 带领{}首次击杀 {}！", who, sideZh, p.what);
             ChatHandler(nullptr).SendWorldText(text);
-            LOG_INFO("module", "CoA World: server first ({}): {}", side, text);
+            LOG_INFO("playerbots.coa", "CoA World: server first ({}): {}", side, text);
             Recent(uint8(p.kind), p.entry, uint8(p.team), p.name, p.guild, time(nullptr));
             CoaWorldState::First(p.kind == FIRST_LEVEL ? Acore::StringFormat("{} 级（{}）", p.entry, sideZh)
                                                       : Acore::StringFormat("{}（{}）", p.what, sideZh),
