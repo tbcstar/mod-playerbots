@@ -2797,10 +2797,11 @@ AiPlayerbot.CoaWorld.ResourceRush.BotsReturnHome = 1
 #                     GMs: .coaworld dungeon status|start <alliance|horde> [name]|stop.
 #        Default:     1 - on (3.0: the living world is the base)
 #                     0 - off
-#        本服：0 = 关闭。机器人不再自己组队开副本；只有真人排进副本查找器时，
-#        它们才按真人选中的副本填队（AiPlayerbot.RandomBotJoinLfg = 1）。
+#        本服：1 = 开启（纯模拟，不加载实例、几乎不耗 CPU）。无人排队时机器人自己跑本
+#        攒经验与掉落；一旦有真人排进副本查找器，它们改为按真人选中的副本填队
+#        （AiPlayerbot.RandomBotJoinLfg = 1）。
 
-AiPlayerbot.CoaWorld.DungeonSim.Enable = 0
+AiPlayerbot.CoaWorld.DungeonSim.Enable = 1
 
 #    AiPlayerbot.CoaWorld.DungeonSim.GroupsPerFaction
 #        Description: Simulated runs going on at once for each side (at most 10).
