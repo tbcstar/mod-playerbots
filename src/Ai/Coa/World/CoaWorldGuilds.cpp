@@ -722,9 +722,8 @@ namespace
 
             auto [potion, bandage] = GiftFor(player->GetLevel());
             CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
-            MailDraft draft(Tr("From the guild", "De la part de la guilde"),
-                            Acore::StringFormat(Tr("Had some spare, thought you could use them. - {}",
-                                                   "J'en avais en trop, je me suis dit que \u00e7a te servirait. - {}"), bot->GetName()));
+            MailDraft draft(Tr("公会寄来", "De la part de la guilde"),
+                            Acore::StringFormat(Tr("手头多了一些，想着你或许用得上。 - {}", "J'en avais en trop, je me suis dit que \u00e7a te servirait. - {}"), bot->GetName()));
             if (Item* item = Item::CreateItem(potion, 5, player))
             {
                 item->SaveToDB(trans);
@@ -738,7 +737,7 @@ namespace
             draft.SendMailTo(trans, MailReceiver(player), MailSender(bot), MAIL_CHECK_MASK_NONE, 0);
             CharacterDatabase.CommitTransaction(trans);
             if (!BotLine(bot, "guild_gift", { { "player", player->GetName() } }))
-                Say(bot, Acore::StringFormat(Tr("{}, sent you a few potions", "{}, je t'ai envoy\u00e9 quelques potions"), player->GetName()), now + urand(20, 40));
+                Say(bot, Acore::StringFormat(Tr("{}，给你寄了几瓶药水", "{}, je t'ai envoy\u00e9 quelques potions"), player->GetName()), now + urand(20, 40));
         }
 
         // An item of the bot's bags by mail to the player, free or cash on delivery.
@@ -750,7 +749,7 @@ namespace
             item->SetOwnerGUID(to->GetGUID());
             item->SetState(ITEM_CHANGED);  // as MailHandler: saved standalone, in no player's update queue
             item->SaveToDB(trans);
-            MailDraft draft(item->GetTemplate()->Name1, Tr("From the guild.", "De la part de la guilde."));
+            MailDraft draft(item->GetTemplate()->Name1, Tr("来自公会。", "De la part de la guilde."));
             draft.AddItem(item);
             if (cod)
                 draft.AddCOD(uint32(cod));
@@ -1015,7 +1014,7 @@ namespace
                 if (got.empty())
                     continue;
                 uint32 const sent = MailStacks(bot, player, got, whole, 0,
-                                               Tr("From the guild bank.", "De la banque de guilde."));
+                                               Tr("来自公会银行。", "De la banque de guilde."));
                 if (!sent)
                     continue;
                 // The stacks count as the player's own withdrawals of the day (the bot's were spent by the core too).
@@ -1058,7 +1057,7 @@ namespace
                     stacks.push_back(item->GetCount());
                 uint32 const sent = MailStacks(bot, player, held[holder.index],
                                                CoaWorldGuildRules::TakeStacks(stacks, need ? holder.count : 0, MAX_MAIL_ITEMS),
-                                               0, Tr("From the guild.", "De la part de la guilde."));
+                                               0, Tr("来自公会。", "De la part de la guilde."));
                 if (!sent)
                     continue;
                 LogEvent("guild", bot->GetName(), Acore::StringFormat("sent {} {} to {}", sent, proto->Name1, player->GetName()));
@@ -1093,8 +1092,7 @@ namespace
                         CoaWorldGuildRules::PlanGuildCraft(need, made, proto->GetMaxStackSize(), cost);
                     cost *= plan.casts;
                     if (!MailNew(bot, player, entry, plan.sent, cost, 0,
-                                 Tr("Made it for you, you only pay the materials.",
-                                    "Fait pour toi, tu ne paies que les composants.")))
+                                 Tr("这是为你做的，你只需付材料钱。", "Fait pour toi, tu ne paies que les composants.")))
                         continue;
                     LogEvent("guild", bot->GetName(), Acore::StringFormat("crafts {} {} for {}", plan.sent, proto->Name1,
                                                                            player->GetName()));
@@ -1152,57 +1150,49 @@ namespace
                 if (!std::strcmp(first.state, "bank"))
                 {
                     if (fewer)
-                        Say(bot, Acore::StringFormat(Tr("{} only {} of the {} in the guild bank, sending them",
-                                                        "{} seulement {} sur les {} à la banque de guilde, je te les envoie"),
+                        Say(bot, Acore::StringFormat(Tr("{}：公会银行里只剩 {} 个{}，先寄给你", "{} seulement {} sur les {} à la banque de guilde, je te les envoie"),
                                                      name, got, qty), at);
                     else if (got == 1)
-                        Say(bot, Acore::StringFormat(Tr("{} took it out of the guild bank for you, check your mail",
-                                                        "{} je te l'ai sorti de la banque de guilde, regarde ta boîte"), name), at);
+                        Say(bot, Acore::StringFormat(Tr("{}：已经从公会银行替你把东西取出来了，去查收邮件", "{} je te l'ai sorti de la banque de guilde, regarde ta boîte"), name), at);
                     else
-                        Say(bot, Acore::StringFormat(Tr("{} took {} out of the guild bank for you, check your mail",
-                                                        "{} je t'en ai sorti {} de la banque de guilde, regarde ta boîte"), name, got), at);
+                        Say(bot, Acore::StringFormat(Tr("{}：已经从公会银行替你取出 {} 个，去查收邮件", "{} je t'en ai sorti {} de la banque de guilde, regarde ta boîte"), name, got), at);
                 }
                 else if (!std::strcmp(first.state, "shared"))
                 {
                     if (fewer)
-                        Say(bot, Acore::StringFormat(Tr("{} I only have {} of the {}, sending them", "{} j'en ai seulement {} sur les {}, je te les envoie"),
+                        Say(bot, Acore::StringFormat(Tr("{}：{} 我这儿只有 {} 个，先寄给你", "{} j'en ai seulement {} sur les {}, je te les envoie"),
                                                      name, got, qty), at);
                     else if (got == 1)
-                        Answer(bot, "guild_order_share", slots, Acore::StringFormat(Tr("{} I have one, sending it", "{} j'en ai un, je te l'envoie"), name), at);
+                        Answer(bot, "guild_order_share", slots, Acore::StringFormat(Tr("{}：我这儿有一个，这就寄给你", "{} j'en ai un, je te l'envoie"), name), at);
                     else
-                        Say(bot, Acore::StringFormat(Tr("{} I have {}, sending them", "{} j'en ai {}, je te les envoie"), name, got), at);
+                        Say(bot, Acore::StringFormat(Tr("{}：我这儿有 {} 个，这就寄给你", "{} j'en ai {}, je te les envoie"), name, got), at);
                 }
                 else if (!std::strcmp(first.state, "crafted"))
                 {
                     if (fewer)
-                        Say(bot, Acore::StringFormat(Tr("{} I can make {} of the {}, mats only ({}), will mail them",
-                                                        "{} je peux t'en faire {} sur les {}, juste les compos ({}), je te les envoie"),
+                        Say(bot, Acore::StringFormat(Tr("{}：{} 我能做 {} 个，只收材料费（{}），做好寄给你", "{} je peux t'en faire {} sur les {}, juste les compos ({}), je te les envoie"),
                                                      name, got, qty, price), at);
                     else if (over)
-                        Say(bot, Acore::StringFormat(Tr("{} the recipe makes {} for the {} you asked, mats only ({}), will mail them",
-                                                        "{} la recette en fait {} pour les {} demandés, juste les compos ({}), je te les envoie"),
+                        Say(bot, Acore::StringFormat(Tr("{}：按配方能做 {} 个，你要的{}只收材料费（{}），做好寄给你", "{} la recette en fait {} pour les {} demandés, juste les compos ({}), je te les envoie"),
                                                      name, got, qty, price), at);
                     else if (got == 1)
                         Answer(bot, "guild_order_craft", slots,
-                               Acore::StringFormat(Tr("{} I can make that, mats only ({}), will mail it", "{} je peux te le faire, juste les compos ({}), je te l'envoie"),
+                               Acore::StringFormat(Tr("{}：这个我能做，只收材料费（{}），做好寄给你", "{} je peux te le faire, juste les compos ({}), je te l'envoie"),
                                                    name, price), at);
                     else
-                        Say(bot, Acore::StringFormat(Tr("{} I can make {}, mats only ({}), will mail them",
-                                                        "{} je peux t'en faire {}, juste les compos ({}), je te les envoie"), name, got, price), at);
+                        Say(bot, Acore::StringFormat(Tr("{}：能给你做 {} 个，只收材料费（{}），做好寄给你", "{} je peux t'en faire {}, juste les compos ({}), je te les envoie"), name, got, price), at);
                 }
                 else if (fewer)
-                    Say(bot, Acore::StringFormat(Tr("{} only found {} of the {} on the AH, {} at cost, check your mail",
-                                                    "{} j'en ai trouvé seulement {} sur les {} à l'HV, {} au prix coûtant, regarde ta boîte"),
+                    Say(bot, Acore::StringFormat(Tr("{}：拍卖行只找到 {} 个{}，成本价 {}，去查收邮件", "{} j'en ai trouvé seulement {} sur les {} à l'HV, {} au prix coûtant, regarde ta boîte"),
                                                  name, got, qty, price), at);
                 else if (over)
-                    Say(bot, Acore::StringFormat(Tr("{} got {} on the AH for the {} you asked (sold in stacks), {} at cost, check your mail",
-                                                    "{} j'en ai pris {} à l'HV pour les {} demandés (vendus par piles), {} au prix coûtant, regarde ta boîte"),
+                    Say(bot, Acore::StringFormat(Tr("{}：你要的{}在拍卖行按堆买到 {} 个，成本价 {}，去查收邮件", "{} j'en ai pris {} à l'HV pour les {} demandés (vendus par piles), {} au prix coûtant, regarde ta boîte"),
                                                  name, got, qty, price), at);
                 else if (got == 1)
                     Answer(bot, "guild_order_ah", slots,
-                           Acore::StringFormat(Tr("{} saw one on the AH for {}, I'll grab it for you", "{} j'en ai vu un à l'HV pour {}, je te le prends"), name, price), at);
+                           Acore::StringFormat(Tr("{}：拍卖行看见一个卖 {}，我帮你拍下", "{} j'en ai vu un à l'HV pour {}, je te le prends"), name, price), at);
                 else
-                    Say(bot, Acore::StringFormat(Tr("{} found {} on the AH for {}, I'll grab them for you", "{} j'en ai trouvé {} à l'HV pour {}, je te les prends"),
+                    Say(bot, Acore::StringFormat(Tr("{}：拍卖行找到 {} 个，共 {}，我帮你拍下", "{} j'en ai trouvé {} à l'HV pour {}, je te les prends"),
                                                  name, got, price), at);
                 return;
             }
@@ -1225,22 +1215,22 @@ namespace
             {
                 std::string piece;
                 if (!std::strcmp(state, "bank"))
-                    piece = Acore::StringFormat(Tr("{} from the guild bank", "{} de la banque de guilde"), sum.first);
+                    piece = Acore::StringFormat(Tr("{} 个（来自公会银行）", "{} de la banque de guilde"), sum.first);
                 else if (!std::strcmp(state, "shared"))
-                    piece = Acore::StringFormat(Tr("{} from our bags", "{} de nos sacs"), sum.first);
+                    piece = Acore::StringFormat(Tr("{} 个（来自我们背的）", "{} de nos sacs"), sum.first);
                 else if (!std::strcmp(state, "crafted"))
-                    piece = Acore::StringFormat(Tr("{} made ({} COD)", "{} fabriqués ({} contre remboursement)"), sum.first,
+                    piece = Acore::StringFormat(Tr("{} 个（自制，{} 货到付款）", "{} fabriqués ({} contre remboursement)"), sum.first,
                                                 Money(sum.second));
                 else
-                    piece = Acore::StringFormat(Tr("{} bought at the AH ({} COD)", "{} achetés à l'HV ({} contre remboursement)"),
+                    piece = Acore::StringFormat(Tr("{} 个（拍卖行购入，{} 货到付款）", "{} achetés à l'HV ({} contre remboursement)"),
                                                 sum.first, Money(sum.second));
                 text += (text.empty() ? "" : ", ") + piece;
             }
-            std::string line = Acore::StringFormat(Tr("{} {}, check your mail", "{} {}, regarde ta boîte"), player->GetName(), text);
+            std::string line = Acore::StringFormat(Tr("{}：{}，去查收邮件", "{} {}, regarde ta boîte"), player->GetName(), text);
             if (fewer)
-                line += Acore::StringFormat(Tr(" ({} of the {})", " ({} sur les {})"), got, qty);
+                line += Acore::StringFormat(Tr("（只发出 {} 个，你要了 {} 个）", " ({} sur les {})"), got, qty);
             else if (over)
-                line += Acore::StringFormat(Tr(" ({} for the {} asked)", " ({} pour les {} demandés)"), got, qty);
+                line += Acore::StringFormat(Tr("（发出 {} 个，你要了 {} 个）", " ({} pour les {} demandés)"), got, qty);
             Say(parts.back().bot, line, now + urand(5, 15));
         }
 
@@ -1306,11 +1296,11 @@ namespace
             // The reason goes to the addon (GO / GLIST) and to the guild line when it is said.
             if (roll_chance_i(50))
             {
-                std::string const ah = !std::strcmp(why, "ahprice") ? Tr("too dear at the AH", "trop cher à l'HV")
-                                       : !std::strcmp(why, "ahgold") ? Tr("nobody has the gold for the AH", "personne n'a l'or pour l'HV")
-                                                                     : Tr("none at the AH", "rien à l'HV");
+                std::string const ah = !std::strcmp(why, "ahprice") ? Tr("拍卖行太贵", "trop cher à l'HV")
+                                       : !std::strcmp(why, "ahgold") ? Tr("拍卖行上没人出得起这个价", "personne n'a l'or pour l'HV")
+                                                                     : Tr("拍卖行没有货", "rien à l'HV");
                 Say(mates.front(),
-                    Acore::StringFormat(Tr("sorry {}, no stock, no crafter online, {}", "désolé {}, pas de stock, pas d'artisan en ligne, {}"),
+                    Acore::StringFormat(Tr("抱歉 {}，没有库存，也没有工匠在线，{}", "désolé {}, pas de stock, pas d'artisan en ligne, {}"),
                                         player->GetName(), ah),
                     now + urand(8, 20));
             }
@@ -1372,8 +1362,7 @@ namespace
             // As buyouts by the bot (AuctionHouseHandler), but the items go on to the player instead of the won mails.
             CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
             buyer->ModifyMoney(-int32(total));
-            MailDraft draft(proto->Name1, Tr("Got it at the auction house, you pay what I paid.",
-                                             "Trouvé à l'hôtel des ventes, tu paies ce que j'ai payé."));
+            MailDraft draft(proto->Name1, Tr("在拍卖行拿到的，你按我付的价给我就行。", "Trouvé à l'hôtel des ventes, tu paies ce que j'ai payé."));
             for (std::size_t n = 0; n < picks.size(); ++n)
             {
                 AuctionEntry* auction = entries[picks[n]];
@@ -1431,7 +1420,7 @@ namespace
             player->UpdatePlayerSetting(GEAR_SETTING, GEAR_SETTING_LAST_DAY, today);  // the period's gift, whatever the answer
             std::string const link = Link(proto, player->GetLevel());
             if (!BotLine(bot, "guild_gift_offer", { { "player", player->GetName() }, { "item", link } }))
-                bot->Whisper(Acore::StringFormat(Tr("found {} for you, want it? (yes/no)", "j'ai trouv\u00e9 {} pour toi, tu le veux ? (oui/non)"), link), LANG_UNIVERSAL, player);
+                bot->Whisper(Acore::StringFormat(Tr("帮你找到 {}，要吗？（回复 是 / 否）", "j'ai trouv\u00e9 {} pour toi, tu le veux ? (oui/non)"), link), LANG_UNIVERSAL, player);
             if (settings.addon)
                 CoaWorldAddonSendLines(player, { OfferLine(offer) });
         }
@@ -1459,16 +1448,16 @@ namespace
             {
                 LogRow(player, LOG_GIFT_REFUSED, offer.item, 1, "refused", offer.botName, now, 0, "");
                 if (bot)
-                    WhisperLater(bot, player, Tr("no worries", "pas de souci"));
+                    WhisperLater(bot, player, Tr("没关系", "pas de souci"));
                 return true;
             }
             if (bot && proto &&
                 MailNew(bot, player, offer.item, 1, 0, 0,
-                        Acore::StringFormat(Tr("Here it is. - {}", "Le voil\u00e0. - {}"), offer.botName), offer.random))
+                        Acore::StringFormat(Tr("拿来了，收好。 - {}", "Le voil\u00e0. - {}"), offer.botName), offer.random))
             {
                 LogEvent("guild", offer.botName, Acore::StringFormat("gave {} to {}", proto->Name1, player->GetName()));
                 LogRow(player, LOG_GIFT, offer.item, 1, "gift", offer.botName, now, 0, "");
-                WhisperLater(bot, player, Tr("sent, check your mail", "envoy\u00e9, regarde ta bo\u00eete aux lettres"));
+                WhisperLater(bot, player, Tr("已寄出，去查收邮件", "envoy\u00e9, regarde ta bo\u00eete aux lettres"));
             }
             return true;
         }
@@ -1477,8 +1466,10 @@ namespace
         bool Whispered(Player* player, Player* bot, std::string msg)
         {
             std::transform(msg.begin(), msg.end(), msg.begin(), [](unsigned char c) { return char(std::tolower(c)); });
-            bool const yes = msg == "yes" || msg == "y" || msg == "oui" || msg == "ok" || msg == "sure";
-            bool const no = msg == "no" || msg == "n" || msg == "non" || msg == "nah";
+            bool const yes = msg == "yes" || msg == "y" || msg == "oui" || msg == "ok" || msg == "sure" ||
+                             msg == "是" || msg == "要" || msg == "好";
+            bool const no = msg == "no" || msg == "n" || msg == "non" || msg == "nah" ||
+                            msg == "否" || msg == "不要" || msg == "不";
             if (!yes && !no)
                 return false;
             for (GiftOffer const& o : g_offers)
@@ -1574,11 +1565,11 @@ namespace
                 return;
             }
             if (!MailNew(bot, player, bestEntry, 1, 0, 0,
-                         Acore::StringFormat(Tr("Found this, it should suit you better. - {}", "Trouv\u00e9 \u00e7a, \u00e7a devrait mieux t'aller. - {}"), bot->GetName()), bestRandom))
+                         Acore::StringFormat(Tr("找到这个，应该更合你用。 - {}", "Trouv\u00e9 \u00e7a, \u00e7a devrait mieux t'aller. - {}"), bot->GetName()), bestRandom))
                 return;
             player->UpdatePlayerSetting(GEAR_SETTING, GEAR_SETTING_LAST_DAY, today);
             Answer(bot, "guild_gear_gift", { { "player", player->GetName() }, { "item", Link(proto, player->GetLevel()) } },
-                   Acore::StringFormat(Tr("{}, sent you something you can use, check your mail", "{}, je t'ai envoy\u00e9 un truc qui devrait te servir, regarde ton courrier"), player->GetName()),
+                   Acore::StringFormat(Tr("{}，给你寄了点用得上的东西，去查收邮件", "{}, je t'ai envoy\u00e9 un truc qui devrait te servir, regarde ton courrier"), player->GetName()),
                    now + urand(20, 40));
             LogEvent("guild", bot->GetName(), Acore::StringFormat("gave {} to {}", proto->Name1, player->GetName()));
             LogRow(player, LOG_GIFT, bestEntry, 1, "gift", bot->GetName(), now, 0, "");

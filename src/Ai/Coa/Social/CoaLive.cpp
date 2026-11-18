@@ -3524,7 +3524,7 @@ public:
         std::string const name = args ? Acore::String::Trim(std::string(args)) : "";
         if (name.empty())
         {
-            handler->SendSysMessage("Usage: .bot soul <name> | .bot soul set <name> <lazy|quester|wanderer|trader|pvp>");
+            handler->SendSysMessage("用法：.bot soul <名字> | .bot soul set <名字> <lazy|quester|wanderer|trader|pvp>");
             return true;
         }
         Player* bot = Bot(handler, name);
@@ -3545,7 +3545,7 @@ public:
         size_t const space = text.find_last_of(' ');
         if (space == std::string::npos)
         {
-            handler->SendSysMessage("Usage: .bot soul set <name> <lazy|quester|wanderer|trader|pvp>");
+            handler->SendSysMessage("用法：.bot soul set <名字> <lazy|quester|wanderer|trader|pvp>");
             return true;
         }
         std::string const name = Unquoted(text.substr(0, space));
@@ -3563,7 +3563,7 @@ public:
         if (!bot)
             return true;
         CoaSoul::SetArchetype(bot, archetype);
-        handler->PSendSysMessage("{} is now {}.", bot->GetName(), kind);
+        handler->PSendSysMessage("{} 现在已切换为 {}。", bot->GetName(), kind);
         return true;
     }
 };
