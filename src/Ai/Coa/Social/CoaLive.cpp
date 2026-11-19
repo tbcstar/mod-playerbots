@@ -1290,7 +1290,9 @@ void PlayThread(std::vector<Player*> const& bots, uint8 channel, std::string con
     for (ThreadStep const& step : thread->steps)
     {
         Player* speaker = cast[std::min<size_t>(step.speaker, cast.size()) - 1];
-        Player* other = speaker == cast[0] ? cast[1] : cast[0];  // %player: the one answered
+        // A single-speaker thread has nobody to answer, so %player stays unset and the
+        // lines that need it are dropped instead of reading past the cast.
+        Player* other = cast.size() < 2 ? nullptr : (speaker == cast[0] ? cast[1] : cast[0]);
         std::string text;
         if (!Humanize(step.text, Values(speaker, other, nullptr, locale), current->SlangOf(locale),
                       sPlayerbotAIConfig.coaLiveAbbrevChance, sPlayerbotAIConfig.coaLiveTypoChance,
