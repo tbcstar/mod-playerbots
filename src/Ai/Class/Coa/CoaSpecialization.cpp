@@ -2017,6 +2017,27 @@ std::string OfferText(Player* bot, CoaRole role)
     return lines[urand(0, lines.size() - 1)];
 }
 
+std::string AnnounceChannel(std::string const& name)
+{
+    if (name == "zone")
+        return "区域";
+    if (name == "newcomers")
+        return "新手";
+    if (name == "world")
+        return "世界";
+    if (name == "general")
+        return "综合";
+    if (name == "trade")
+        return "交易";
+    if (name == "lookingforgroup")
+        return "寻求组队";
+
+    std::string shown = name;
+    if (!shown.empty())
+        shown[0] = char(std::toupper(static_cast<unsigned char>(shown[0])));
+    return shown;
+}
+
 std::string AnnounceText(CoaLfgSettings const& settings)
 {
     if (!settings.announce.empty())
@@ -2025,17 +2046,15 @@ std::string AnnounceText(CoaLfgSettings const& settings)
     std::string where;
     for (std::size_t i = 0; i < settings.channels.size() && i < 2; ++i)
     {
-        std::string name = settings.channels[i];
-        if (name == "lookingforgroup")
-            name = "LookingForGroup";
-        else if (name == "zone")
-            name = "Zone";
-        else if (!name.empty())
-            name[0] = char(std::toupper(static_cast<unsigned char>(name[0])));
-        where += (where.empty() ? "" : " or ") + name;
+        std::string name = AnnounceChannel(settings.channels[i]);
+        if (name.empty())
+            continue;
+        where += (where.empty() ? "" : "或") + name;
     }
-    return "|cff66ccff[SquidBots]|r 缺治疗、坦克还是输出？在 " + where +
-           " 频道里说 |cffffff00lfg bot heal|r、|cffffff00lfg bot tank|r、|cffffff00lfg bot dps|r，"
+    if (where.empty())
+        where = "区域";
+    return "|cff66ccff[SquidBots]|r 缺治疗、坦克还是输出？在" + where +
+           "频道里说 |cffffff00lfg bot heal|r、|cffffff00lfg bot tank|r、|cffffff00lfg bot dps|r，"
            "也可以直接点职业：|cffffff00lfg bot tinker heal|r，然后邀请私聊你的机器人。";
 }
 }  // namespace
