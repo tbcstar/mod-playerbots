@@ -27,4 +27,14 @@ public:
     bool IsActive() override;
 };
 
+// A real player of this bot's team waits for a dungeon with no tank (or no healer) queued: a bot of that role joins
+// the queue on the next check instead of waiting for the "random" trigger, which left the count to chance.
+class LfgMissingRoleTrigger : public Trigger
+{
+public:
+    LfgMissingRoleTrigger(PlayerbotAI* botAI) : Trigger(botAI, "lfg missing role", 5000) {}
+
+    bool IsActive() override;
+};
+
 #endif

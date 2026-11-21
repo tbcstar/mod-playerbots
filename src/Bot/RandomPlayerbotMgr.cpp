@@ -1782,6 +1782,8 @@ void RandomPlayerbotMgr::CheckLfgQueue()
         }
     }
 
+    bool needTank[2] = {false, false};
+    bool needHeal[2] = {false, false};
     if (sPlayerbotAIConfig.coaLfgMissingRoles &&
         (partiesWithoutTank[TEAM_ALLIANCE] + partiesWithoutTank[TEAM_HORDE] + partiesWithoutHeal[TEAM_ALLIANCE] +
          partiesWithoutHeal[TEAM_HORDE]) > 0)
@@ -1803,12 +1805,20 @@ void RandomPlayerbotMgr::CheckLfgQueue()
         }
 
         for (uint8 team : {TEAM_ALLIANCE, TEAM_HORDE})
+        {
             needTankOrHeal[team] =
                 partiesWithoutTank[team] > queuedTanks[team] || partiesWithoutHeal[team] > queuedHeals[team];
+            needTank[team] = partiesWithoutTank[team] > queuedTanks[team];
+            needHeal[team] = partiesWithoutHeal[team] > queuedHeals[team];
+        }
     }
 
     LfgNeedTankOrHeal[TEAM_ALLIANCE] = needTankOrHeal[TEAM_ALLIANCE];
     LfgNeedTankOrHeal[TEAM_HORDE] = needTankOrHeal[TEAM_HORDE];
+    LfgNeedTank[TEAM_ALLIANCE] = needTank[TEAM_ALLIANCE];
+    LfgNeedTank[TEAM_HORDE] = needTank[TEAM_HORDE];
+    LfgNeedHeal[TEAM_ALLIANCE] = needHeal[TEAM_ALLIANCE];
+    LfgNeedHeal[TEAM_HORDE] = needHeal[TEAM_HORDE];
 
     {
         std::lock_guard<std::mutex> lock(lfgPlayerLevelsLock);
