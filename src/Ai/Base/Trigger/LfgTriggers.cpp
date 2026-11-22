@@ -25,6 +25,10 @@ bool LfgMissingRoleTrigger::IsActive()
         return false;
 
     RandomPlayerbotMgr& mgr = RandomPlayerbotMgr::instance();
+    // A player waited past the urgent fill: every role, damage dealers included, joins on its own.
+    if (mgr.LfgUrgentFill[team])
+        return true;
+
     // A tank (by specialization, as the queue reports it) for a team whose players wait without one.
     if (mgr.LfgNeedTank[team] && PlayerbotAI::IsTank(bot, true))
         return true;

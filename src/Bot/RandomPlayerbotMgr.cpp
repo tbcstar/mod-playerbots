@@ -1718,6 +1718,8 @@ void RandomPlayerbotMgr::CheckLfgQueue()
     bool needTankOrHeal[2] = {false, false};
     uint32 partiesWithoutTank[2] = {0, 0};
     uint32 partiesWithoutHeal[2] = {0, 0};
+    // The longest a real player of the team has waited: past CoaLfgUrgentFillSeconds every role fills in.
+    time_t maxWaited[2] = {0, 0};
     std::unordered_set<ObjectGuid> countedParties;
 
     for (std::vector<Player*>::iterator i = players.begin(); i != players.end(); ++i)
@@ -1735,6 +1737,7 @@ void RandomPlayerbotMgr::CheckLfgQueue()
             auto const since = lfgQueuedSince.find(player->GetGUID());
             time_t const queuedAt = since != lfgQueuedSince.end() ? since->second : lfgNow;
             queuedSince[player->GetGUID()] = queuedAt;
+            maxWaited[player->GetTeamId()] = std::max(maxWaited[player->GetTeamId()], lfgNow - queuedAt);
             lfg::LfgDungeonSet const& dList = sLFGMgr->GetSelectedDungeons(player->GetGUID());
             for (lfg::LfgDungeonSet::const_iterator itr = dList.begin(); itr != dList.end(); ++itr)
             {
@@ -1819,6 +1822,10 @@ void RandomPlayerbotMgr::CheckLfgQueue()
     LfgNeedTank[TEAM_HORDE] = needTank[TEAM_HORDE];
     LfgNeedHeal[TEAM_ALLIANCE] = needHeal[TEAM_ALLIANCE];
     LfgNeedHeal[TEAM_HORDE] = needHeal[TEAM_HORDE];
+
+    time_t const urgentFillSeconds = time_t(sPlayerbotAIConfig.coaLfgUrgentFillSeconds);
+    for (uint8 team : {TEAM_ALLIANCE, TEAM_HORDE})
+        LfgUrgentFill[team] = urgentFillSeconds > 0 && maxWaited[team] >= urgentFillSeconds;
 
     {
         std::lock_guard<std::mutex> lock(lfgPlayerLevelsLock);

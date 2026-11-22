@@ -880,6 +880,8 @@ bool PlayerbotAIConfig::Initialize()
     coaSmartHeal = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaSmartHeal", true);
     coaSmartTank = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaSmartTank", true);
     coaLfgMissingRoles = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaLfgMissingRoles", true, false);
+    coaLfgUrgentFillSeconds =
+        sConfigMgr->GetOption<uint32>("AiPlayerbot.CoaLfgUrgentFillSeconds", 180, false);
     lfgKeepRandomBots = sConfigMgr->GetOption<bool>("AiPlayerbot.LfgKeepRandomBots", false, false);
     coaHoldBehindTank = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaHoldBehindTank", false, false);
     coaPlayersReplaceBots = std::min<uint32>(sConfigMgr->GetOption<uint32>("AiPlayerbot.CoaPlayersReplaceBots", 0, false), 1000);

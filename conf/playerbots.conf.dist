@@ -1893,6 +1893,14 @@ AiPlayerbot.CoaPlayersReplaceBotsMin = 0
 # Default: 1 (enabled)
 AiPlayerbot.CoaLfgMissingRoles = 1
 
+# Dungeon finder: a real player who has waited this many seconds in the queue stops being picky.
+# Every role joins on its own, damage dealers included, and the damage dealers no longer hold
+# back for a missing tank or healer, so the remaining seats fill instead of the player waiting.
+# 0 - off, only the tank and the healer are ever pulled in.
+# 本服：真人在随机本队列里等满这么多秒后，坦克、治疗、输出都确定性排队，输出也不再为坦/奶让位。
+# Default: 180
+AiPlayerbot.CoaLfgUrgentFillSeconds = 180
+
 # Random bots of a Dungeon Finder group stay in the group when the player leaves the dungeon
 # alive (teleport, hearthstone): they follow the player out like the alts, and the player can
 # queue the same group again in the Dungeon Finder for the next dungeon. A player who leaves the

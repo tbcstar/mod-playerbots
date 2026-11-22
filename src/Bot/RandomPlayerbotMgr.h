@@ -232,6 +232,8 @@ public:
     // The same, per role: a tank (or healer) bot of this team joins the queue on its own (CheckLfgQueue).
     std::array<std::atomic<bool>, 2> LfgNeedTank{};
     std::array<std::atomic<bool>, 2> LfgNeedHeal{};
+    // A real player of this team has waited AiPlayerbot.CoaLfgUrgentFillSeconds: every role fills in.
+    std::array<std::atomic<bool>, 2> LfgUrgentFill{};
     void CheckBgQueue();
     // How many healer and damage bots the rated solo queues real players wait in still need (CheckBgQueue).
     void CountRatedSoloNeeds();

@@ -433,6 +433,7 @@ public:
     bool coaSmartHeal;
     bool coaSmartTank;
     bool coaLfgMissingRoles;
+    uint32 coaLfgUrgentFillSeconds;
     bool lfgKeepRandomBots;
     bool coaHoldBehindTank;
     uint32 coaPlayersReplaceBots;

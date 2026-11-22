@@ -197,8 +197,10 @@ bool LfgJoinAction::JoinLFG()
     // While a queued player still lacks a tank or a healer, damage dealers mostly stay out so the
     // tanks and healers get the seats; a few still come to fill the damage slots. Not on a Wildcard
     // realm: there players waited for damage dealers with tanks and healers plentiful.
+    // AiPlayerbot.CoaLfgUrgentFillSeconds turns the hold back off: after that wait a damage dealer joins too.
     if (roleMask == PLAYER_ROLE_DAMAGE && !IsWildcardRealm() && RandomPlayerbotMgr::instance().IsRandomBot(bot) &&
-        RandomPlayerbotMgr::instance().LfgNeedTankOrHeal[bot->GetTeamId()] && urand(0, 99) >= 20)
+        RandomPlayerbotMgr::instance().LfgNeedTankOrHeal[bot->GetTeamId()] &&
+        !RandomPlayerbotMgr::instance().LfgUrgentFill[bot->GetTeamId()] && urand(0, 99) >= 20)
         return false;
 
     bool many = list.size() > 1;
