@@ -173,7 +173,7 @@ namespace CoaWorld
                 return;
 
             ChatHandler handler(player->GetSession());
-            handler.SendSysMessage("|cffff8000[Living World]|r " + text);
+            handler.SendSysMessage("|cffff8000[世界动态]|r " + text);
             if (onScreen)
                 handler.SendNotification(text);
         }

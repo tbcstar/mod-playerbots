@@ -168,7 +168,7 @@ void TellAll(char const* situation, char const* en, char const* fr, CityDef cons
         text = WorldLine(player, situation,
                          { { "side", side }, { "city", place }, { "king", king }, { "minutes", std::to_string(minutes) } }, text);
         ChatHandler handler(player->GetSession());
-        handler.SendSysMessage("|cffff8000[Living World]|r " + text);
+        handler.SendSysMessage("|cffff8000[世界动态]|r " + text);
         handler.SendNotification(text);
     }
 }
