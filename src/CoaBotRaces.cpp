@@ -14,16 +14,13 @@
 #include <array>
 #include <vector>
 
-// A core with added races may declare which of them have a male model only. The official core has no such helper:
-// the module's own list (CoaBotRaceRules.h) and the server's lines are then the only sources.
-// The header name alone is not enough: a core can ship AscensionIncarnation.h for its incarnations without the
-// male-only races, so only a core that defines COA_CORE_MALE_ONLY_RACES in that header turns this on.
-// COA_BOT_RACES_FORCE_FALLBACK builds the fallback on a core that has the helper, to test both paths.
-#if __has_include("AscensionIncarnation.h") && !defined(COA_BOT_RACES_FORCE_FALLBACK)
-#include "AscensionIncarnation.h"
-#endif
-
-#if defined(COA_CORE_MALE_ONLY_RACES) && !defined(COA_BOT_RACES_FORCE_FALLBACK)
+// A core with added races may declare which of them have a male model only. No core does today: the module's own
+// list (CoaBotRaceRules.h) and the server's lines are the only sources. A header's presence proves nothing (3.2: the
+// official core added an AscensionIncarnation.h of its own, without that function, and the build broke), so the
+// core path is taken only when the core defines COA_CORE_MALE_ONLY_RACES_HEADER, the header declaring
+// IsAscensionMaleOnlyRace(uint8). COA_BOT_RACES_FORCE_FALLBACK keeps the fallback even then.
+#if defined(COA_CORE_MALE_ONLY_RACES_HEADER) && !defined(COA_BOT_RACES_FORCE_FALLBACK)
+#include COA_CORE_MALE_ONLY_RACES_HEADER
 #define COA_BOT_RACES_CORE_MALE_ONLY 1
 #else
 #define COA_BOT_RACES_CORE_MALE_ONLY 0
