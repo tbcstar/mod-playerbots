@@ -346,7 +346,9 @@ AiPlayerbot.LootNeedRollLevel = 2
 # 启用机器人在物品上 roll 贪婪（全局开关）
 # 若禁用，机器人将对所有物品放弃而非贪婪
 # 默认值：0（禁用——机器人只需求或放弃）
-AiPlayerbot.LootGreedRollLevel = 0
+# 本服：1 = 开启。机器人只会需求「真升级」的装备，其余全部放弃时，掉落会整包
+#       落进真实玩家的背包；开启后不需求的装备/物品改为 roll 贪婪参与竞争。
+AiPlayerbot.LootGreedRollLevel = 1
 
 # 将比机器人高出至多这么多级的武器和护甲视为其可成长使用的升级：
 # 机器人会 roll 需求，包括与其队伍中的真实玩家竞争，并保留该物品直到能
