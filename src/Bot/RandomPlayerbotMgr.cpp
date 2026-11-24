@@ -1721,6 +1721,7 @@ void RandomPlayerbotMgr::CheckLfgQueue()
     bool needHeal[2] = {false, false};
     uint32 partiesWithoutTank[2] = {0, 0};
     uint32 partiesWithoutHeal[2] = {0, 0};
+    time_t maxWaited[2] = {0, 0};
     std::unordered_set<ObjectGuid> countedParties;
 
     for (std::vector<Player*>::iterator i = players.begin(); i != players.end(); ++i)
@@ -1755,6 +1756,7 @@ void RandomPlayerbotMgr::CheckLfgQueue()
                 }
                 time_t& waited = playerWaited[player->GetTeamId()][dungeon->id];
                 waited = std::max(waited, lfgNow - queuedAt);
+                maxWaited[player->GetTeamId()] = std::max(maxWaited[player->GetTeamId()], lfgNow - queuedAt);
             }
 
             if (!sPlayerbotAIConfig.coaLfgMissingRoles)
@@ -1821,6 +1823,8 @@ void RandomPlayerbotMgr::CheckLfgQueue()
     {
         LfgNeedTank[team] = needTank[team];
         LfgNeedHeal[team] = needHeal[team];
+        LfgUrgentFill[team] = sPlayerbotAIConfig.coaLfgUrgentFillSeconds > 0 &&
+            maxWaited[team] >= static_cast<time_t>(sPlayerbotAIConfig.coaLfgUrgentFillSeconds);
     }
 
     {

@@ -232,6 +232,9 @@ public:
     // 3.2.1: the same, role by role (CoaLfgRolePriority: a bot of the missing role queues first).
     std::array<std::atomic<bool>, 2> LfgNeedTank{};
     std::array<std::atomic<bool>, 2> LfgNeedHeal{};
+    // A real player of this team has waited AiPlayerbot.CoaLfgUrgentFillSeconds in the queue: from then on every
+    // role queues, so the damage dealers stop holding back and the dungeon fills instead of timing out.
+    std::array<std::atomic<bool>, 2> LfgUrgentFill{};
     void CheckBgQueue();
     // How many healer and damage bots the rated solo queues real players wait in still need (CheckBgQueue).
     void CountRatedSoloNeeds();
