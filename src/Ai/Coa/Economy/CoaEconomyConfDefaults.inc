@@ -8,7 +8,7 @@
 {"AiPlayerbot.CoaEconomy.AHBot.MaterialBuyer.PlayerMatchesHouse", R"coa(1)coa"},
 {"AiPlayerbot.CoaEconomy.AHBot.MaterialBuyer.PricePercent", R"coa(90)coa"},
 {"AiPlayerbot.CoaEconomy.AHBot.MaterialFloor.Enable", R"coa(1)coa"},
-{"AiPlayerbot.CoaEconomy.AHBot.MaterialFloor.Stacks", R"coa(2)coa"},
+{"AiPlayerbot.CoaEconomy.AHBot.MaterialFloor.Stacks", R"coa(3)coa"},
 {"AiPlayerbot.CoaEconomy.Artisans.Addon", R"coa(1)coa"},
 {"AiPlayerbot.CoaEconomy.Artisans.Enable", R"coa(1)coa"},
 {"AiPlayerbot.CoaEconomy.Artisans.LearnRareRecipes.Enable", R"coa(1)coa"},

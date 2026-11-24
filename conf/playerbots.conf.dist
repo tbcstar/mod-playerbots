@@ -5714,9 +5714,10 @@ AiPlayerbot.CoaEconomy.AHBot.EmptyOldAuctions = 0
 # already there. Inside its quota (AuctionHouseBot.*.MaxItems); a new realm's launch curve holds back what nobody can
 # reach yet. Read again by ".reload config" and ".ahbot reload".
 #    Enable  1 = on (default), 0 = off.
-#    Stacks  Auctions of each material the house makes sure of, 1 to 5 (default 2).
+#    Stacks  Auctions of each material the house makes sure of, 1 to 5 (default 3).
+#            本服取 3：每种常用材料保底 3 组，玩家 1-60 级练专业时随手就能买到。
 AiPlayerbot.CoaEconomy.AHBot.MaterialFloor.Enable = 1
-AiPlayerbot.CoaEconomy.AHBot.MaterialFloor.Stacks = 2
+AiPlayerbot.CoaEconomy.AHBot.MaterialFloor.Stacks = 3
 
 # Auction house bot, buyer of crafting materials (3.1.4): the house buyer (AuctionHouseBot.Buyer.Enabled) looks first at
 # the materials of the floor above that players and bots list, and pays up to PricePercent of the house's own value

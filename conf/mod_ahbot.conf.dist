@@ -72,6 +72,9 @@
 #        and an existing auction character is kept as it is. One character lists in
 #        the Alliance, Horde and Neutral auction houses.
 #    Default: true
+#        中文说明：本服保持 true。设成 false 时必须自己填 AuctionHouseBot.GUIDs，否则整个拍卖机器人
+#        模块会在启动时被禁用（日志：… so this module will be disabled）。
+#        AHBOT 账号在 acore_auth.account 里 locked = 1 是正常的：它是服务账号，永远不允许登录。
 #
 #    AuctionHouseBot.ItemsPerCycle
 #        How many items to post on the auction house every house update.
