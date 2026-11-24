@@ -1717,10 +1717,10 @@ void RandomPlayerbotMgr::CheckLfgQueue()
     std::unordered_map<ObjectGuid, time_t> queuedSince;
     time_t const lfgNow = time(nullptr);
     bool needTankOrHeal[2] = {false, false};
+    bool needTank[2] = {false, false};
+    bool needHeal[2] = {false, false};
     uint32 partiesWithoutTank[2] = {0, 0};
     uint32 partiesWithoutHeal[2] = {0, 0};
-    // The longest a real player of the team has waited: past CoaLfgUrgentFillSeconds every role fills in.
-    time_t maxWaited[2] = {0, 0};
     std::unordered_set<ObjectGuid> countedParties;
 
     for (std::vector<Player*>::iterator i = players.begin(); i != players.end(); ++i)
@@ -1738,7 +1738,6 @@ void RandomPlayerbotMgr::CheckLfgQueue()
             auto const since = lfgQueuedSince.find(player->GetGUID());
             time_t const queuedAt = since != lfgQueuedSince.end() ? since->second : lfgNow;
             queuedSince[player->GetGUID()] = queuedAt;
-            maxWaited[player->GetTeamId()] = std::max(maxWaited[player->GetTeamId()], lfgNow - queuedAt);
             lfg::LfgDungeonSet const& dList = sLFGMgr->GetSelectedDungeons(player->GetGUID());
             for (lfg::LfgDungeonSet::const_iterator itr = dList.begin(); itr != dList.end(); ++itr)
             {
@@ -1763,6 +1762,8 @@ void RandomPlayerbotMgr::CheckLfgQueue()
                 uint8 roles = sLFGMgr->GetRoles(player->GetGUID());
                 if (!(roles & lfg::PLAYER_ROLE_TANK) || !(roles & lfg::PLAYER_ROLE_HEALER))
                     needTankOrHeal[player->GetTeamId()] = true;
+                needTank[player->GetTeamId()] |= !(roles & lfg::PLAYER_ROLE_TANK);
+                needHeal[player->GetTeamId()] |= !(roles & lfg::PLAYER_ROLE_HEALER);
                 continue;
             }
 
@@ -1786,8 +1787,6 @@ void RandomPlayerbotMgr::CheckLfgQueue()
         }
     }
 
-    bool needTank[2] = {false, false};
-    bool needHeal[2] = {false, false};
     if (sPlayerbotAIConfig.coaLfgMissingRoles &&
         (partiesWithoutTank[TEAM_ALLIANCE] + partiesWithoutTank[TEAM_HORDE] + partiesWithoutHeal[TEAM_ALLIANCE] +
          partiesWithoutHeal[TEAM_HORDE]) > 0)
@@ -1810,23 +1809,19 @@ void RandomPlayerbotMgr::CheckLfgQueue()
 
         for (uint8 team : {TEAM_ALLIANCE, TEAM_HORDE})
         {
-            needTankOrHeal[team] =
-                partiesWithoutTank[team] > queuedTanks[team] || partiesWithoutHeal[team] > queuedHeals[team];
             needTank[team] = partiesWithoutTank[team] > queuedTanks[team];
             needHeal[team] = partiesWithoutHeal[team] > queuedHeals[team];
+            needTankOrHeal[team] = needTank[team] || needHeal[team];
         }
     }
 
     LfgNeedTankOrHeal[TEAM_ALLIANCE] = needTankOrHeal[TEAM_ALLIANCE];
     LfgNeedTankOrHeal[TEAM_HORDE] = needTankOrHeal[TEAM_HORDE];
-    LfgNeedTank[TEAM_ALLIANCE] = needTank[TEAM_ALLIANCE];
-    LfgNeedTank[TEAM_HORDE] = needTank[TEAM_HORDE];
-    LfgNeedHeal[TEAM_ALLIANCE] = needHeal[TEAM_ALLIANCE];
-    LfgNeedHeal[TEAM_HORDE] = needHeal[TEAM_HORDE];
-
-    time_t const urgentFillSeconds = time_t(sPlayerbotAIConfig.coaLfgUrgentFillSeconds);
     for (uint8 team : {TEAM_ALLIANCE, TEAM_HORDE})
-        LfgUrgentFill[team] = urgentFillSeconds > 0 && maxWaited[team] >= urgentFillSeconds;
+    {
+        LfgNeedTank[team] = needTank[team];
+        LfgNeedHeal[team] = needHeal[team];
+    }
 
     {
         std::lock_guard<std::mutex> lock(lfgPlayerLevelsLock);
@@ -3294,11 +3289,18 @@ std::string RandomPlayerbotMgr::GetEventData(uint32 bot, std::string const& even
 uint32 RandomPlayerbotMgr::SetEventValue(uint32 bot, std::string const& event, uint32 value, uint32 validIn,
                                          std::string const& data)
 {
-    PlayerbotsDatabasePreparedStatement* stmt = PlayerbotsDatabase.GetPreparedStatement(
-        value ? PLAYERBOTS_INS_RANDOM_BOTS : PLAYERBOTS_DEL_RANDOM_BOTS_BY_OWNER_AND_EVENT);
+    PlayerbotsDatabaseTransaction trans = PlayerbotsDatabase.BeginTransaction();
+
+    PlayerbotsDatabasePreparedStatement* stmt =
+        PlayerbotsDatabase.GetPreparedStatement(PLAYERBOTS_DEL_RANDOM_BOTS_BY_OWNER_AND_EVENT);
+    stmt->SetData(0, 0);
+    stmt->SetData(1, bot);
+    stmt->SetData(2, event.c_str());
+    trans->Append(stmt);
 
     if (value)
     {
+        stmt = PlayerbotsDatabase.GetPreparedStatement(PLAYERBOTS_INS_RANDOM_BOTS);
         stmt->SetData(0, 0);
         stmt->SetData(1, bot);
         stmt->SetData(2, NowSeconds());
@@ -3310,15 +3312,11 @@ uint32 RandomPlayerbotMgr::SetEventValue(uint32 bot, std::string const& event, u
             stmt->SetData(6, data.c_str());
         else
             stmt->SetData(6);  // NULL
-    }
-    else
-    {
-        stmt->SetData(0, 0);
-        stmt->SetData(1, bot);
-        stmt->SetData(2, event.c_str());
+
+        trans->Append(stmt);
     }
 
-    PlayerbotsDatabase.Execute(stmt);
+    PlayerbotsDatabase.CommitTransaction(trans);
 
     // Update in-memory cache
     std::lock_guard<std::mutex> lock(eventCacheLock);
@@ -3383,7 +3381,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
     if (cmd == "memory")
     {
         // Bounded, read-only sample; never evaluate calculated values or modify bot state.
-        handler->PSendSysMessage("在线随机机器人：{}", sRandomPlayerbotMgr.playerBots.size());
+        handler->PSendSysMessage("Random bots online: {}", sRandomPlayerbotMgr.playerBots.size());
         std::map<std::string, uint32> counts;
         uint32 sampled = 0;
         uint64 spells = 0;
@@ -3402,7 +3400,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
             if (++sampled == 100)
                 break;
         }
-        handler->PSendSysMessage("机器人内存采样：{} 个机器人、{} 个缓存值、{} 个已学法术。 "
+        handler->PSendSysMessage("Bot memory sample: {} bots, {} cached values, {} learned spells. "
             "Inline sizes (exclude heap allocations): Player={} AI={} Session={}",
             sampled, values, spells, sizeof(Player), sizeof(PlayerbotAI), sizeof(WorldSession));
         uint64 grids = 0;
@@ -3414,7 +3412,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
             creatures += map->GetCreatureBySpawnIdStore().size();
             gameObjects += map->GetGameObjectBySpawnIdStore().size();
         });
-        handler->PSendSysMessage("共享世界：{} 个已加载网格、{} 个已生成生物、{} 个已生成游戏对象",
+        handler->PSendSysMessage("Shared world: {} loaded grids, {} spawned creatures, {} spawned gameobjects",
             grids, creatures, gameObjects);
         std::vector<std::pair<std::string, uint32>> sorted(counts.begin(), counts.end());
         std::sort(sorted.begin(), sorted.end(), [](auto const& left, auto const& right)
@@ -3422,7 +3420,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
             return left.second > right.second;
         });
         for (std::size_t index = 0; index < std::min<std::size_t>(20, sorted.size()); ++index)
-            handler->PSendSysMessage("缓存 {}：{} 个实例", sorted[index].first, sorted[index].second);
+            handler->PSendSysMessage("Cache {}: {} instances", sorted[index].first, sorted[index].second);
         return true;
     }
 

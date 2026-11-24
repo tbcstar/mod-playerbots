@@ -229,11 +229,9 @@ public:
     bool IsNearLfgPlayerLevels(TeamId team, uint32 dungeonId, uint32 level);
     // A queued real player of this team still lacks a tank or a healer: damage dealers hold back.
     std::array<std::atomic<bool>, 2> LfgNeedTankOrHeal{};
-    // The same, per role: a tank (or healer) bot of this team joins the queue on its own (CheckLfgQueue).
+    // 3.2.1: the same, role by role (CoaLfgRolePriority: a bot of the missing role queues first).
     std::array<std::atomic<bool>, 2> LfgNeedTank{};
     std::array<std::atomic<bool>, 2> LfgNeedHeal{};
-    // A real player of this team has waited AiPlayerbot.CoaLfgUrgentFillSeconds: every role fills in.
-    std::array<std::atomic<bool>, 2> LfgUrgentFill{};
     void CheckBgQueue();
     // How many healer and damage bots the rated solo queues real players wait in still need (CheckBgQueue).
     void CountRatedSoloNeeds();
