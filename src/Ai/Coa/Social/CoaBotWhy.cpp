@@ -207,7 +207,7 @@ namespace
     {
         if (!enabled)
         {
-            handler->SendSysMessage("[SquidBots why] off (AiPlayerbot.CoaWhy.Enable = 0).");
+            handler->SendSysMessage("[机器人 why] 已关闭（AiPlayerbot.CoaWhy.Enable = 0）。");
             return true;
         }
         // Open to every account (a command refused to a player account would be said aloud in /say when the realm
@@ -215,7 +215,7 @@ namespace
         WorldSession* session = handler->GetSession();
         if (gmOnly && session && session->GetSecurity() < SEC_GAMEMASTER)
         {
-            handler->SendSysMessage("[SquidBots why] GM account needed.");
+            handler->SendSysMessage("[机器人 why] 需要 GM 账号。");
             return true;
         }
         if (session && session->GetPlayer() && cooldownMs)
@@ -224,7 +224,7 @@ namespace
             uint64 const now = NowMs();
             if (last && now < last + cooldownMs)
             {
-                handler->PSendSysMessage("[SquidBots why] wait {} s between two questions.",
+                handler->PSendSysMessage("[机器人 why] 两次提问之间请等 {} 秒。",
                                          (last + cooldownMs - now + 999) / 1000);
                 return true;
             }
@@ -236,7 +236,7 @@ namespace
         PlayerbotAI* botAI = bot ? GET_PLAYERBOT_AI(bot) : nullptr;
         if (!bot || !botAI || !botAI->IsBotAI())
         {
-            handler->SendSysMessage("[SquidBots why] select a bot, or name one: .squidbots why [name]");
+            handler->SendSysMessage("[机器人 why] 请选中一名机器人，或直接给它名字：.squidbots why [名字]");
             return true;
         }
 
@@ -247,36 +247,36 @@ namespace
         Player* master = botAI->GetMaster();
 
         std::vector<std::string> lines;
-        lines.push_back(bot->GetName() + ", level " + std::to_string(bot->GetLevel()) + ", " +
-                        (sRandomPlayerbotMgr.IsRandomBot(bot) ? "random bot" : "alt bot") +
-                        (master && master != bot ? " of " + master->GetName() : "") + ", " +
-                        ZoneName(bot->GetZoneId()) + " (area " + std::to_string(bot->GetAreaId()) + "), " +
+        lines.push_back(bot->GetName() + "，等级 " + std::to_string(bot->GetLevel()) + ", " +
+                        (sRandomPlayerbotMgr.IsRandomBot(bot) ? "随机机器人" : "附身机器人") +
+                        (master && master != bot ? "，主人 " + master->GetName() : "") + ", " +
+                        ZoneName(bot->GetZoneId()) + "（区域 " + std::to_string(bot->GetAreaId()) + "), " +
                         Pos(bot->GetMapId(), bot->GetPositionX(), bot->GetPositionY(), bot->GetPositionZ()) +
-                        (bot->isDead() ? ", dead" : "") + (bot->IsInCombat() ? ", in combat" : "") +
-                        (bot->IsMounted() ? ", mounted" : "") + (bot->IsInFlight() ? ", on a taxi" : ""));
+                        (bot->isDead() ? "，已死亡" : "") + (bot->IsInCombat() ? "，战斗中" : "") +
+                        (bot->IsMounted() ? "，骑乘中" : "") + (bot->IsInFlight() ? "，在飞行路线上" : ""));
         lines.push_back("RPG " + goal.status + (goal.what.empty() ? "" : ", " + goal.what) +
                         (goal.hasPos ? ", to " + Pos(goal.mapId, goal.x, goal.y, goal.z) : "") + "; " +
                         PathTo(bot, goal) +
                         (botAI->rpgInfo.stuckAttempts ? ", " + std::to_string(botAI->rpgInfo.stuckAttempts) +
-                                                            " stuck attempt(s)"
+                                                            " 次卡住尝试"
                                                       : ""));
         lines.push_back(
-            "Last move: " +
+            "最后一次移动：" +
             (trace.moveAtMs ? trace.moveAction + " to " + Pos(trace.moveMapId, trace.moveX, trace.moveY, trace.moveZ) +
-                                  ", " + CoaBotWhyRules::Duration(now - trace.moveAtMs) + " ago"
-                            : std::string("none seen")) +
-            "; last action: " + (engine ? engine->GetLastAction() : std::string("none")) + "; motion " +
+                                  "，" + CoaBotWhyRules::Duration(now - trace.moveAtMs) + "前"
+                            : std::string("未见移动")) +
+            "；最后一次动作：" + (engine ? engine->GetLastAction() : std::string("无")) + "；移动状态 " +
             std::to_string(uint32(bot->GetMotionMaster()->GetCurrentMovementGeneratorType())) +
-            "; still for " + (trace.stillSinceMs ? CoaBotWhyRules::Duration(now - trace.stillSinceMs) : "?"));
+            "；静止 " + (trace.stillSinceMs ? CoaBotWhyRules::Duration(now - trace.stillSinceMs) : "?"));
 
         std::string joined;
         for (std::string const& line : lines)
         {
-            handler->PSendSysMessage("[SquidBots why] {}", line);
+            handler->PSendSysMessage("[机器人 why] {}", line);
             joined += (joined.empty() ? "" : " | ") + line;
         }
         WriteLine(joined);
-        handler->PSendSysMessage("[SquidBots why] written to {} in the server's logs folder.", fileName);
+        handler->PSendSysMessage("[机器人 why] 已写入服务器 logs 目录下的 {}。", fileName);
         return true;
     }
 

@@ -219,7 +219,7 @@ public:
     static bool HandleUpdate(ChatHandler* handler)
     {
         LOG_INFO("module", "CoA Economy AH bot: manual update cycle requested.");
-        handler->SendSysMessage("AH bot: running one update cycle.");
+        handler->SendSysMessage("拍卖行机器人：正在执行一轮更新。");
         auctionbot->Update();
         return true;
     }
@@ -227,7 +227,7 @@ public:
     static bool HandleReload(ChatHandler* handler)
     {
         LOG_INFO("module", "CoA Economy AH bot: reloading configuration.");
-        handler->SendSysMessage("AH bot: reloading configuration and item data.");
+        handler->SendSysMessage("拍卖行机器人：正在重新载入配置与物品数据。");
         sConfigMgr->LoadModulesConfigs(true, false);
         auctionbot->EnsureAutoCharacter();
         auctionbot->InitializeConfiguration();
@@ -238,7 +238,7 @@ public:
     static bool HandleEmpty(ChatHandler* handler)
     {
         LOG_INFO("module", "CoA Economy AH bot: removing all bot auctions.");
-        handler->SendSysMessage("AH bot: removing all bot auctions and cleaning expired items.");
+        handler->SendSysMessage("拍卖行机器人：正在撤下全部机器人拍卖并清理过期物品。");
         auctionbot->EmptyAuctionHouses();
         auctionbot->CleanupExpiredAuctionItems();
         return true;
