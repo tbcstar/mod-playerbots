@@ -38,6 +38,8 @@ void PlayerbotAIConfig::LoadCoaCombatConfig()
     coaCombatLootNeedMinUpgradePct =
         std::max(0.0f, sConfigMgr->GetOption<float>("AiPlayerbot.CoaCombat.LootNeedMinUpgradePct", 10.0f));
     coaCombatLootNeedEpicOnly = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaCombat.LootNeedEpicOnly", false);
+    coaCombatLootNeedAgainstPlayers =
+        sConfigMgr->GetOption<bool>("AiPlayerbot.CoaCombat.LootNeedAgainstPlayers", false);
     coaCombatCallOfTheGraveEnable = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaCombat.CallOfTheGrave.Enable", true);
     coaCombatPlayerLedEnable = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaCombat.PlayerLed.Enable", true);
     coaCombatBenchKeyOnly = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaCombat.BenchKeyOnly", false);

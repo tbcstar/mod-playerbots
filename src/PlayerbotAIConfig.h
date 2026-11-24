@@ -821,6 +821,8 @@ public:
     // and only on epic or better items (off).
     float coaCombatLootNeedMinUpgradePct = 0.0f;
     bool coaCombatLootNeedEpicOnly = false;
+    // Roll Need even where a real player rolled Need, so the roll decides the winner (off: the bot steps aside).
+    bool coaCombatLootNeedAgainstPlayers = false;
     // Call of the Grave (Dire Maul West): the curse removed first, the melee out of its casters' 5 yd.
     bool coaCombatCallOfTheGraveEnable = false;
     // "The player leads" (docs/JOUEUR-MENE-3.0.md): the player's Main Tank bar comes first for the raid strategies'

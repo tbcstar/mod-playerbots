@@ -67,14 +67,16 @@ namespace CoaRollRule
 
     inline char const* VoteName(Vote v) { return v == Vote::Need ? "need" : v == Vote::Greed ? "greed" : "pass"; }
 
+    // A realm may let the bots roll Need even where a real player rolled Need (LootNeedAgainstPlayers): the roll then
+    // decides the winner instead of the bot stepping aside.
     inline Vote Polite(Vote wanted, int needRollLevel, bool uniqueAlreadyOwned, bool realPlayerRolledNeed,
-                       bool greedAllowed)
+                       bool greedAllowed, bool needAgainstPlayers = false)
     {
         if (wanted == Vote::Need)
         {
             if (needRollLevel == 0 || uniqueAlreadyOwned)
                 return Vote::Pass;
-            if (needRollLevel == 1 || realPlayerRolledNeed)
+            if (needRollLevel == 1 || (realPlayerRolledNeed && !needAgainstPlayers))
                 wanted = Vote::Greed;
             else
                 return Vote::Need;

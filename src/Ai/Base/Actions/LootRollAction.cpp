@@ -208,9 +208,10 @@ bool LootRollAction::Execute(Event /*event*/)
             if (CoaRollRule::HoldVote(wanted, needLevel, realPlayerStillToVote, RollSeenForMs(bot, guid),
                                       sPlayerbotAIConfig.coaCombatLootNeedWaitMs))
                 continue;
-            CoaRollRule::Vote const polite = CoaRollRule::Polite(wanted, needLevel,
-                                                                 vote == NEED && RollUniqueCheck(proto, bot),
-                                                                 realPlayerRolledNeed, greedAllowed);
+            CoaRollRule::Vote const polite =
+                CoaRollRule::Polite(wanted, needLevel, vote == NEED && RollUniqueCheck(proto, bot),
+                                    realPlayerRolledNeed, greedAllowed,
+                                    sPlayerbotAIConfig.coaCombatLootNeedAgainstPlayers);
             if (sPlayerbotAIConfig.coaSelfFoundRollLog)
                 LOG_INFO("playerbots.loot",
                          "roll: {} (level {}{}) item {} ({}) wanted {} voted {} (need level {}, greed {}, real player "

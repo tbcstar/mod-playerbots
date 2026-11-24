@@ -359,12 +359,14 @@ AiPlayerbot.LootNeedLevelLookahead = 1
 # 启用机器人在配方上 roll。会对其尚未学会的可学习专业配方 roll 需求。
 # 若 LootRollGreed 已启用，机器人会对其无法学习的装绑配方 roll 贪婪。
 # 默认值：0（禁用）
-AiPlayerbot.LootRollRecipe = 0
+# 本服：1 = 开启（机器人也会在配方上 roll，掉落不会全部落进玩家背包）。
+AiPlayerbot.LootRollRecipe = 1
 
 # 拥有附魔的机器人会对可分解物品 roll 分解而非贪婪。
 # 若禁用，机器人会对可分解物品 roll 贪婪。
 # 默认值：0（禁用）
-AiPlayerbot.LootRollDisenchant = 0
+# 本服：1 = 开启（会附魔的机器人对可分解物品 roll 分解，参与竞争）。
+AiPlayerbot.LootRollDisenchant = 1
 
 # 机器人不会与之交互的游戏对象 GUID 列表。
 # 默认 GUID 列表：
@@ -4194,7 +4196,8 @@ AiPlayerbot.CoaLive.PlayerReplies.Enable = 1
 #    AiPlayerbot.CoaLive.LootNeedAsk.PerDungeon    - asks in one dungeon run, all the bots together (2)
 #    AiPlayerbot.CoaLive.LootNeedAsk.MinUpgradePct - the upgrade over the piece worn, in percent (10)
 
-AiPlayerbot.CoaLive.LootNeedAsk.Enable = 1
+# 本服：0 = 关闭（不再先在队伍频道问「我能需求吗」并等 40 秒，直接按规则 roll）。
+AiPlayerbot.CoaLive.LootNeedAsk.Enable = 0
 AiPlayerbot.CoaLive.LootNeedAsk.PerDungeon = 2
 AiPlayerbot.CoaLive.LootNeedAsk.MinUpgradePct = 10
 
@@ -6281,7 +6284,8 @@ AiPlayerbot.CoaCombat.AhnQiraj.Enable = 1
 #                  wears in that slot (gear score); a smaller upgrade is rolled Greed. An empty slot always counts.
 #     Default:     10 (since 3.1.6; 0: any upgrade is a Need)
 
-AiPlayerbot.CoaCombat.LootNeedMinUpgradePct = 10
+# 本服：0 = 任何升级都算需求（不再卡 10% 门槛），让机器人积极点需求、由 roll 决定归属。
+AiPlayerbot.CoaCombat.LootNeedMinUpgradePct = 0
 
 #
 # AiPlayerbot.CoaCombat.LootNeedEpicOnly
@@ -6291,6 +6295,17 @@ AiPlayerbot.CoaCombat.LootNeedMinUpgradePct = 10
 #                  1 - (Enabled)
 
 AiPlayerbot.CoaCombat.LootNeedEpicOnly = 0
+
+#
+# AiPlayerbot.CoaCombat.LootNeedAgainstPlayers
+#     Description: Only where bots may roll Need (AiPlayerbot.LootNeedRollLevel = 2). A bot that wants an item rolls
+#                  Need even when a real player in the group already rolled Need, so the roll itself decides who gets
+#                  it. Off (default): the bot steps aside and rolls Greed instead.
+#     Default:     0 - (Disabled: the bot never needs against a real player's Need)
+#                  1 - (Enabled: need against a real player's Need, the roll decides)
+# 本服：1 = 机器人凭运气与玩家一起点需求。
+
+AiPlayerbot.CoaCombat.LootNeedAgainstPlayers = 1
 
 #
 # AiPlayerbot.CoaCombat.CallOfTheGrave.Enable

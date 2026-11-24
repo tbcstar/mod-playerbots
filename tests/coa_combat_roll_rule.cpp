@@ -17,6 +17,11 @@ int main()
     assert(Polite(Vote::Need, 2, false, false, true) == Vote::Need);
     // 3. Level 2, but a real player rolled Need on it: Greed, never against the player.
     assert(Polite(Vote::Need, 2, false, true, true) == Vote::Greed);
+    // 4. LootNeedAgainstPlayers: the same case keeps the Need, so the roll decides the winner.
+    assert(Polite(Vote::Need, 2, false, true, true, true) == Vote::Need);
+    assert(Polite(Vote::Need, 2, false, false, true, true) == Vote::Need);
+    assert(Polite(Vote::Need, 1, false, true, true, true) == Vote::Greed);   // level 1 stays a Greed
+    assert(Polite(Vote::Need, 0, false, true, true, true) == Vote::Pass);
 
     // Level 0 and a unique item already owned: Pass.
     assert(Polite(Vote::Need, 0, false, false, true) == Vote::Pass);
