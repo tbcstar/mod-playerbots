@@ -82,16 +82,16 @@
 # 启用或禁用 Playerbots 模块
 AiPlayerbot.Enabled = 1
 
-# Startup check: the module loads its settings, data and AI contexts, then creates, deletes, renames and logs in no
-# bot, and its world updates do nothing. For a server that qualifies a build before opening it. CoA.ValidationMode = 1
-# does the same.
-# Default: 0 (off)
+# 启动检查：模块加载其设置、数据和 AI 上下文，然后不会创建、删除、重命名或登录任何机器人，
+# 其世界更新也不执行任何操作。用于在开放服务器前验证构建。CoA.ValidationMode = 1
+# 效果相同。
+# 默认值：0（关闭）
 AiPlayerbot.StartupCheckOnly = 0
 
-# The SquidBots addon asks what this server has ("SQBW\tCAPS?"): the bots' version and whether Dungeon Clear is
-# built in. Without Dungeon Clear the addon says so on its Dungeon features instead of acting on nothing. Whether
-# Dungeon Clear is built in is also written once in the log at startup. 0: no answer, as on an older server.
-# Default: 1 (on)
+# SquidBots 插件会询问本服务器具备哪些能力（"SQBW\tCAPS?"）：机器人的版本以及是否内置地下城清理功能。
+# 若未内置地下城清理，插件会在其地下城功能中说明，而不是无操作。是否内置地下城清理也会在启动时
+# 写入日志一次。0：不应答，与旧版服务器行为一致。
+# 默认值：1（开启）
 AiPlayerbot.CoaCaps.Addon = 1
 
 # Enable randombot system
@@ -325,7 +325,7 @@ AiPlayerbot.AutoEquipUpgradeLoot = 1
 AiPlayerbot.EquipUpgradeThreshold = 1.1
 
 # 两轮装备初始化以创建更合适的装备
-AiPlayerbot.TwoRoundsGearInit = 0
+AiPlayerbot.TwoRoundsGearInit = 1
 
 #
 #
@@ -341,7 +341,7 @@ AiPlayerbot.FreeMethodLoot = 0
 
 # 机器人对需求物品使用的 roll 等级（0 = 放弃，1 = 贪婪，2 = 需求）
 # 默认值：1（贪婪）
-AiPlayerbot.LootNeedRollLevel = 1
+AiPlayerbot.LootNeedRollLevel = 2
 
 # 启用机器人在物品上 roll 贪婪（全局开关）
 # 若禁用，机器人将对所有物品放弃而非贪婪
@@ -352,7 +352,7 @@ AiPlayerbot.LootGreedRollLevel = 0
 # 机器人会 roll 需求，包括与其队伍中的真实玩家竞争，并保留该物品直到能
 # 穿戴，除非它已经在该槽位持有至少同样好的物品。
 # 默认值：0（禁用）
-AiPlayerbot.LootNeedLevelLookahead = 0
+AiPlayerbot.LootNeedLevelLookahead = 1
 
 # 启用机器人在配方上 roll。会对其尚未学会的可学习专业配方 roll 需求。
 # 若 LootRollGreed 已启用，机器人会对其无法学习的装绑配方 roll 贪婪。
@@ -381,49 +381,49 @@ AiPlayerbot.DisallowedGameObjects = 176213,17155,2656,74448,19020,3719,3658,3705
 # TIMERS
 #
 
-# Max AI iterations per tick
+# 每 tick 的最大 AI 迭代次数
 AiPlayerbot.IterationsPerTick = 10
 
-# Delay between two short-time spells cast
+# 两次短时法术施放之间的延迟
 AiPlayerbot.GlobalCooldown = 500
 
-# Max wait time when moving
+# 移动时的最大等待时间
 AiPlayerbot.MaxWaitForMove = 5000
 
-# Enable/disable use of MoveSplinePath for bot movement
-# Disabling will result in more erratic movement but is required for stuns, snares, and roots to work on bots
-# Default: 0 - MoveSplinePath enabled
-#          1 - MoveSplinePath disabled in BG/Arena only
-#          2 - MoveSplinePath disabled everywhere
+# 启用/禁用机器人移动使用 MoveSplinePath
+# 禁用会导致移动更不稳定，但这是让眩晕、减速和定身对机器人生效所必需的
+# 默认值：0 - 启用 MoveSplinePath
+#         1 - 仅在战场/竞技场中禁用 MoveSplinePath
+#         2 - 在所有地方禁用 MoveSplinePath
 AiPlayerbot.DisableMoveSplinePath = 0
 
-# Max search time for movement (higher for better movement on slopes)
+# 移动的最大搜索时间（越高在斜坡上的移动效果越好）
 # Default: 3
 AiPlayerbot.MaxMovementSearchTime = 3
 
-# Action expiration time
+# 动作过期时间
 AiPlayerbot.ExpireActionTime = 5000
 
-# Max dispel auras duration
+# 驱散光环的最大持续时间
 AiPlayerbot.DispelAuraDuration = 700
 
-# Delay between two bot actions
+# 两个机器人动作之间的延迟
 AiPlayerbot.ReactDelay = 100
 
-# Dynamically adjust react delay for bots in different status to reduce server lags
+# 根据机器人所处不同状态动态调整反应延迟，以减少服务器卡顿
 AiPlayerbot.DynamicReactDelay = 1
 
-# Inactivity delay
+# 空闲延迟
 AiPlayerbot.PassiveDelay = 10000
 
-# Minimum delay between repeating actions (chat messages, emotes etc)
+# 重复动作（聊天消息、表情等）之间的最小延迟
 AiPlayerbot.RepeatDelay = 2000
 
-# Delay timers
+# 延迟计时器
 AiPlayerbot.ErrorDelay = 100
 AiPlayerbot.RpgDelay = 10000
 AiPlayerbot.SitDelay = 20000
-# ReturnDelay has a minimum value of 2000 - lower values will cause a crash!
+# ReturnDelay 的最小值为 2000 —— 低于该值会导致崩溃！
 AiPlayerbot.ReturnDelay = 2000
 AiPlayerbot.LootDelay = 1000
 
@@ -435,7 +435,7 @@ AiPlayerbot.LootDelay = 1000
 # DISTANCES
 #
 
-# Distances are in yards
+# 距离单位为码
 AiPlayerbot.FarDistance = 20.0
 AiPlayerbot.SightDistance = 100.0
 AiPlayerbot.SpellDistance = 28.5
@@ -479,25 +479,25 @@ AiPlayerbot.HighMana = 65
 # QUESTS
 #
 
-# Bots pick their quest rewards
-# yes = picks the most useful item, no = list all rewards, ask = pick useful item and lists if multiple
+# 机器人选择其任务奖励
+# yes = 选择最有用的物品，no = 列出所有奖励，ask = 选择有用物品并在有多个时列出
 AiPlayerbot.AutoPickReward = yes
 
-# Sync quests with player (bots will complete quests the moment you hand them in and will not loot quest items.)
+# 与玩家同步任务（机器人会在你交任务的那一刻完成任务，并且不会拾取任务物品。）
 # Default: 1 (enabled)
 AiPlayerbot.SyncQuestWithPlayer = 1
 
-# Bots will auto-complete quests for the player when handing in bots' quests
+# 机器人在交自己的任务时会自动为玩家完成任务
 # Default: 0 (disabled)
 AiPlayerbot.SyncQuestForPlayer = 0
 
-# Your alts catch up a quest chain: when you take or share a quest an alt can't take only because it misses the
-# earlier quests of the chain, it marks them done (no reward, no experience, no item) and takes the quest.
-# Never past a level, race, class, reputation or profession requirement. Never for random bots.
+# 你的小号追赶任务链：当你接受或分享一个任务，而小号仅因缺少该任务链的
+# 前置任务而无法接受时，它会将这些前置任务标记为已完成（无奖励、无经验、无物品）并接受该任务。
+# 绝不会越过等级、种族、职业、声望或专业要求。绝不会对随机机器人生效。
 # Default: 1 (enabled)
 AiPlayerbot.CatchUpQuestChains = 1
 
-# Bots will drop obsolete quests
+# 机器人会放弃过时的任务
 # Default: 1 (enabled)
 AiPlayerbot.DropObsoleteQuests = 1
 
@@ -509,24 +509,24 @@ AiPlayerbot.DropObsoleteQuests = 1
 # COMBAT
 #
 
-# Auto add dungeon/raid strategies when entering the instance if implemented
+# 进入副本时自动添加地下城/团本策略（如果已实现）
 AiPlayerbot.ApplyInstanceStrategies = 1
 
-# Enable auto avoid aoe strategy
+# 启用自动躲避 AOE 策略
 # Default: 1 (enabled)
 AiPlayerbot.AutoAvoidAoe = 1
 
-# Only avoid aoe spells with a radius smaller than this value
+# 仅躲避半径小于此值的 AOE 法术
 AiPlayerbot.MaxAoeAvoidRadius = 15.0
 
-# A whitelist of aoe spell IDs that should not be avoided
+# 不应躲避的 AOE 法术 ID 白名单
 AiPlayerbot.AoeAvoidSpellWhitelist = 50759,57491,13810,29946
 
-# Enable healer bot save mana strategy
+# 启用治疗机器人节省法力策略
 # Default: 1 (enabled)
 AiPlayerbot.AutoSaveMana = 1
 
-# Healer bot save mana threshold
+# 治疗机器人节省法力阈值
 # Default: 60 (60%)
 AiPlayerbot.SaveManaThreshold = 60
 
@@ -716,6 +716,17 @@ AiPlayerbot.Coa.AchievementAnnounceGapSeconds = 60
 # alt bot. 0: no realm gap.
 # Default: 60
 AiPlayerbot.Coa.AchievementAnnounceRealmGapSeconds = 60
+
+# The core saves no achievement of a bot, so after each restart a random bot earns its achievements again: at its
+# first level-up, "Level 10" up to its level at once. 1: a level achievement below the bot's level is earned without a
+# word (the one of the level it just reached is announced). Never a real player, never a player's alt bot.
+# Default: 1
+AiPlayerbot.Coa.HideReplayedAchievements = 1
+
+# Every hour, to the log (CoaBots.log): the achievements of the random bots shown and muted, and why
+# ("achievement announces (last hour): ..."). A diagnostic for the bench.
+# Default: 0
+AiPlayerbot.Coa.AchievementAnnounceLog = 0
 
 # Self-found random bots in dungeons: share of the random bots (0 to 100 percent, picked by character whatever
 # its level, always the same ones) that wear only what they loot, earn from quests or are traded from level 10 on.
@@ -4331,6 +4342,13 @@ AiPlayerbot.CoaTrust.Kill = 1
 AiPlayerbot.CoaTrust.Boss = 25
 AiPlayerbot.CoaTrust.RaidBoss = 100
 AiPlayerbot.CoaTrust.Ranks = 0,100,500,1500,4000,10000
+
+#    AiPlayerbot.CoaLfgRolePriority
+#        Description: Dungeon finder: while a queued party of real players misses a tank or a healer that no queued
+#                     bot covers, a free random bot of that role queues within seconds instead of at its random
+#                     roll (one chance in 20 a check), so the missing role comes first.
+#        Default:     1 (enabled)
+AiPlayerbot.CoaLfgRolePriority = 1
 
 # Bots' minimum and maximum level when teleporting in and out of a zone, according to the new RPG strategy
 # Format: AiPlayerbot.ZoneBracket.zoneID = minLevel,maxLevel
