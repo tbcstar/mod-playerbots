@@ -604,7 +604,7 @@ void Play(Due isDue)
                     bot->Say(p.text, LANG_UNIVERSAL);
                     break;
                 case CH_PARTY:
-                    if (Group* group = bot->GetGroup())
+                    if (Group* group = bot->GetGroup(); group && GroupChatOn())
                     {
                         WorldPacket data;
                         ChatHandler::BuildChatPacket(data, CHAT_MSG_PARTY, LANG_UNIVERSAL, bot, nullptr, p.text);
@@ -657,7 +657,6 @@ void Play(Due isDue)
         }
     }
 }
-
 
 // ---------------------------------------------------------------- social bots (L2)
 
@@ -803,7 +802,6 @@ bool Social(Player* bot, PlayerbotAI* botAI, std::list<Player*> const& nearby)
     return false;
 }
 
-
 // ---------------------------------------------------------------- Immersion (L2): fishing on the shore
 
 std::atomic<uint32> onlineRandomBots{0};  // refreshed by the world thread every 5 s while Immersion is on
@@ -912,7 +910,6 @@ void Fish(Player* bot, PlayerbotAI* botAI)
         fishingUntil.clear();
 }
 
-
 // ---------------------------------------------------------------- %place: "where is ...?"
 
 // A name made comparable with a whisper: lower case (UTF-8, by the core), then NormalizeWhisper, without the spaces
@@ -986,7 +983,6 @@ std::string FindPlace(std::vector<std::string> const& subjects, uint8 locale)
     }
     return "";
 }
-
 
 // ---------------------------------------------------------------- Immersion (L2): gathering trips
 
@@ -2725,7 +2721,7 @@ public:
     // Every aura of the realm passes here: leave at once unless it is a real player's buff on a random bot.
     void OnAuraApply(Unit* unit, Aura* aura) override
     {
-        if (!Enabled() || !unit || !aura || unit->GetTypeId() != TYPEID_PLAYER)
+        if (!Enabled() || !unit || !aura || !unit->IsPlayer())
             return;
         ObjectGuid const casterGuid = aura->GetCasterGUID();
         if (!casterGuid.IsPlayer() || casterGuid == unit->GetGUID() || aura->IsPassive() || !aura->GetSpellInfo() ||
@@ -3018,6 +3014,11 @@ void BeforeBotLogout(Player* bot)
     ObjectGuid const guid = bot->GetGUID();
     if (React(bot, "guild_logout", nullptr, "g" + std::to_string(bot->GetGuildId()), opt))
         Play([guid](Pending const& p) { return p.bot == guid && p.dueMs == 0; });
+}
+
+bool GroupChatOn()
+{
+    return CoaChat::GroupChannelAllowed(ChatOn(), sPlayerbotAIConfig.coaLiveGroupChat);
 }
 
 bool LegacyChatOn()
@@ -3378,7 +3379,6 @@ void OnResurrectAccepted(Player* bot, ObjectGuid by)
         React(bot, "rez_received", caster, "r" + std::to_string(bot->GetGUID().GetCounter()));
 }
 }  // namespace CoaLive
-
 
 using Acore::ChatCommands::ChatCommandTable;
 using Acore::ChatCommands::Console;

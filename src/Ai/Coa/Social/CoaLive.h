@@ -62,6 +62,8 @@ bool ChatOn();
 bool LegacyChatOn();
 // The older "WTS [item] for <vendor price>" (suggest_sell): false while the living chat speaks (CoaChatRules.h).
 bool LegacySellOn();
+// AiPlayerbot.CoaLive.Chat.GroupChannels = 0: no bot line in the guild, party or raid channel (CoaChatRules.h).
+bool GroupChatOn();
 
 // The bot accepted a resurrection cast by "by".
 void OnResurrectAccepted(Player* bot, ObjectGuid by);

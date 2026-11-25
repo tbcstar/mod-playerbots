@@ -3980,6 +3980,18 @@ AiPlayerbot.CoaLive.NoAwayFlag = 1
 
 AiPlayerbot.CoaLive.Chat.Enable = 1
 
+#    AiPlayerbot.CoaLive.Chat.GroupChannels
+#        Description: 机器人是否在「公会频道 / 队伍频道 / 团队频道」发言。这些频道是玩家之间说话的地方，
+#                     默认关闭后机器人一个字都不写进去：CoA Live 的台词（公会问候、组队闲聊、队伍提问）
+#                     和模块旧有的提示行（喊人组队、公会招人、拉怪/缺蓝/复活播报）全部不再出现。
+#                     副本里的协作仍由机器人自己的逻辑完成，只是不再把这些话打字出来；密语、世界频道、
+#                     区域频道、交易频道、LFG 频道不受影响。需要 AiPlayerbot.CoaLive.Chat.Enable = 1。
+#                     ".reload config" 可重读。
+#        Default:     0 - 公会/队伍/团队频道保持安静（只有玩家在说）
+#                     1 - 机器人可以在这三个频道发言（旧行为）
+
+AiPlayerbot.CoaLive.Chat.GroupChannels = 0
+
 #    AiPlayerbot.CoaLive.LegacyChat
 #        Description: The module's older unsolicited lines while the living chat speaks
 #                     (AiPlayerbot.CoaLive.Enable = 1 and AiPlayerbot.CoaLive.Chat.Enable = 1): the

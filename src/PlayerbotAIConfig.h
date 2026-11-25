@@ -718,6 +718,7 @@ public:
     bool coaLiveNoAwayFlag;  // AiPlayerbot.CoaLive.NoAwayFlag: resting bots not shown <Away>
     bool coaLiveChatEnable;  // AiPlayerbot.CoaLive.Chat.Enable: off, the bots write no CoA Live line (default 1)
     bool coaLiveLegacyChat;  // AiPlayerbot.CoaLive.LegacyChat: the older lines speak with the living chat (default 0)
+    bool coaLiveGroupChat;  // AiPlayerbot.CoaLive.Chat.GroupChannels: bots may talk in guild, party and raid (default 0)
     uint32 coaLiveHeavyRefreshPerTick;  // AiPlayerbot.CoaLive.HeavyRefreshPerTick (0: no budget)
     bool coaLiveMaintenanceSpread;  // AiPlayerbot.CoaLive.MaintenanceSpread: level-up maintenance a step a second
     bool coaLiveTrainerDedup;  // AiPlayerbot.CoaLive.TrainerDedup: each trainer's spell list walked once a round

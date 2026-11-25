@@ -15,6 +15,9 @@ int main()
            !CoaChat::ChatFeatureOn(true, true, false) && !CoaChat::ChatFeatureOn(false, false, false));
     assert(CoaChat::TradePaceRuns(true, 2) && !CoaChat::TradePaceRuns(false, 2) && !CoaChat::TradePaceRuns(true, 0));
     assert(CoaChat::ChannelLineAllowed(true) && !CoaChat::ChannelLineAllowed(false));
+    // Guild, party and raid: silent by default, whatever the other switches say, and silent with the chat off.
+    assert(!CoaChat::GroupChannelAllowed(true, false) && !CoaChat::GroupChannelAllowed(false, true));
+    assert(CoaChat::GroupChannelAllowed(true, true) && !CoaChat::GroupChannelAllowed(false, false));
     assert(CoaChat::ChatReplyAllowed(true, false) && CoaChat::ChatReplyAllowed(false, true) &&
            !CoaChat::ChatReplyAllowed(false, false));
     // Older lines: silent while the living chat speaks, unless LegacyChat; as before with CoA Live off.

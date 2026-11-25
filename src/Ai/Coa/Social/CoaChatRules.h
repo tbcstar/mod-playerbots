@@ -43,6 +43,11 @@ inline bool TradePaceRuns(bool chatOn, unsigned perMinute) { return chatOn && pe
 // (PlayerbotAI::SayTo*): off, none of them. A bot's reply to what a player says near it or in a channel is
 // kept for its master only (an order and its answer are not chat).
 inline bool ChannelLineAllowed(bool chatOn) { return chatOn; }
+
+// Guild, party and raid: the channels a group of players talks in themselves. Off
+// (AiPlayerbot.CoaLive.Chat.GroupChannels = 0), no bot line goes there, whether the living chat or an older line
+// says it; the group's own coordination still holds by the bot logic, not by what it writes there.
+inline bool GroupChannelAllowed(bool chatOn, bool groupChannelsOn) { return chatOn && groupChannelsOn; }
 inline bool ChatReplyAllowed(bool chatOn, bool fromMaster) { return chatOn || fromMaster; }
 
 // The module's older unsolicited lines (broadcasts, RandomBotTalk suggestions and replies to chatter): while the

@@ -54,6 +54,7 @@ void PlayerbotAIConfig::LoadCoaLiveConfig()
     coaLiveNoAwayFlag = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaLive.NoAwayFlag", true);
     coaLiveChatEnable = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaLive.Chat.Enable", true);
     coaLiveLegacyChat = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaLive.LegacyChat", false);
+    coaLiveGroupChat = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaLive.Chat.GroupChannels", false);
     coaLiveHeavyRefreshPerTick = sConfigMgr->GetOption<uint32>("AiPlayerbot.CoaLive.HeavyRefreshPerTick", 0);
     coaLiveMaintenanceSpread = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaLive.MaintenanceSpread", true);
     coaLiveTrainerDedup = sConfigMgr->GetOption<bool>("AiPlayerbot.CoaLive.TrainerDedup", false);

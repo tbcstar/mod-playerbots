@@ -3559,7 +3559,7 @@ void PlayerbotAI::LogChat(std::string_view how, std::string const& msg) const
 
 bool PlayerbotAI::SayToGuild(std::string const& msg)
 {
-    if (!CoaChat::ChannelLineAllowed(CoaLive::ChatOn()))  // AiPlayerbot.CoaLive.Chat.Enable = 0
+    if (!CoaLive::GroupChatOn())  // AiPlayerbot.CoaLive.Chat.Enable = 0, or Chat.GroupChannels = 0
         return false;
     if (msg.empty())
     {
@@ -3703,6 +3703,9 @@ bool PlayerbotAI::SayToChannelNow(std::string const& msg, ChatChannelId chanId)
 
 bool PlayerbotAI::SayToParty(std::string const& msg)
 {
+    if (!CoaLive::GroupChatOn())  // AiPlayerbot.CoaLive.Chat.Enable = 0, or Chat.GroupChannels = 0
+        return false;
+
     if (!bot->GetGroup())
         return false;
 
@@ -3721,6 +3724,9 @@ bool PlayerbotAI::SayToParty(std::string const& msg)
 
 bool PlayerbotAI::SayToRaid(std::string const& msg)
 {
+    if (!CoaLive::GroupChatOn())  // AiPlayerbot.CoaLive.Chat.Enable = 0, or Chat.GroupChannels = 0
+        return false;
+
     if (!bot->GetGroup() || !bot->GetGroup()->isRaidGroup())
         return false;
 
