@@ -1720,8 +1720,8 @@ void RandomPlayerbotMgr::CheckLfgQueue()
     bool needTankOrHeal[2] = {false, false};
     bool needTank[2] = {false, false};
     bool needHeal[2] = {false, false};
-    std::map<TeamId, std::map<uint32, uint32>> partiesWithoutTankByDungeon;
-    std::map<TeamId, std::map<uint32, uint32>> partiesWithoutHealByDungeon;
+    std::map<uint8, std::map<uint32, uint32>> partiesWithoutTankByDungeon;
+    std::map<uint8, std::map<uint32, uint32>> partiesWithoutHealByDungeon;
     time_t maxWaited[2] = {0, 0};
     std::unordered_set<ObjectGuid> countedParties;
 
@@ -1801,8 +1801,8 @@ void RandomPlayerbotMgr::CheckLfgQueue()
     if (sPlayerbotAIConfig.coaLfgMissingRoles &&
         (!partiesWithoutTankByDungeon.empty() || !partiesWithoutHealByDungeon.empty()))
     {
-        std::map<TeamId, std::map<uint32, uint32>> queuedTanksByDungeon;
-        std::map<TeamId, std::map<uint32, uint32>> queuedHealsByDungeon;
+        std::map<uint8, std::map<uint32, uint32>> queuedTanksByDungeon;
+        std::map<uint8, std::map<uint32, uint32>> queuedHealsByDungeon;
         uint32 freeTanks[2] = {0, 0};
         uint32 freeHeals[2] = {0, 0};
         for (auto itr = GetPlayerBotsBegin(); itr != GetPlayerBotsEnd(); ++itr)
@@ -1896,7 +1896,7 @@ void RandomPlayerbotMgr::CheckLfgQueue()
     LOG_DEBUG("playerbots", "LFG Queue check finished");
 }
 
-bool RandomPlayerbotMgr::GatherLfgNeedDungeons(uint32 roles, TeamId team, std::set<uint32>& dungeons)
+bool RandomPlayerbotMgr::GatherLfgNeedDungeons(uint32 roles, uint8 team, std::set<uint32>& dungeons)
 {
     if (team > TEAM_HORDE)
         return false;

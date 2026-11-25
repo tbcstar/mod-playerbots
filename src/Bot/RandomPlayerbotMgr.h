@@ -237,7 +237,7 @@ public:
     std::mutex lfgNeedDungeonsLock;
     std::array<std::set<uint32>, 2> LfgNeedTankDungeons;
     std::array<std::set<uint32>, 2> LfgNeedHealDungeons;
-    bool GatherLfgNeedDungeons(uint32 roles, TeamId team, std::set<uint32>& dungeons);
+    bool GatherLfgNeedDungeons(uint32 roles, uint8 team, std::set<uint32>& dungeons);
     // A real player of this team has waited AiPlayerbot.CoaLfgUrgentFillSeconds in the queue: from then on every
     // role queues, so the damage dealers stop holding back and the dungeon fills instead of timing out.
     std::array<std::atomic<bool>, 2> LfgUrgentFill{};
