@@ -1861,7 +1861,7 @@ void RandomPlayerbotMgr::CheckLfgQueue()
             }
 
             if (changed && (needTank[team] || needHeal[team]))
-                LOG_INFO("playerbots", "LFG: {} waits without a {}; free bots that queue as tank {} / healer {}",
+                LOG_INFO("playerbots.lfg", "LFG: {} waits without a {}; free bots that queue as tank {} / healer {}",
                          team == TEAM_ALLIANCE ? "Alliance" : "Horde",
                          needTank[team] ? "tank" : "healer", freeTanks[team], freeHeals[team]);
         }
