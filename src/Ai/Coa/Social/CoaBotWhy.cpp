@@ -287,7 +287,7 @@ namespace
     {
         for (std::string const& line : CoaPathProbe::Probe(mapId, fx, fy, fz, tx, ty, tz))
         {
-            handler->PSendSysMessage("[SquidBots path] {}", line);
+            handler->PSendSysMessage("[机器人 路径] {}", line);
             LOG_INFO("playerbots.coa", "path probe map {} {:.1f} {:.1f} {:.1f} -> {:.1f} {:.1f} {:.1f}: {}", mapId, fx, fy,
                      fz, tx, ty, tz, line);
         }
@@ -298,7 +298,7 @@ namespace
     {
         for (std::string const& line : CoaPathProbe::CheckCapitals())
         {
-            handler->PSendSysMessage("[SquidBots pathcheck] {}", line);
+            handler->PSendSysMessage("[机器人 路径检查] {}", line);
             LOG_INFO("playerbots.coa", "path check: {}", line);
         }
         return true;
@@ -309,7 +309,7 @@ namespace
     {
         for (std::string const& line : CoaPathProbe::StopProbe(mapId, x, y, z, entryOrSpawn))
         {
-            handler->PSendSysMessage("[SquidBots stop] {}", line);
+            handler->PSendSysMessage("[机器人 停靠] {}", line);
             LOG_INFO("playerbots.coa", "stop probe map {} {:.1f} {:.1f} {:.1f} npc {}: {}", mapId, x, y, z, entryOrSpawn,
                      line);
         }
@@ -321,7 +321,7 @@ namespace
     {
         for (std::string const& line : CoaPathProbe::ArrivalsDisagree())
         {
-            handler->PSendSysMessage("[SquidBots arrivals] {}", line);
+            handler->PSendSysMessage("[机器人 抵达点] {}", line);
             LOG_INFO("playerbots.coa", "arrivals probe: {}", line);
         }
         return true;
@@ -332,7 +332,7 @@ namespace
     {
         for (std::string const& line : CoaPathProbe::GroundProbe(mapId, x, y, z))
         {
-            handler->PSendSysMessage("[SquidBots ground] {}", line);
+            handler->PSendSysMessage("[机器人 地面] {}", line);
             LOG_INFO("playerbots.coa", "ground probe map {} {:.1f} {:.1f} {:.1f}: {}", mapId, x, y, z, line);
         }
         return true;
@@ -343,7 +343,7 @@ namespace
     {
         for (std::string const& line : CoaPathProbe::PlaceExplain(mapId, x, y, z))
         {
-            handler->PSendSysMessage("[SquidBots place] {}", line);
+            handler->PSendSysMessage("[机器人 停靠点] {}", line);
             LOG_INFO("playerbots.coa", "place probe map {} {:.1f} {:.1f} {:.1f}: {}", mapId, x, y, z, line);
         }
         return true;
@@ -353,7 +353,7 @@ namespace
     bool HandlePlaces(ChatHandler* handler)
     {
         for (std::string const& line : CoaPathProbe::PlacesReport())
-            handler->PSendSysMessage("[SquidBots places] {}", line);
+            handler->PSendSysMessage("[机器人 停靠点列表] {}", line);
         return true;
     }
 

@@ -1286,15 +1286,15 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
         if (!charname)
         {
             messages.push_back(
-                "addclass: invalid CLASSNAME (warrior/paladin/hunter/rogue/priest/shaman/mage/warlock/druid/dk, or a "
-                "CoA class: barbarian, witchdoctor, sun ...)");
+                "addclass：职业名无效（战士/圣骑士/猎人/盗贼/牧师/萨满/法师/术士/德鲁伊/死骑，或 CoA 职业："
+                "barbarian 野蛮人、witchdoctor 巫医、sun 太阳祭司……）");
             return messages;
         }
         // 3.2.3: the CoA classes too, by name (the AddClass accounts of a CoA realm hold only them).
         uint8 claz = AddclassClassFromName(charname);
         if (!claz)
         {
-            messages.push_back("Error: Invalid Class (or a beginning shared by two CoA classes). Try again.");
+            messages.push_back("错误：职业无效（这个开头同时匹配两个 CoA 职业），请重试。");
             return messages;
         }
         //  Added for gender choice : Parsing gender

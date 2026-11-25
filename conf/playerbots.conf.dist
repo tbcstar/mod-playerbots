@@ -280,9 +280,9 @@ AiPlayerbot.BotRepairWhenSummon = 1
 # 坐骑
 #
 
-# Defines at what level a bot will naturally use its 60% ground mount
-# Note: was level 20 during WotLK, 30 during TBC, 40 during Vanilla
-# Default: 20
+# 定义机器人从多少级起会自然使用其 60% 地面坐骑
+# 备注：在 WotLK 中为 20 级，TBC 中为 30 级，Vanilla 中为 40 级
+# 默认值：20（本服下调为 5，让新服机器人早早上坐骑）
 AiPlayerbot.UseGroundMountAtMinLevel = 5
 
 # 定义机器人从多少级起会自然使用其 100% 快速地面坐骑
@@ -1020,10 +1020,10 @@ AiPlayerbot.RandomBotJoinLfg = 1
 # 默认值：0（禁用，在线机器人集合保持固定）
 AiPlayerbot.EnablePeriodicOnlineOffline = 1
 
-# Defines the ratio between the total number of randombots (including offline ones) and the number of randombots currently online (MaxRandomBots)
-# This setting must greater than 1.0 and only applies when EnablePeriodicOnlineOffline
-# Default: 1.5 (total number of bots is 1.5 times MaxRandomBots: 1,500 kept for 1,000 online; 3.2.3, was 2.0. A
-# server's existing bots and accounts are kept: only a new realm, or one short of bots, creates fewer)
+# 定义 randombots 总数（包括离线）与当前在线 randombots 数量（MaxRandomBots）之间的比例
+# 此设置必须大于 1.0，且仅在 EnablePeriodicOnlineOffline 启用时生效
+# 默认值：1.5（机器人总数是在线的 1.5 倍：1,000 在线时保留 1,500；3.2.3 起由 2.0 下调。
+# 服务器上已有的机器人与账号会被保留：只有新开服或机器人不足时才会少建）
 AiPlayerbot.PeriodicOnlineOfflineRatio = 1.5
 
 # 启用 EnablePeriodicOnlineOffline 时，上线的机器人首先从在线真实玩家

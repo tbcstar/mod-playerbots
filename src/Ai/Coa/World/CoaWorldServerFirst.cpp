@@ -190,8 +190,8 @@ namespace
             char const* sideZh = p.team == TEAM_ALLIANCE ? "联盟" : "部落";
             std::string who = p.guild.empty() ? p.name : Acore::StringFormat("{} <{}>", p.name, p.guild);
             std::string text = p.kind == FIRST_LEVEL
-                ? Acore::StringFormat("|cffff8000[Server First]|r {} is the first of {} to reach level {}!", who, side, p.entry)
-                : Acore::StringFormat("|cffff8000[Server First]|r {} has slain {}, a first for {}!", who, p.what, side);
+                ? Acore::StringFormat("|cffff8000[全服首杀]|r {} 是{}第一位达到 {} 级的玩家！", who, sideZh, p.entry)
+                : Acore::StringFormat("|cffff8000[全服首杀]|r {} 带领{}首次击杀 {}！", who, sideZh, p.what);
             // 3.2.2 (crash 24/11 16:29, a new realm's first "first"): ChatHandler(nullptr).SendWorldText sends to its own
             // session, null here. To each player in the world instead (bots included: their chat is ignored).
             // Never ChatHandler(nullptr) in this module: SendWorldText and the like dereference its session.
