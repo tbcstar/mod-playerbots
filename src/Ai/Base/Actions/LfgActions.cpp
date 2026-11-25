@@ -15,6 +15,7 @@
 #include "RandomPlayerbotMgr.h"
 #include "World.h"
 #include "WorldPacket.h"
+#include <set>
 #include "CoaSpecialization.h"
 #include "CoaWildcard.h"
 #include "CoaReborn.h"
@@ -167,6 +168,23 @@ bool LfgJoinAction::JoinLFG()
 
     if (!selected.size())
         return false;
+
+    // A party of this team waits for one dungeon entry with no bot of this role queued for that same entry: the
+    // bot takes the missing seat instead of rolling for any dungeon of the list.
+    if (RandomPlayerbotMgr::instance().IsRandomBot(bot))
+    {
+        std::set<uint32> needed;
+        if (RandomPlayerbotMgr::instance().GatherLfgNeedDungeons(GetRoles(), bot->GetTeamId(), needed) && !needed.empty())
+        {
+            std::vector<uint32> wanted;
+            for (uint32 id : selected)
+                if (needed.count(id))
+                    wanted.push_back(id);
+            if (wanted.empty())
+                return false;
+            selected.swap(wanted);
+        }
+    }
 
     // The core refuses a join that holds more than one random dungeon or mixes raids with dungeons:
     // queue for one random dungeon alone, else the specific dungeons, else the raids.
@@ -342,7 +360,6 @@ void LfgAcceptAction::ForgetProposal()
     pendingProposalId = 0;
     pendingSinceMs = 0;
 }
-
 
 bool LfgLeaveAction::Execute(Event /*event*/)
 {
