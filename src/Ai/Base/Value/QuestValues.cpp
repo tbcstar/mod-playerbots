@@ -186,9 +186,11 @@ std::vector<GuidPosition> ActiveQuestGiversValue::Calculate()
 
             if (creatureTemplate)
             {
-                if (bot->GetFactionReactionTo(bot->GetFactionTemplateEntry(),
-                                              sFactionTemplateStore.LookupEntry(creatureTemplate->faction)) <
-                    REP_FRIENDLY)
+                FactionTemplateEntry const* factionEntry =
+                    sFactionTemplateStore.LookupEntry(creatureTemplate->faction);
+
+                if (factionEntry &&
+                    bot->GetFactionReactionTo(bot->GetFactionTemplateEntry(), factionEntry) < REP_FRIENDLY)
                     continue;
             }
 
@@ -242,8 +244,10 @@ std::vector<GuidPosition> ActiveQuestTakersValue::Calculate()
             {
                 if (CreatureTemplate const* info = sObjectMgr->GetCreatureTemplate(entry.first))
                 {
-                    if (bot->GetFactionReactionTo(bot->GetFactionTemplateEntry(),
-                                                  sFactionTemplateStore.LookupEntry(info->faction)) < REP_FRIENDLY)
+                    FactionTemplateEntry const* factionEntry = sFactionTemplateStore.LookupEntry(info->faction);
+
+                    if (factionEntry &&
+                        bot->GetFactionReactionTo(bot->GetFactionTemplateEntry(), factionEntry) < REP_FRIENDLY)
                         continue;
                 }
             }

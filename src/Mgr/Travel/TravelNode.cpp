@@ -59,6 +59,8 @@ void TravelNodePath::calculateCost(bool distanceOnly)
                 if (cInfo)
                 {
                     FactionTemplateEntry const* factionEntry = sFactionTemplateStore.LookupEntry(cInfo->faction);
+                    if (!factionEntry)
+                        continue;
 
                     if (aReact.find(factionEntry) == aReact.end())
                         aReact.insert(std::make_pair(

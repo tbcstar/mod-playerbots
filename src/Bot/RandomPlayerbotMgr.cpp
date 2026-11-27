@@ -1035,10 +1035,16 @@ void RandomPlayerbotMgr::LoadBattleMastersCache()
         if (!bmaster)
             continue;
 
-        FactionTemplateEntry const* bmFaction = sFactionTemplateStore.LookupEntry(bmaster->faction);
-        uint32 bmFactionId = bmFaction->faction;
-        FactionEntry const* bmParentFaction = sFactionStore.LookupEntry(bmFactionId);
-        uint32 bmParentTeam = bmParentFaction->team;
+        uint32 bmFactionId = 0;
+        uint32 bmParentTeam = 0;
+
+        if (FactionTemplateEntry const* bmFaction = sFactionTemplateStore.LookupEntry(bmaster->faction))
+        {
+            bmFactionId = bmFaction->faction;
+
+            if (FactionEntry const* bmParentFaction = sFactionStore.LookupEntry(bmFactionId))
+                bmParentTeam = bmParentFaction->team;
+        }
         TeamId bmTeam = TEAM_NEUTRAL;
         if (bmParentTeam == 891)
             bmTeam = TEAM_ALLIANCE;
@@ -4558,6 +4564,9 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
                     continue;
 
                 FactionTemplateEntry const* factionEntry = sFactionTemplateStore.LookupEntry(cInfo->faction);
+                if (!factionEntry)
+                    continue;
+
                 ReputationRank reaction = Unit::GetFactionReactionTo(player->GetFactionTemplateEntry(), factionEntry);
 
                 if (reaction > REP_NEUTRAL && dest->nearestPoint(&botPos)->GetMapId() == player->GetMapId())

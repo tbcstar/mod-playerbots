@@ -288,6 +288,9 @@ bool RpgTrainAction::isPossible()
         return false;
 
     FactionTemplateEntry const* factionTemplate = sFactionTemplateStore.LookupEntry(cinfo->faction);
+    if (!factionTemplate)
+        return false;
+
     float reputationDiscount = bot->GetReputationPriceDiscount(factionTemplate);
     uint32 currentGold = AI_VALUE2(uint32, "free money for", (uint32)NeedMoneyFor::spells);
 

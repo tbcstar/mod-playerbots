@@ -1322,6 +1322,9 @@ bool RpgTravelDestination::isActive(Player* bot)
     }
 
     FactionTemplateEntry const* factionEntry = sFactionTemplateStore.LookupEntry(cInfo->faction);
+    if (!factionEntry)
+        return false;
+
     ReputationRank reaction = bot->GetReputationRank(factionEntry->faction);
 
     return reaction > REP_NEUTRAL;
@@ -1400,6 +1403,9 @@ bool GrindTravelDestination::isActive(Player* bot)
         return false;
 
     FactionTemplateEntry const* factionEntry = sFactionTemplateStore.LookupEntry(cInfo->faction);
+    if (!factionEntry)
+        return false;
+
     ReputationRank reaction = bot->GetReputationRank(factionEntry->faction);
 
     return reaction < REP_NEUTRAL;
